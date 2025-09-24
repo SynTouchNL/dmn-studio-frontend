@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                    <h3>Nieuwe DMN aanmaken</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Naam DMN</label>
+                <input required type="text" class="form-control" id="form_new_dmn_name" placeholder="Kies een DMN naam" [(ngModel)]="dmnName" name="dmnName" required>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Domein</label>
+                <select class="form-control" id="form_new_dmn_domain" [(ngModel)]="dmnDomain" name="dmnDomain" required>
+                    <option value="" disabled selected>Kies uw domein</option>
+                    @for(domain of domains; track domain.id) {
+                        <option value="{{ domain.id }}">{{ domain.name }}</option>
+                    }
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Eigenaar DMN</label>
+                <select class="form-control" id="form_new_dmn_owner" [(ngModel)]="dmnOwner" name="dmnOwner" required>
+                    <option value="" disabled selected>Kies een eigenaar</option>
+                    <option>Mark Akkermans</option>
+                    <option>Jan Klaassen</option>
+                    <option>Herman Jans</option>
+                    <option>Klaas Hermans</option>
+                    <option>Piet Pieters</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="formFile" class="form-label">Importeer Camunda-bestand</label>
+                <input class="form-control" type="file" name="dmnFile" id="formFile" (change)="onFileChange($event)">
+            </div>
+            <br>
+            <div class="btn-group">
+                <button (click)="submitForm($event)" class="btn btn-primary mb-2">Indienen</button>
+                <button [routerLink]="['/dmns']"class="btn btn-primary mb-2">Terug</button>
+            </div>
+        </form>
+    </div>
+</div>

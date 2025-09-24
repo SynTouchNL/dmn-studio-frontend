@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                    <h3>Nieuwe DMN Versie aanmaken</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <span>Het aanmaken van een nieuwe versie kan alleen als er geen bestaande versie in ontwikkeling is.
+            Kijk eerst of er een bestaande (nieuwe) versie is, en werk hieraan voordat er een nieuwe versie gemaakt wordt. </span>
+        <div class="col-3">
+            <div class="input-group mb-3">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="reuseDmn" name="reuseDmn">
+                    <option value="" disabled selected>DMN hergebruiken?</option>
+                    <option value="true">Ja</option>
+                    <option value="false">Nee, nieuwe DMN</option>
+                </select>
+                <button (click)="createNewVersion()" class="btn btn-primary">Aanmaken</button>
+            </div>
+
+        </div>
+        <div class="col-4">
+
+        </div>
+    </div>
+</div>

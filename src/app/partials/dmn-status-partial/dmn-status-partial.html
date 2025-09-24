@@ -1,0 +1,6 @@
+@for(badge of badges; let idx = $index; track badge.label + badge.active) {
+    <span class="badge {{ badge.active ? 'bg-success' : 'bg-secondary' }}" data-bs-toggle="tooltip" data-bss-tooltip data-toggle="tooltip" data-placement="top" title="{{ badge.tooltip }}">{{ badge.label }}</span>
+    @if(idx !== badges.length-1){
+        <span>–</span>
+    }
+}

@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                    <h3>DMNs - Sociaal Domein</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-xxl-9 text-start align-self-center">
+            <div class="btn-group" role="group">
+                <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button">Nieuw</button>
+            </div>
+        </div>
+        <div class="col col-xxl-3">
+            <div class="input-group"><input [formControl]="filter" class="form-control" type="text" placeholder="Zoeken..." /><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <app-dmn-list-partial [dmnList]="dmnData" [filter]="filter"></app-dmn-list-partial>
+        </div>
+    </div>
+</div>

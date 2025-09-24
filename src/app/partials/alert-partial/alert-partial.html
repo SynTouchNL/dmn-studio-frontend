@@ -1,0 +1,9 @@
+@if (alert) {
+    <ngb-alert [type]="alert.type" (closed)="close()">
+        @if(alert.text == ""){
+            <strong>{{ alert.title }}</strong>
+        } @else {
+            <strong>{{ alert.title }}</strong> – {{ alert.text }}
+        }
+    </ngb-alert>
+}
