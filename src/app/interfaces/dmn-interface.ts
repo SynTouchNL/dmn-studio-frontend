@@ -40,3 +40,9 @@ export interface DMNCreateVersionInterface {
     file: string;
     created_by: string;
 }
+
+export interface DMNDomainInterface {
+    id: number;
+    name: string;
+}
+export type DomainListInterface = DMNDomainInterface[];

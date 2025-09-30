@@ -1,26 +1,49 @@
 <div class="container">
+
     <div class="row">
         <div class="col-md-12">
             <div class="row gx-0 gy-0">
                 <div class="col col-xxl-12">
-                    <h3>DMNs - Sociaal Domein</h3>
+                    @if(this.domain_selected == '') {
+                        <h3>DMN Overzicht</h3>
+                    } @else {
+                        <h3>DMNs - {{ this.domain_selected.name}}</h3>
+                    }
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mb-2">
-        <div class="col-xxl-9 text-start align-self-center">
-            <div class="btn-group" role="group">
-                <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button">Nieuw</button>
+
+    <div class="row mb-2 align-items-center">
+        <div class="col-xxl-1 btn-group" role="group">
+            <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button">Nieuw</button>
+        </div>
+        <div class="col-xxl-2">
+            <form [formGroup]="myForm">
+                <select formControlName="domain" class="form-select">
+                    <option [ngValue]="null" selected>Alle domeinen</option>
+                    @for(domain of domains; track domain.id + " - " + domain.name) {
+                        <option [ngValue]="domain">{{ domain.name }}</option>
+                    }
+                </select>
+            </form>
+        </div>
+        <div class="offset-6 col-xxl-3">
+            <div class="input-group">
+                <form [formGroup]="myForm">
+                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
+                </form>
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
-        <div class="col col-xxl-3">
-            <div class="input-group"><input [formControl]="filter" class="form-control" type="text" placeholder="Zoeken..." /><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
-        </div>
     </div>
+
     <div class="row">
         <div class="col">
-            <app-dmn-list-partial [dmnList]="dmnData" [filter]="filter"></app-dmn-list-partial>
+            <app-dmn-list-partial [dmnList]="dmnData" [domains]="true"></app-dmn-list-partial>
         </div>
     </div>
+
 </div>

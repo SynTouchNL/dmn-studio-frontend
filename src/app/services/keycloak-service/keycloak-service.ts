@@ -5,10 +5,9 @@ import Keycloak from 'keycloak-js';
   providedIn: 'root'
 })
 
-export class KeyCloakService {
+export class KeycloakService {
     private keycloak = inject(Keycloak)
     constructor(){
-
     }
 
     logOut(){
@@ -22,4 +21,5 @@ export class KeyCloakService {
     async getUserProfile(){
         return await this.keycloak.loadUserProfile();
     }
+
 }

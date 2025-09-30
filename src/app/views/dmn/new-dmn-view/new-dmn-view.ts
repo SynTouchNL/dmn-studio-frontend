@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { DMNService } from '../../../services/dmn-service/dmn-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
+import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
 
 @Component({
     selector: 'app-new-dmn-view',
@@ -18,7 +19,7 @@ export class NewDMNView implements OnInit {
     dmnName: string = '';
     dmnDomain: string = '';
     dmnOwner: string = '';
-    domains: any[] = [];
+    domains: DMNDomainInterface[] = [];
     dmnFileContent: string = '';
 
     constructor(
@@ -28,9 +29,11 @@ export class NewDMNView implements OnInit {
     ) { }
 
     ngOnInit(){
-        this.dmnService.getDomains().subscribe(domains => {
-            this.domains = domains;
-        });
+        this.dmnService.getDomains().subscribe(
+            data => {
+                this.domains = Array.isArray(data) ? data : [data];
+            }
+        );
     }
 
     private sanitizeString(input: string): string {
@@ -78,10 +81,12 @@ export class NewDMNView implements OnInit {
             newDiagram: xmlBase64
         };
 
-        this.dmnService.createDMN(payload).subscribe(response => {
-            this.alertService.success('Nieuwe DMN aangemaakt', this.dmnName);
-            this.router.navigate(['/dmns']);
-        });
+        this.dmnService.createDMN(payload).subscribe(
+            response => {
+                this.alertService.success('Nieuwe DMN aangemaakt', response.name);
+                this.router.navigate(['/dmns']);
+            }
+        );
     }
 
     onFileChange(event: Event) {

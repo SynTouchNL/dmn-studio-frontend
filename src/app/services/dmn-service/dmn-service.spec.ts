@@ -1,16 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-
-import { DmnService } from './dmn-service';
+import { DMNService } from './dmn-service';
 
 describe('DmnService', () => {
-  let service: DmnService;
+    let service: DMNService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DmnService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(DMNService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

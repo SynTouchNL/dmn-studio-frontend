@@ -17,43 +17,57 @@ export const routes: Routes = [
         path: 'dmns/:id/:version/edit',
         component: DiagramEditorView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'developer' }
+        data: {
+            role: 'developer'
+        }
     },
     {
         path: 'dmns/:id/:version/view',
         component: DiagramReadonlyView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'editor' }
+        data: {
+            role: 'editor'
+        }
     },
     {
         path: 'dmns/:id/new',
         component: NewDiagramView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'developer' }
+        data: {
+            role: 'developer'
+        }
     },
     {
         path: 'dmns/:id/:version',
         component: DmnDetailView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'editor' }
+        data: {
+            role: 'editor'
+        }
     },
     {
         path: 'dmns/new',
         component: NewDMNView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'developer' }
+        data: {
+            role: 'developer'
+        }
     },
     {
         path: 'dmns',
         component: DmnListView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'editor' }
+        data: {
+            role: 'editor'
+        }
     },
     {
         path: '',
         component: IndexView,
         canActivate: [canActivateAuthRole],
-        data: { role: 'editor' }
+        data: {
+            role: 'editor'
+        }
     },
     {
         path: 'not-authorized',

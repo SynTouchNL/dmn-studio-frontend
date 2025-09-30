@@ -5,8 +5,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { DMNService } from '../../../services/dmn-service/dmn-service';
-
 import { Title } from '@angular/platform-browser';
+
 // Pipes
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';

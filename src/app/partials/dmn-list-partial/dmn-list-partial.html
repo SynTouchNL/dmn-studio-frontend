@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-        @for(dmn of dmnList; track dmn.id; let i = $index){
+        @for(dmn of dmnList; track dmn.id + '-' + dmn.version) {
             <tr [routerLink]="['/dmns', dmn.id, dmn.version]" style="cursor: pointer;">
                 <td><span class="badge {{ dmn.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ "v" + dmn.version }}</span></td>
                 @if(this.domains){
@@ -55,40 +55,3 @@
         <option [ngValue]="50">50 DMNs per pagina</option>
     </select>
 </div>
-
-<!--<ul class="list-group">-->
-<!--    <li class="list-group-item" style="text-align: left;padding: 0px 16px;">-->
-<!--        <div class="row">-->
-<!--            <div class="col col-xxl-1 text-start align-self-center" style="text-align: center;"><span class="fw-bold">Versie</span></div>-->
-<!--            @if(domains){-->
-<!--                <div class="col col-xxl-1 text-start align-self-center" style="text-align: center;"><span class="fw-bold">Domein</span></div>-->
-<!--            }-->
-<!--            <div class="col col-xxl-3 fw-bold text-start align-self-center"><span>Diagram</span></div>-->
-<!--            <div class="col col-xxl-3 fw-bold text-start align-self-center"><span>Eigenaar</span></div>-->
-<!--            <div class="col-2 text-start align-self-center"><span class="fw-bold text-end">Laatste wijziging</span></div>-->
-<!--            <div class="col-2 text-start text-center"><span class="fw-bold text-end">Status</span></div>-->
-<!--        </div>-->
-<!--    </li>-->
-<!--    @for(dmn of dmnList; track dmn.id){-->
-<!--        <li class="list-group-item" style="text-align: left;padding: 0px 16px;">-->
-<!--            <div class="row" [routerLink]="['/dmns', dmn.id, dmn.version]" style="cursor: pointer;">-->
-<!--                <div class="col col-xxl-1 text-start align-self-center" style="text-align: center;">-->
-<!--                    <span class="badge {{ dmn.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ "v" + dmn.version }}</span>-->
-<!--                </div>-->
-<!--                @if(domains){-->
-<!--                    <div class="col col-xxl-1 text-start align-self-center" style="text-align: center;">{{ dmn.domain }}</div>-->
-<!--                }-->
-<!--                <div class="col col-xxl-3 text-start align-self-center">{{ dmn.name }}</div>-->
-<!--                <div class="col col-xxl-3 text-start align-self-center">{{ dmn.owner }}</div>-->
-<!--                @if(dmn.latest_change != null){-->
-<!--                    <div class="col-2 text-start align-self-center">{{ dmn.latest_change | date:'dd-MM-yyyy HH:mm' }}</div>-->
-<!--                } @else {-->
-<!--                    <div class="col-2 text-start align-self-center">N/A</div>-->
-<!--                }-->
-<!--                <div class="col-2 text-center align-self-center">-->
-<!--                    <span class="badge {{ dmn.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dmn.status | statusPipe }}</span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </li>-->
-<!--    }-->
-<!--</ul>-->
