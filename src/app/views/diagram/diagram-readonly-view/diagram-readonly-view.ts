@@ -1,8 +1,9 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, inject } from '@angular/core';
 import NavigatedViewer from "dmn-js/lib/NavigatedViewer";
 import { from, Observable } from 'rxjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { base64ToXml } from '../../../utils'
 
 // Services
 import { DMNService } from '../../../services/dmn-service/dmn-service';
@@ -12,15 +13,15 @@ import { AlertService } from '../../../services/alert-service/alert-service';
 import { ViewList } from '../../../interfaces/view-interface';
 
 @Component({
-  selector: 'app-diagram-readonly-view',
+    selector: 'app-diagram-readonly-view',
     imports: [
         RouterLink
     ],
-  templateUrl: './diagram-readonly-view.html',
-  styleUrl: './diagram-readonly-view.css'
+    templateUrl: './diagram-readonly-view.html',
+    styleUrl: './diagram-readonly-view.css'
 })
 
-export class DiagramReadonlyView implements AfterViewInit{
+export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     @ViewChild('dmnViewerRef', {static: true}) private dmnViewerRef: ElementRef | undefined;
 
     private dmnJS: NavigatedViewer;
@@ -79,16 +80,7 @@ export class DiagramReadonlyView implements AfterViewInit{
 
     ngAfterViewInit(): void {
         this.dmnJS.attachTo(this.dmnViewerRef!.nativeElement);
-        if(!this.dmnFile || this.dmnFile === ""){
-            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
-                data => {
-                    this.dmnFile = data.file;
-                    this.importDiagram(this.dmnFile);
-                }
-            )
-        } else {
-            this.importDiagram(this.dmnFile);
-        }
+        this.initDiagram();
         this.titleService.setTitle("DMN Tool - Bekijk DMN");
     }
 
@@ -96,12 +88,23 @@ export class DiagramReadonlyView implements AfterViewInit{
         this.dmnJS?.destroy();
     }
 
+    private initDiagram(): void {
+        if(!this.dmnFile || this.dmnFile === ""){
+            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
+                data => {
+                    this.importDiagram(atob(data.fileBlob));
+                },
+                error => console.log(error)
+            )
+        } else {
+            this.importDiagram(this.dmnFile);
+        }
+    }
+
     private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
         return from(
             this.dmnJS.importXML(xml)
                 .then((result: any) => {
-                    // this.dmnDetails = this.dmnJS.getDefinitions()
-                    //this.alertService.warning('[READ ONLY] DMN geopened', this.dmnDetails.name);
                     return result;
                 })
                 .catch((err: any) => {
@@ -112,7 +115,6 @@ export class DiagramReadonlyView implements AfterViewInit{
     }
 
     async openView(idx: number){
-        console.log(idx)
         this.activeViewIdx = idx;
         try {
             this.dmnJS.open(this.views[idx]);

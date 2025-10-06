@@ -11,6 +11,7 @@ import {
 import { new_dmn } from '../../new_dmn';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +27,7 @@ export class DMNService {
         this.token = this.keycloak.getToken();
     }
 
-    // DMN
+    // DMN // TODO PORT
     createDMN(data: DMNCreateInterface): Observable<DMNCreateInterface> {
         return this.http.post<DMNCreateInterface>(`${this.baseUrl}/dmn`, data,  {
             headers: {
@@ -38,34 +39,29 @@ export class DMNService {
 
     getDMNs(): Observable<DMNListInterface> {
         return this.http.get<DMNListInterface>(`${this.baseUrl}/dmn`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
     getDMNsByDomain(domain: number): Observable<DMNListInterface> {
         return this.http.get<DMNListInterface>(`${this.baseUrl}/dmn?domain=${domain}`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
-    getDMN(id: number, version?: number): Observable<DMNDetailInterface> {
-        if (version && !isNaN(version)){
-            return this.http.get<DMNDetailInterface>(`${this.baseUrl}/dmn/${id}/${version}`, {
-                headers: { 'Authorization': `Bearer ${this.token}` }
-            });
-        } else {
-            return this.http.get<DMNDetailInterface>(`${this.baseUrl}/dmn/`, {
-                headers: { 'Authorization': `Bearer ${this.token}` }
-            });
-        }
-    }
-
-    getDMNVersions(id: number): Observable<number[]> {
-        return this.http.get<number[]>(`${this.baseUrl}/dmn/${id}/versions`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+    getDMN(id: number): Observable<DMNDetailInterface> {
+        return this.http.get<DMNDetailInterface>(`${this.baseUrl}/dmn/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
+    // TODO PORT
     createDMNVersion(data: DMNCreateVersionInterface): Observable<DMNCreateVersionInterface> {
         return this.http.post<DMNCreateVersionInterface>(`${this.baseUrl}/dmn/${data.dmn_id}/`, data, {
             headers: {
@@ -78,38 +74,49 @@ export class DMNService {
     // DMN FILE
     getDMNFile(id: number, version: number): Observable<DMNFileInterface> {
         return this.http.get<DMNFileInterface>(`${this.baseUrl}/dmn/${id}/${version}/file`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
-    saveDMNFile(id: number, version: number, request: DMNFileInterface): Observable<DMNFileInterface> {
+    // TODO PORT
+    saveDMNFile(id: number, version: number, request: {
+        id: number;
+        version: number;
+        file: string
+    }): Observable<DMNFileInterface> {
         return this.http.put<DMNFileInterface>(`${this.baseUrl}/dmn/${id}/${version}/file`, request, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
+    // TODO PORT
     createDMNFile(id: number, version: number, content: string): Observable<string> {
-        return this.http.post<string>(`${this.baseUrl}/dmn/${id}/${version}/file`, {content}, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+        return this.http.post<string>(`${this.baseUrl}/dmn/${id}/${version}/file`, { content }, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
+    // TODO PORT
     updateDMNFile(id: number, version: number, content: string): Observable<string> {
-        return this.http.put<string>(`${this.baseUrl}/dmn/${id}/${version}/file`, {content}, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+        return this.http.put<string>(`${this.baseUrl}/dmn/${id}/${version}/file`, { content }, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 
     // DOMAIN
     getDomains(): Observable<DMNDomainInterface> {
-        return this.http.get<DMNDomainInterface>(`${this.baseUrl}/dmn/domains`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
-    });
-    }
-
-    getUsername(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/api/users/me`, {
-            headers: { 'Authorization': `Bearer ${this.token}` }
+        return this.http.get<DMNDomainInterface>(`${this.baseUrl}/domain`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
         });
     }
 }

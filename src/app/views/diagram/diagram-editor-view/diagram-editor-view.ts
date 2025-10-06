@@ -223,7 +223,7 @@ export class DiagramEditorView {
         if(!this.dmnFile || this.dmnFile === ""){
             this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
                 data => {
-                    this.dmnFile = data.file;
+                    this.dmnFile = data.fileBlob;
                     this.importDiagram(this.dmnFile);
                 }
             )

@@ -70,7 +70,7 @@ export class NewDiagramView implements OnInit{
             this.dmnService.getDMNFile(this.dmn_id, this.dmnVersion).subscribe(
                 data => {
                     //console.log(data.file)
-                    const xmlBytes = encoder.encode(data.file);
+                    const xmlBytes = encoder.encode(data.fileBlob);
                     xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
                     this.prepareVersion(xmlBase64);
                 }

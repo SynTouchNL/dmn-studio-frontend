@@ -5,6 +5,7 @@ import { StatusPipe } from '../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../pipes/class-pipe/class-pipe';
 import {FormControl, FormsModule} from '@angular/forms';
 import {NgbHighlight, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
+import {VersionInterface} from '../../interfaces/version-interface';
 
 @Component({
     selector: 'app-dmn-list-partial',
@@ -50,5 +51,21 @@ export class DmnListPartial implements AfterViewInit {
                 (this.page - 1) * this.pageSize,
                 (this.page - 1) * this.pageSize + this.pageSize,
             );
+    }
+
+    findLatest(versions: VersionInterface[]): VersionInterface {
+        const prodStatus = 4;
+        // Try exact match first
+        const exact = versions.find(v => v.status === prodStatus);
+        if (exact) return exact;
+
+        // Otherwise, go down from targetStatus - 1 until 1
+        for (let s = prodStatus - 1; s >= 1; s--) {
+            const found = versions.find(v => v.status === s);
+            if (found) return found;
+        }
+
+        // If none of 4..1 exist, just return the first version as fallback
+        return versions[0];
     }
 }

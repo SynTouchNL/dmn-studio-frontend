@@ -23,16 +23,16 @@ export interface DMNVersionShortInterface {
 export interface DMNFileInterface {
     id: number;
     version: number;
-    file: string;
-    status?: number;
+    fileBlob: string;
+    status: number;
 }
 
 export interface DMNCreateInterface {
     name: string;
     owner: string;
-    domain_id: number;
-    creator: string;
-    newDiagram: string;
+    domain: {
+        id: number;
+    };
 }
 
 export interface DMNCreateVersionInterface {

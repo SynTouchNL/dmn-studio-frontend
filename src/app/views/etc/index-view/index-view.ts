@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
 import { DMNService } from '../../../services/dmn-service/dmn-service';
 import { DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
+import {VersionInterface} from '../../../interfaces/version-interface';
 
 @Component({
   selector: 'app-index-view',
@@ -13,7 +14,7 @@ import { Title } from '@angular/platform-browser';
   styleUrl: './index-view.css'
 })
 
-export class IndexView {
+export class IndexView implements OnInit {
     dmnData: DMNInterface[] = [];
 
     constructor(

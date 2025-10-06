@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { DatePipe } from '@angular/common';
+import {VersionInterface} from '../../../interfaces/version-interface';
 
 @Component({
     selector: 'app-dmn-detail-view',
@@ -26,10 +27,10 @@ import { DatePipe } from '@angular/common';
     styleUrl: './dmn-detail-view.css'
 })
 
-export class DmnDetailView implements OnInit, DoCheck {
+export class DmnDetailView implements OnInit {
     dmnId: number = 0;
-    dmnData: any = [];
     dmnVersion: number = 0;
+    dmnData: any = [];
     dmnVersions: any = []
 
     private activatedRoute = inject(ActivatedRoute);
@@ -38,7 +39,7 @@ export class DmnDetailView implements OnInit, DoCheck {
         private dmnService: DMNService,
         private titleService: Title,
         private router: Router
-        ) {
+    ) {
 
         this.activatedRoute.params.subscribe(params => {
             this.dmnVersion = +params['version'];
@@ -51,24 +52,12 @@ export class DmnDetailView implements OnInit, DoCheck {
 
     ngOnInit() {
         this.fetchData();
-        this.dmnService.getDMNVersions(this.dmnId).subscribe(
-            data => {
-                this.dmnVersions = data;
-            }
-        )
-    }
-
-    ngDoCheck(){
-        this.fetchData();
     }
 
     fetchData(){
-        this.dmnService.getDMN(this.dmnId, this.dmnVersion).subscribe(
+        this.dmnService.getDMN(this.dmnId).subscribe(
             data => {
                 this.dmnData = data;
-                if(isNaN(this.dmnVersion)) {
-                    this.dmnVersion = this.dmnData.latest_version;
-                }
                 this.titleService.setTitle(`DMN Detail - ${this.dmnData.name} v${this.dmnVersion}`)
             }
         );
@@ -77,8 +66,44 @@ export class DmnDetailView implements OnInit, DoCheck {
     clickOpen() {
         this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
             data => {
-                this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, file: data.file}})
+                this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, file: atob(data.fileBlob)}})
             }
         )
+    }
+
+    selectedVersion(versions: VersionInterface[]): VersionInterface {
+        return versions.filter(v => v.version === this.dmnVersion)[0];
+    }
+
+    findLatest(versions: VersionInterface[]): VersionInterface {
+        const prodStatus = 4;
+        // Try exact match first
+        const exact = versions.find(v => v.status === prodStatus);
+        if (exact) return exact;
+
+        // Otherwise, go down from targetStatus - 1 until 1
+        for (let s = prodStatus - 1; s >= 1; s--) {
+            const found = versions.find(v => v.status === s);
+            if (found) return found;
+        }
+
+        // If none of 4..1 exist, just return the first version as fallback
+        return versions[0];
+    }
+
+    canStartNewVersion(versions: VersionInterface[], status: number): boolean {
+        if (status === 5) return false;
+
+        if (status === 4) {
+            const hasLower = versions.some(v => v.status < 4);
+            if (hasLower) return false;// there is already a lower status
+        }
+
+        if (status < 4) {
+            const hasHigher = versions.some(v => v.status > status);
+            if (hasHigher) return false; // there is already a higher status
+        }
+
+        return true;
     }
 }

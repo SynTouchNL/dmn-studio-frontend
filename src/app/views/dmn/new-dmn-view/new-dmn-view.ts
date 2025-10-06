@@ -8,13 +8,11 @@ import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
 
 @Component({
     selector: 'app-new-dmn-view',
-    imports: [
-        RouterLink,
-        FormsModule
-    ],
+    imports: [RouterLink, FormsModule],
     templateUrl: './new-dmn-view.html',
     styleUrl: './new-dmn-view.css'
 })
+
 export class NewDMNView implements OnInit {
     dmnName: string = '';
     dmnDomain: string = '';
@@ -76,11 +74,10 @@ export class NewDMNView implements OnInit {
         const payload = {
             name: this.dmnName,
             owner: this.dmnOwner,
-            domain_id: +this.dmnDomain,
-            creator: "Mark Akkermans",
-            newDiagram: xmlBase64
+            domain: { id: +this.dmnDomain },
         };
 
+        console.log(payload);
         this.dmnService.createDMN(payload).subscribe(
             response => {
                 this.alertService.success('Nieuwe DMN aangemaakt', response.name);

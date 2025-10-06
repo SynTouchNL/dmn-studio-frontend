@@ -40,7 +40,7 @@ export class DmnListView implements OnInit {
 
         this.dmnService.getDomains().subscribe(
             data => {
-             this.domains = Array.isArray(data) ? data : [data];
+                this.domains = Array.isArray(data) ? data : [data];
             }
         );
 
@@ -52,13 +52,15 @@ export class DmnListView implements OnInit {
         });
 
         this.myForm.get("domain").valueChanges.subscribe(
-            (value: any) => {
+            (value: any[]) => {
                 if (value !== null) {
-                    this.dmnService.getDMNsByDomain(value.id).subscribe(
+                    this.dmnService.getDMNs().subscribe(
                         data => {
-                            this.dmnData = data;
+                            //@ts-ignore
+                            this.dmnData = data.filter(dmn => dmn.domain.id === value.id);
+                            //this.dmnData = data;
                         }
-                    );
+                    )
                 } else {
                     this.dmnService.getDMNs().subscribe(data => {
                         this.dmnData = data;
