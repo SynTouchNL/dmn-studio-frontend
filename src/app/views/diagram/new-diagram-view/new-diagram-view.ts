@@ -80,9 +80,9 @@ export class NewDiagramView implements OnInit{
 
     prepareVersion(xmlBase64: string){
         const newVersion = {
-            dmn_id: this.dmn_id,
-            file: xmlBase64,
-            created_by: this.creator
+            dmnId: this.dmn_id,
+            fileBlob: xmlBase64,
+            createdBy: this.creator
         };
 
         this.dmnService.createDMNVersion(newVersion).subscribe(

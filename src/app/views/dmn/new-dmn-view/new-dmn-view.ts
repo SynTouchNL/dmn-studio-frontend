@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DMNService } from '../../../services/dmn-service/dmn-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
     selector: 'app-new-dmn-view',
@@ -19,11 +20,13 @@ export class NewDMNView implements OnInit {
     dmnOwner: string = '';
     domains: DMNDomainInterface[] = [];
     dmnFileContent: string = '';
+    users: any[] = [];
 
     constructor(
         private dmnService: DMNService,
         private alertService: AlertService,
-        private router: Router
+        private router: Router,
+        private keycloakService: KeycloakService
     ) { }
 
     ngOnInit(){
@@ -32,6 +35,12 @@ export class NewDMNView implements OnInit {
                 this.domains = Array.isArray(data) ? data : [data];
             }
         );
+        this.keycloakService.getUsers().subscribe(
+            (data: any[]) => {
+                this.users = data;
+            }
+        );
+
     }
 
     private sanitizeString(input: string): string {
@@ -74,10 +83,10 @@ export class NewDMNView implements OnInit {
         const payload = {
             name: this.dmnName,
             owner: this.dmnOwner,
-            domain: { id: +this.dmnDomain },
+            domainId: +this.dmnDomain,
+            fileBlob: xmlBase64
         };
 
-        console.log(payload);
         this.dmnService.createDMN(payload).subscribe(
             response => {
                 this.alertService.success('Nieuwe DMN aangemaakt', response.name);

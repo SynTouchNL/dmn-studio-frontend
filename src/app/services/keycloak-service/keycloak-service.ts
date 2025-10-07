@@ -1,17 +1,24 @@
 import { inject, Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 export class KeycloakService {
     private keycloak = inject(Keycloak)
-    constructor(){
+    private baseUrl = 'http://localhost:8080';
+
+    constructor(private http: HttpClient) {
     }
 
-    logOut(){
-        this.keycloak.logout();
+    getUsers(): any {
+        return this.http.get(`${this.baseUrl}/auth/users`, {
+            headers: {
+                'Authorization': `Bearer ${this.getToken()}`
+            }
+        });
     }
 
     getToken(): string | undefined {
@@ -21,5 +28,4 @@ export class KeycloakService {
     async getUserProfile(){
         return await this.keycloak.loadUserProfile();
     }
-
 }

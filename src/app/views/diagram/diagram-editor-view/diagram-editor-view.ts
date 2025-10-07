@@ -259,15 +259,14 @@ export class DiagramEditorView {
             const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
 
             let request = {
-                id: this.dmnId,
-                version: this.dmnVersion,
-                file: xmlBase64
+                fileBlob: xmlBase64,
+                modifiedBy: 'Mark Akkermans'
             }
 
             this.dmnService.saveDMNFile(this.dmnId, this.dmnVersion, request).subscribe(response => {
                 if (response) {
                     this.alertService.success('Diagram opgeslagen', '');
-                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view']);
+                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], { state: { file: atob(response.fileBlob) } });
                 }
             }, error => {
                 this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);

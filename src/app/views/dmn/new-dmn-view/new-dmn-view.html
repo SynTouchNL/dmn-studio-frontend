@@ -29,11 +29,11 @@
                 <label for="exampleFormControlSelect1">Eigenaar DMN</label>
                 <select class="form-control" id="form_new_dmn_owner" [(ngModel)]="dmnOwner" name="dmnOwner" required>
                     <option value="" disabled selected>Kies een eigenaar</option>
-                    <option>Mark Akkermans</option>
-                    <option>Jan Klaassen</option>
-                    <option>Herman Jans</option>
-                    <option>Klaas Hermans</option>
-                    <option>Piet Pieters</option>
+                    @for(user of users; track user.id) {
+                        @if (user.enabled) {
+                            <option value="{{ user.username }}">{{ user.firstName + " " + user.lastName }}</option>
+                        }
+                    }
                 </select>
             </div>
             <br>

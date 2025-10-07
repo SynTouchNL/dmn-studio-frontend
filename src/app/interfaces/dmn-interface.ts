@@ -30,15 +30,14 @@ export interface DMNFileInterface {
 export interface DMNCreateInterface {
     name: string;
     owner: string;
-    domain: {
-        id: number;
-    };
+    domainId: number;
+    fileBlob: string;
 }
 
 export interface DMNCreateVersionInterface {
-    dmn_id: number;
-    file: string;
-    created_by: string;
+    dmnId: number;
+    fileBlob: string;
+    createdBy: string;
 }
 
 export interface DMNDomainInterface {
@@ -46,3 +45,8 @@ export interface DMNDomainInterface {
     name: string;
 }
 export type DomainListInterface = DMNDomainInterface[];
+
+export interface DMNUpdateFileInterface {
+    fileBlob: string;
+    modifiedBy: string;
+}
