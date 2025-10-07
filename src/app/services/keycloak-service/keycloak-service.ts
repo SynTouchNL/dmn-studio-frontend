@@ -21,6 +21,14 @@ export class KeycloakService {
         });
     }
 
+    getUserByGroup(groupId: string): any {
+        return this.http.get(`${this.baseUrl}/auth/group-users/${groupId}`).subscribe(
+            data => {
+                return data
+            }
+        );
+    }
+
     getToken(): string | undefined {
         return this.keycloak.token;
     }

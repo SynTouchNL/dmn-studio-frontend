@@ -27,7 +27,6 @@ export class DMNService {
         this.token = this.keycloak.getToken();
     }
 
-    // DMN
     createDMN(data: DMNCreateInterface): Observable<DMNCreateInterface> {
         return this.http.post<DMNCreateInterface>(`${this.baseUrl}/dmns`, data,  {
             headers: {
@@ -45,6 +44,7 @@ export class DMNService {
         });
     }
 
+    // NOW MANAGED BY FRONTEND
     // getDMNsByDomain(domain: number): Observable<DMNListInterface> {
     //     return this.http.get<DMNListInterface>(`${this.baseUrl}/dmn?domain=${domain}`, {
     //         headers: {
