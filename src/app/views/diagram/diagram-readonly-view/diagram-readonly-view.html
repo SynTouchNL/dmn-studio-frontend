@@ -17,7 +17,7 @@
                         <div class="col-1">
                             <div class="btn-group" role="group" aria-label="Button group">
                                 <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/edit']" [state]="{id: this.dmnId, version: this.dmnVersion, file: this.dmnFile}" type="button" class="btn btn-primary">Bewerken</button>
-                                <button type="button" class="btn btn-primary">Indienen</button>
+                                <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/indienen']" class="btn btn-primary">Indienen</button>
                             </div>
                         </div>
                     </div>

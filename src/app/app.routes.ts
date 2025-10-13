@@ -11,8 +11,43 @@ import { DiagramReadonlyView } from './views/diagram/diagram-readonly-view/diagr
 import { NewDMNView } from './views/dmn/new-dmn-view/new-dmn-view';
 import { NewDiagramView } from './views/diagram/new-diagram-view/new-diagram-view';
 import { UnauthorizedView } from './views/etc/unauthorized-view/unauthorized-view';
+import { IndienenView } from './views/diagram/indienen-view/indienen-view';
+import { DeploymentsView } from './views/deployment/deployments-view/deployments-view';
+import { DeploymentDetailsView } from './views/deployment/deployment-details-view/deployment-details-view';
 
 export const routes: Routes = [
+    {
+        path: 'deployments',
+        component: DeploymentsView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
+    {
+        path: 'deployments/:id',
+        component: DeploymentDetailsView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
+    {
+        path: 'deployments/new',
+        component: DeploymentDetailsView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
+    {
+        path: 'dmns/:id/:version/indienen',
+        component: IndienenView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
     {
         path: 'dmns/:id/:version/edit',
         component: DiagramEditorView,

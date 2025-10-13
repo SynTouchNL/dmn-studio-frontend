@@ -22,7 +22,7 @@ import {VersionInterface} from '../../interfaces/version-interface';
     providers: []
 })
 
-export class DmnListPartial implements AfterViewInit {
+export class DmnListPartial implements OnChanges {
     @Input() dmnList: any = [];  // incoming full list
     @Input() domains: boolean = false;
     @Input() filter: FormControl = new FormControl('');
@@ -39,9 +39,6 @@ export class DmnListPartial implements AfterViewInit {
         this.allDmnList = this.dmnList; // store full dataset
         this.collectionSize = this.allDmnList.length;
         this.refreshDMNs();
-    }
-
-    ngAfterViewInit() {
     }
 
     refreshDMNs() {

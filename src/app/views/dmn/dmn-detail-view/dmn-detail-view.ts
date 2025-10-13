@@ -77,22 +77,20 @@ export class DmnDetailView implements OnInit {
 
     findLatest(versions: VersionInterface[]): VersionInterface {
         const prodStatus = 4;
-        // Try exact match first
         const exact = versions.find(v => v.status === prodStatus);
         if (exact) return exact;
 
-        // Otherwise, go down from targetStatus - 1 until 1
         for (let s = prodStatus - 1; s >= 1; s--) {
             const found = versions.find(v => v.status === s);
             if (found) return found;
         }
-
-        // If none of 4..1 exist, just return the first version as fallback
         return versions[0];
     }
 
     canStartNewVersion(versions: VersionInterface[], status: number): boolean {
-        if (status === 5) return false;
+        if (status === 5) {
+            return false;
+        }
 
         if (status === 4) {
             const hasLower = versions.some(v => v.status < 4);
@@ -106,4 +104,5 @@ export class DmnDetailView implements OnInit {
 
         return true;
     }
+
 }
