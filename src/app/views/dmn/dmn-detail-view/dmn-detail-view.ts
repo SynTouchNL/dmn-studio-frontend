@@ -88,16 +88,20 @@ export class DmnDetailView implements OnInit {
     }
 
     canStartNewVersion(versions: VersionInterface[], status: number): boolean {
-        if (status === 5) {
+        if (status === 5) { // Archived
             return false;
         }
 
-        if (status === 4) {
+        if (status === 4) { // Production
             const hasLower = versions.some(v => v.status < 4);
             if (hasLower) return false;// there is already a lower status
         }
 
-        if (status < 4) {
+        if (status === 1) { // Bestaande concept
+            return false;
+        }
+
+        if (status < 4) { // anders, zo lang hoogste status
             const hasHigher = versions.some(v => v.status > status);
             if (hasHigher) return false; // there is already a higher status
         }

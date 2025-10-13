@@ -67,7 +67,7 @@
                 @for(version of dmnData.versions; track version.version + '-' + version.status) {
                     @if(this.dmnVersion == version.version) {
                         <a class="dropdown-item text-secondary" disabled>
-                            <li class="list-group-item"><span><b>v{{ version.version }} - {{ version.status | statusPipe }}</b></span></li>
+                            <li class="list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
                         </a>
                     } @else {
                         <a class="dropdown-item" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">

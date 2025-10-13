@@ -11,6 +11,7 @@ import {
 import { new_dmn } from '../../new_dmn';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import {DeploymentsInterface} from '../../interfaces/deployments-interface';
+import {EnvironmentsInterface} from '../../interfaces/environments-interface';
 
 
 @Injectable({
@@ -29,6 +30,11 @@ export class DMNService {
     }
 
     // GET
+    /**
+     * Get all DMNs.
+     * @returns DMNListInterface of all DMNs.
+     * @internal
+     */
     getDMNs(): Observable<DMNListInterface> {
         return this.http.get<DMNListInterface>(`${this.baseUrl}/dmn`, {
             headers: {
@@ -37,6 +43,12 @@ export class DMNService {
         });
     }
 
+    /**
+     * Get specific DMNs.
+     * @param id ID of the DMN to get.
+     * @returns DMNtInterface of DMN matching the id.
+     * @internal
+     */
     getDMN(id: number): Observable<DMNDetailInterface> {
         return this.http.get<DMNDetailInterface>(`${this.baseUrl}/dmn/${id}`, {
             headers: {
@@ -45,6 +57,13 @@ export class DMNService {
         });
     }
 
+    /**
+     * Get DMN version's file content.
+     * @param id
+     * @param version
+     * @returns DMNFileInterface with metadata of file and DMN/version.
+     * @internal
+     */
     getDMNFile(id: number, version: number): Observable<DMNFileInterface> {
         return this.http.get<DMNFileInterface>(`${this.baseUrl}/dmns/${id}/${version}/file`, {
             headers: {
@@ -53,6 +72,11 @@ export class DMNService {
         });
     }
 
+    /**
+     * Get all domains.
+     * @returns List of domains.
+     * @internal
+     */
     getDomains(): Observable<DMNDomainInterface> {
         return this.http.get<DMNDomainInterface>(`${this.baseUrl}/domain`, {
             headers: {
@@ -67,6 +91,19 @@ export class DMNService {
                 'Authorization': `Bearer ${this.token}`
             }
         });
+    }
+
+    /**
+     * Get all environments.
+     * @returns EnvironmentsInterface with environments.
+     * @internal
+     */
+    getEnvironments(): Observable<EnvironmentsInterface>{
+        return this.http.get<any>(`${this.baseUrl}/environment`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        })
     }
 
     // POST
