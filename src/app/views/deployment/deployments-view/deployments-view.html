@@ -1,0 +1,86 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                        <h3>Deployment - Overzicht</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+        <div class="col-xxl-1 btn-group" role="group">
+            <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button">Nieuw</button>
+        </div>
+        <div class="col-xxl-2">
+            <form [formGroup]="myForm">
+                <select formControlName="environments" class="form-select">
+                    <option [ngValue]="null" selected>Alle domeinen</option>
+                    @for(env of environments; track env.id + " - " + env.name) {
+                        <option [ngValue]="env">{{ env.name }}</option>
+                    }
+                </select>
+            </form>
+        </div>
+        <div class="offset-6 col-xxl-3">
+            <div class="input-group">
+<!--                <form [formGroup]="myForm">-->
+<!--                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />-->
+<!--                </form>-->
+<!--                <button class="btn btn-primary" type="button">-->
+<!--                    <i class="fas fa-search"></i>-->
+<!--                </button>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Omgeving</th>
+                    <th scope="col">DMN</th>
+                    <th scope="col">Versie</th>
+                    <th scope="col">Door</th>
+                    <th scope="col">Timestamp</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @for(dep of deployment_list; track dep.id) {
+                        <tr [routerLink]="['/deployments/', dep.id]" style="cursor: pointer;">
+                            <td>{{ dep.environmentName }}</td>
+                            <td>{{ dep.dmn.name }}</td>
+                            <td><span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span><span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span></td>
+                            <td>{{ dep.deployedBy }}</td>
+                            <td>{{ dep.deployedTime | date:'dd-MM-yyyy HH:mm' }}</td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="6" class="text-center">Geen Deployments gevonden.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+                <ngb-pagination
+                    [collectionSize]="collectionSize"
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    (pageChange)="refreshDeployments()">
+                </ngb-pagination>
+
+                <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDeployments()">
+                    <option [ngValue]="10">10 DMNs per pagina</option>
+                    <option [ngValue]="25">25 DMNs per pagina</option>
+                    <option [ngValue]="50">50 DMNs per pagina</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+</div>
