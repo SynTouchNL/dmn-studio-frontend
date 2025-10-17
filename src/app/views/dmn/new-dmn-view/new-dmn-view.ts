@@ -51,9 +51,9 @@ export class NewDMNView implements OnInit {
 
     submitForm(event: Event) {
         let new_xml = '';
-        if (this.dmnFileContent){
+        if (this.dmnFileContent) {
             new_xml = this.dmnFileContent;
-        } else {
+        } else { //TODO : Generic new_dmn.ts file gebruiken ipv hardcoded xml, misschien een util functie?
             new_xml = `<?xml version="1.0" encoding="UTF-8"?>
             <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="${this.sanitizeString(this.dmnName)}" name="${this.dmnName}" namespace="http://camunda.org/schema/1.0/dmn" exporter="dmn-js (https://demo.bpmn.io/dmn)" exporterVersion="17.2.0">
               <decision id="decision_19w0x1w" name="">
