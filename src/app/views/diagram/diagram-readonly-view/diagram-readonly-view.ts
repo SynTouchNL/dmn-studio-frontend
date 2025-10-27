@@ -71,9 +71,6 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
 
         this.activatedRoute.params.subscribe(params => {
             this.dmnVersion = +params['version'];
-        });
-
-        this.activatedRoute.params.subscribe((params) => {
             this.dmnId = +params['id'] || 0;
         });
     }

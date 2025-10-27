@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                    <h3>Deployment aanmaken</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <form [formGroup]="myForm">
+            <label for="domainSelector">Domein</label>
+            <select id="domainSelector" formControlName="domains" class="form-control" required>
+                <option value="" disabled selected>Kies een Domein</option>
+                @for(dom of domains; track dom.id) {
+                    <option [ngValue]="dom" value="{{ dom.id }}">{{ dom.name }}</option>
+                }
+            </select>
+
+            <label for="dmnSelector">DMN</label>
+            <select id="dmnSelector" formControlName="dmns" class="form-control" required>
+                <option value="" disabled selected>Kies een DMN</option>
+                @for(dmn of dmns; track dmn.id) {
+                    <option [ngValue]="dmn" value="{{ dmn.id }}">{{ dmn.name }}</option>
+                }
+            </select>
+
+            <label for="versionSelector">Versie</label>
+            <select id="versionSelector" formControlName="versions" class="form-control" required>
+                <option value="" disabled selected>Kies een versie</option>
+                @for(ver of dmn_versions; track ver.id + ver.version) {
+                    <option [ngValue]="ver" value="{{ ver.id }}">v{{ ver.version }} - {{ ver.status | statusPipe }}</option>
+                }
+            </select>
+
+            <label for="environmentSelector" class="form-label">Omgeving</label>
+            <select id="environmentSelector" formControlName="environments" class="form-control" required>
+                <option value="" disabled selected>Kies een omgeving</option>
+                @for(env of environments; track env.id) {
+                    <option [ngValue]="env" value="{{ env.id }}">{{ env.name }}</option>
+                }
+            </select>
+            <br>
+            <div class="alert alert-danger" role="alert">
+                LET OP! Controlleer goed of u de juiste DMN versie en omgeving heeft geselecteerd voordat u op "Uitrollen" klikt.
+            </div>
+            <div class="col-xxl-1 btn-group" role="group">
+                <button class="btn btn-primary " [disabled]="button_disabled" (click)="deployVersion()" type="button">Uitrollen</button>
+            </div>
+        </form>
+    </div>
+</div>

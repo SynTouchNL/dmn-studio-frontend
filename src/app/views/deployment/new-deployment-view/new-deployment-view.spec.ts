@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalPartial } from './modal-partial';
+import { NewDeploymentView } from './new-deployment-view';
 
-describe('ModalPartial', () => {
-  let component: ModalPartial;
-  let fixture: ComponentFixture<ModalPartial>;
+describe('NewDeploymentView', () => {
+  let component: NewDeploymentView;
+  let fixture: ComponentFixture<NewDeploymentView>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalPartial]
+      imports: [NewDeploymentView]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalPartial);
+    fixture = TestBed.createComponent(NewDeploymentView);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

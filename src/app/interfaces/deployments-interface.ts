@@ -1,11 +1,12 @@
-import {VersionInterface} from './version-interface';
+import { VersionInterface } from './version-interface';
 
 export interface DeploymentsInterface {
     id: number;
+    dmnId: number;
     deployedBy: string;
     deployedTime: string;
     environmentName: string;
-    dmnId: number;
+    deploymentRef: string;
     dmnVersion: {
         id: number;
         version: number;
@@ -18,6 +19,7 @@ export interface DeploymentsInterface {
     dmn: {
         id: number;
         name: string;
+        owner: string;
         domain: {
             id: number;
             name: string;

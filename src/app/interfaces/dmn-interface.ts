@@ -2,10 +2,15 @@ export interface DMNInterface {
     id: number;
     name: string;
     owner: string;
-    domain: string;
-    latest_version: number;
-    status: number;
-    version: number;
+    domain: DMNDomainInterface;
+    versions: DMNVersionInterface;
+}
+
+export interface DMNInterfaceNoVersion {
+    id: number;
+    name: string;
+    owner: string;
+    domain: DMNDomainInterface;
 }
 
 export type DMNListInterface = DMNInterface[];
@@ -13,6 +18,17 @@ export type DMNListInterface = DMNInterface[];
 export interface DMNDetailInterface extends DMNInterface {
     modified_date: string;
     modified_by: string;
+}
+
+export interface DMNVersionInterface {
+    id: number;
+    version: number;
+    status: number;
+    createdBy: string;
+    createdDate: string;
+    modifiedBy: string;
+    modifiedDate: string;
+    dmn: DMNInterfaceNoVersion;
 }
 
 export interface DMNVersionShortInterface {

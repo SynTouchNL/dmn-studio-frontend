@@ -1,1 +1,63 @@
-<p>deployment-details-view works!</p>
+<div class="container">
+    @if(!deploymentData) {
+        <div class="row">
+            <div class="col">
+                <h3>Onbekende versie gevonden</h3>
+                <span>Ga terug - <a [routerLink]="['/deployments']">Klik hier.</a> </span>
+            </div>
+        </div>
+    } @else {
+        <div class="row">
+            <div class="col col-lg-6">
+                <h3>{{ deploymentData[0].dmn.name }}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col align-self-center">
+                <span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{ deploymentData[0].dmnVersion.version }}</span>
+                <span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe}}</span>
+            </div>
+            <div class="col text-end align-self-center">
+                <div class="btn-group" role="group">
+                    <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Bekijken</a></button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-xxl-12">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Eigenaar</span></div>
+                            <div class="col col-xxl-6"><span>{{ deploymentData[0].dmn.owner }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Domein</span></div>
+                            <div class="col col-xxl-6"><span>{{ deploymentData[0].dmn.domain.name }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Versie in productie</span></div>
+<!--                            <div class="col col-xxl-6"><span>Versie {{ findLatest(dmnData.versions).version }}</span></div>-->
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Huidige status</span></div>
+                            <div class="col col-xxl-6"><span></span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{  deploymentData[0].dmnVersion.version }}</span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
+                            <div class="col col-xxl-6"><span>{{  deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} – {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>

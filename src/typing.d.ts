@@ -100,6 +100,8 @@ declare module 'dmn-js-decision-table/lib/Viewer' {
 declare module 'dmn-js-properties-panel' {
   const DmnPropertiesPanelModule: any;
   const DmnPropertiesProviderModule: any;
-  export { DmnPropertiesPanelModule, DmnPropertiesProviderModule };
+  const CamundaPropertiesProviderModule: any;
+  export { DmnPropertiesPanelModule, DmnPropertiesProviderModule, CamundaPropertiesProviderModule, HistoryCleanupProps };
 }
 
+declare module 'camunda-dmn-moddle/resources/camunda.json';

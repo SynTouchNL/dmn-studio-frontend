@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { canActivateAuthRole } from './guards/auth-guard';
+import { canActivateAuthRole } from './guards/auth-guard/auth-guard';
 
 // views
 import { NotFoundView } from './views/etc/not-found-view/not-found-view';
@@ -12,13 +12,23 @@ import { NewDMNView } from './views/dmn/new-dmn-view/new-dmn-view';
 import { NewDiagramView } from './views/diagram/new-diagram-view/new-diagram-view';
 import { UnauthorizedView } from './views/etc/unauthorized-view/unauthorized-view';
 import { IndienenView } from './views/diagram/indienen-view/indienen-view';
-import { DeploymentsView } from './views/deployment/deployments-view/deployments-view';
+import { DeploymentsListView } from './views/deployment/deployments-list-view/deployments-list-view';
 import { DeploymentDetailsView } from './views/deployment/deployment-details-view/deployment-details-view';
+import { NewDeploymentView } from './views/deployment/new-deployment-view/new-deployment-view';
 
 export const routes: Routes = [
+    // Deployment routes
     {
         path: 'deployments',
-        component: DeploymentsView,
+        component: DeploymentsListView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
+    {
+        path: 'deployments/new',
+        component: NewDeploymentView,
         canActivate: [canActivateAuthRole],
         data: {
             role: 'editor'
@@ -32,14 +42,8 @@ export const routes: Routes = [
             role: 'editor'
         }
     },
-    {
-        path: 'deployments/new',
-        component: DeploymentDetailsView,
-        canActivate: [canActivateAuthRole],
-        data: {
-            role: 'editor'
-        }
-    },
+
+    // DMN routes
     {
         path: 'dmns/:id/:version/indienen',
         component: IndienenView,
@@ -96,6 +100,8 @@ export const routes: Routes = [
             role: 'editor'
         }
     },
+
+    // Auxilliary routes
     {
         path: '',
         component: IndexView,

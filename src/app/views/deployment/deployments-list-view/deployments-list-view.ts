@@ -9,7 +9,7 @@ import {DeploymentsInterface} from '../../../interfaces/deployments-interface';
 import {DMNService} from '../../../services/dmn-service/dmn-service';
 
 @Component({
-    selector: 'app-deployments-view',
+    selector: 'app-deployments-list-view',
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -19,11 +19,11 @@ import {DMNService} from '../../../services/dmn-service/dmn-service';
         ClassPipe,
         StatusPipe,
     ],
-    templateUrl: './deployments-view.html',
-    styleUrl: './deployments-view.css'
+    templateUrl: './deployments-list-view.html',
+    styleUrl: './deployments-list-view.css'
 })
 
-export class DeploymentsView implements OnInit, OnChanges {
+export class DeploymentsListView implements OnInit, OnChanges {
     deployment_list: DeploymentsInterface[] = [];
     all_deployments: DeploymentsInterface[] = [];
     environments: any[] = [];

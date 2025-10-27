@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DMNCreateInterface, DMNCreateVersionInterface, DMNDetailInterface, DMNDomainInterface, DMNFileInterface, DMNListInterface, DMNUpdateFileInterface } from '../../interfaces/dmn-interface';
+import {
+    DMNCreateInterface, DMNCreateVersionInterface, DMNDetailInterface, DMNDomainInterface, DMNFileInterface,
+    DMNInterface, DMNListInterface, DMNUpdateFileInterface
+} from '../../interfaces/dmn-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
@@ -103,6 +106,22 @@ export class DMNService {
         })
     }
 
+    getDeploymentDetails(id: Number): Observable<DeploymentsInterface> {
+        return this.http.get<any>(`${this.baseUrl}/deployments/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    getOperatonDetails(id: String): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/deploy/info/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
     /**
      * Create a new DMN.
      * @param data - DMNCreateInterface with data for new DMN
@@ -171,4 +190,26 @@ export class DMNService {
         });
     }
 
+    // TODO Implement activiationTime parameter to schedule deployment. TODO: JDoc
+    deployVersion(dmn: DMNInterface, file: DMNFileInterface, version: number, environment: EnvironmentsInterface){
+        const body = {
+            dmn: dmn,
+            version: version,
+            environment: environment,
+            tenantId: "testrotterdam",
+            deploymentSource: "DMN Tool",
+            deployChangedOnly: false,
+            enableDuplicateFiltering: true,
+            deploymentName: dmn.name,
+            activiationTime: null, //TODO implementeren voor scheduled deployment.
+            data: file.fileBlob
+        }
+
+        return this.http.post<any>(`${this.baseUrl}/deploy`, body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
 }
