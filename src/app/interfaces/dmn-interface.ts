@@ -15,25 +15,15 @@ export interface DMNInterfaceNoVersion {
 
 export type DMNListInterface = DMNInterface[];
 
-export interface DMNDetailInterface extends DMNInterface {
-    modified_date: string;
-    modified_by: string;
-}
-
 export interface DMNVersionInterface {
     id: number;
     version: number;
     status: number;
+    modifiedBy: string | null;
+    modifiedDate: string | null;
     createdBy: string;
     createdDate: string;
-    modifiedBy: string;
-    modifiedDate: string;
     dmn: DMNInterfaceNoVersion;
-}
-
-export interface DMNVersionShortInterface {
-    version: number;
-    status: number;
 }
 
 export interface DMNFileInterface {
@@ -60,7 +50,6 @@ export interface DMNDomainInterface {
     id: number;
     name: string;
 }
-export type DomainListInterface = DMNDomainInterface[];
 
 export interface DMNUpdateFileInterface {
     fileBlob: string;

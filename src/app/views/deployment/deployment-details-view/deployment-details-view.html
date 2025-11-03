@@ -53,7 +53,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
-                            <div class="col col-xxl-6"><span>{{  deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} – {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></div>
+                            <div class="col col-xxl-6"><span>{{ deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></div>
                         </div>
                     </li>
                 </ul>

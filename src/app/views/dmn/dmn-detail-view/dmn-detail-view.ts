@@ -2,6 +2,7 @@ import { Component, DoCheck, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DmnStatusPartial } from '../../../partials/dmn-status-partial/dmn-status-partial';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { DMNVersionInterface } from '../../../interfaces/dmn-interface';
 
 // Services
 import { DMNService } from '../../../services/dmn-service/dmn-service';
@@ -11,7 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { DatePipe } from '@angular/common';
-import {VersionInterface} from '../../../interfaces/version-interface';
+
 
 @Component({
     selector: 'app-dmn-detail-view',
@@ -31,7 +32,6 @@ export class DmnDetailView implements OnInit {
     dmnId: number = 0;
     dmnVersion: number = 0;
     dmnData: any = [];
-    dmnVersions: any = []
 
     private activatedRoute = inject(ActivatedRoute);
 
@@ -71,11 +71,11 @@ export class DmnDetailView implements OnInit {
         )
     }
 
-    selectedVersion(versions: VersionInterface[]): VersionInterface {
+    selectedVersion(versions: DMNVersionInterface[]): DMNVersionInterface {
         return versions.filter(v => v.version === this.dmnVersion)[0];
     }
 
-    findLatest(versions: VersionInterface[]): VersionInterface {
+    findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
         const prodStatus = 4;
         const exact = versions.find(v => v.status === prodStatus);
         if (exact) return exact;
@@ -87,7 +87,7 @@ export class DmnDetailView implements OnInit {
         return versions[0];
     }
 
-    canStartNewVersion(versions: VersionInterface[], status: number): boolean {
+    canStartNewVersion(versions: DMNVersionInterface[], status: number): boolean {
         if (status === 5) { // Archived
             return false;
         }

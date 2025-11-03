@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-    DMNCreateInterface, DMNCreateVersionInterface, DMNDetailInterface, DMNDomainInterface, DMNFileInterface,
+    DMNCreateInterface, DMNCreateVersionInterface, DMNDomainInterface, DMNFileInterface,
     DMNInterface, DMNListInterface, DMNUpdateFileInterface
 } from '../../interfaces/dmn-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
@@ -44,8 +44,8 @@ export class DMNService {
      * @returns DMNtInterface of DMN matching the id.
      * @internal
      */
-    getDMN(id: number): Observable<DMNDetailInterface> {
-        return this.http.get<DMNDetailInterface>(`${this.baseUrl}/dmn/${id}`, {
+    getDMN(id: number): Observable<DMNInterface> {
+        return this.http.get<DMNInterface>(`${this.baseUrl}/dmn/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }

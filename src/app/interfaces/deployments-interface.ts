@@ -1,4 +1,4 @@
-import { VersionInterface } from './version-interface';
+import { DMNVersionInterface } from './dmn-interface';
 
 export interface DeploymentsInterface {
     id: number;
@@ -44,5 +44,5 @@ export interface GenericDeployment {
         id: number;
         name: string;
     }
-    version: VersionInterface;
+    version: DMNVersionInterface;
 }

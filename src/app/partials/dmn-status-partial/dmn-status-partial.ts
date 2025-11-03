@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { DMNDetailInterface } from '../../interfaces/dmn-interface';
-import {VersionInterface} from '../../interfaces/version-interface';
+import { DMNVersionInterface } from '../../interfaces/dmn-interface';
 
 @Component({
   selector: 'app-dmn-status-partial',
@@ -9,7 +8,7 @@ import {VersionInterface} from '../../interfaces/version-interface';
   styleUrl: './dmn-status-partial.css'
 })
 export class DmnStatusPartial implements OnChanges {
-    @Input() data!: VersionInterface;
+    @Input() data!: DMNVersionInterface;
 
     constructor() {}
 

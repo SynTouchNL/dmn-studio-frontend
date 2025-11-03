@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, Input, OnChanges, PipeTransform} from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import {DatePipe} from '@angular/common';
+import { Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { StatusPipe } from '../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../pipes/class-pipe/class-pipe';
-import {FormControl, FormsModule} from '@angular/forms';
-import {NgbHighlight, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
-import {VersionInterface} from '../../interfaces/version-interface';
+import { FormControl, FormsModule } from '@angular/forms';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { DMNVersionInterface } from '../../interfaces/dmn-interface';
 
 @Component({
     selector: 'app-dmn-list-partial',
@@ -50,7 +50,7 @@ export class DmnListPartial implements OnChanges {
             );
     }
 
-    findLatest(versions: VersionInterface[]): VersionInterface {
+    findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
         const prodStatus = 4;
         // Try exact match first
         const exact = versions.find(v => v.status === prodStatus);

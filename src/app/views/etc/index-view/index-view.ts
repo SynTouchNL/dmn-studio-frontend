@@ -3,7 +3,6 @@ import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-part
 import { DMNService } from '../../../services/dmn-service/dmn-service';
 import { DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
-import {VersionInterface} from '../../../interfaces/version-interface';
 
 @Component({
   selector: 'app-index-view',
