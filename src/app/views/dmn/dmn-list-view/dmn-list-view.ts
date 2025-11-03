@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
 import { DMNService } from '../../../services/dmn-service/dmn-service';
-import {DMNDomainInterface, DMNInterface} from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface, DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +21,6 @@ import { FormBuilder } from '@angular/forms';
 })
 
 export class DmnListView implements OnInit {
-    filter = new FormControl('', { nonNullable: true });
     dmnData: DMNInterface[] = [];
     domains: DMNDomainInterface[] = [];
     domain_selected: DMNDomainInterface | '' = '';
@@ -58,7 +57,6 @@ export class DmnListView implements OnInit {
                         data => {
                             //@ts-ignore
                             this.dmnData = data.filter(dmn => dmn.domain.id === value.id);
-                            //this.dmnData = data;
                         }
                     )
                 } else {

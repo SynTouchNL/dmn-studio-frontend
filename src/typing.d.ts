@@ -2,25 +2,15 @@ declare module 'dmn-js/lib/Modeler' {
     import BaseViewer from 'dmn-js/lib/base/Manager'; // or wherever it's from
     class Modeler extends BaseViewer {
         _viewers: any;
-
         importXML(xml: string): Promise<any>;
-
         saveXML(): Promise<{ xml: string }>;
-
         attachTo(element: HTMLElement | string): void;
-
         detach(): void;
-
         destroy(): void;
-
-        getDefinitions() {
-        };
-
+        getDefinitions(): void;
         open: (decision: any) => void;
-
-        on(changed: string, param2: (event: any) => void) {
-
-        }
+        on(changed: string, param2: (event: any) => void) {}
+        get(variableResolver: string) {}
     }
 
     export default Modeler;
@@ -64,6 +54,9 @@ declare module 'dmn-js/lib/NavigatedViewer' {
 
 declare module 'dmn-js/lib/Modeler' {
     export default class DmnModeler {
+        get(arg0: string) {
+            throw new Error("Method not implemented.");
+        }
         on(arg0: string, arg1: (event: any) => void) {
             throw new Error("Method not implemented.");
         }
@@ -101,7 +94,13 @@ declare module 'dmn-js-properties-panel' {
   const DmnPropertiesPanelModule: any;
   const DmnPropertiesProviderModule: any;
   const CamundaPropertiesProviderModule: any;
-  export { DmnPropertiesPanelModule, DmnPropertiesProviderModule, CamundaPropertiesProviderModule, HistoryCleanupProps };
+  export { DmnPropertiesPanelModule, DmnPropertiesProviderModule, CamundaPropertiesProviderModule };
+}
+
+declare module '@bpmn-io/dmn-variable-resolver' {
+    const DmnVariableResolverModule: any;
+    export default DmnVariableResolverModule;
+    export function resolveVariables(...args: any[]): any;
 }
 
 declare module 'camunda-dmn-moddle/resources/camunda.json';

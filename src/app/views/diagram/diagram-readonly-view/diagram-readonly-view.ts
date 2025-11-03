@@ -60,8 +60,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
                     bindTo: document
                 }
             },
-            drd: {
-            }
+            drd: {}
         });
 
         this.dmnJS.on('views.changed', (event: any) => {
@@ -86,7 +85,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     }
 
     private initDiagram(): void {
-        if(!this.dmnFile || this.dmnFile === ""){
+        if (!this.dmnFile || this.dmnFile === "") {
             this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
                 data => {
                     this.importDiagram(atob(data.fileBlob));
@@ -111,7 +110,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         );
     }
 
-    async openView(idx: number){
+    async openView(idx: number) {
         this.activeViewIdx = idx;
         try {
             this.dmnJS.open(this.views[idx]);
@@ -120,8 +119,8 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         }
     }
 
-    checkClass(type: string){
-        switch(type) {
+    checkClass(type: string) {
+        switch (type) {
             case "drd":
                 return "dmn-icon-lasso-tool";
             case "decisionTable":
@@ -131,5 +130,26 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
             default:
                 return ""
         }
+    }
+
+    exportDMN() {
+        this.dmnJS.saveXML({format: true}, (err: any, xml: any) => {
+            const encoder = new TextEncoder();
+            const xmlBytes = encoder.encode(xml);
+
+            const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
+
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/xml;base64,' + xmlBase64);
+            element.setAttribute('download',  this.dmnJS.getDefinitions().id + ` _v${this.dmnVersion}.dmn`);
+
+            console.log();
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        });
     }
 }

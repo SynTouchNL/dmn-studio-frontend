@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './settings-view.html',
   styleUrl: './settings-view.css'
 })
+
 export class SettingsView {
 
 }

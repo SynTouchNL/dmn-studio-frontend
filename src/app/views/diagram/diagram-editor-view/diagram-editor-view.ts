@@ -1,10 +1,6 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, inject, OnDestroy } from '@angular/core';
 import DmnModeler from 'dmn-js/lib/Modeler';
-import {
-    DmnPropertiesPanelModule,
-    CamundaPropertiesProviderModule,
-    DmnPropertiesProviderModule
-} from 'dmn-js-properties-panel';
+import { DmnPropertiesPanelModule, CamundaPropertiesProviderModule, DmnPropertiesProviderModule } from 'dmn-js-properties-panel';
 import { from, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -24,7 +20,7 @@ import { ViewList } from '../../../interfaces/view-interface';
     styleUrl: './diagram-editor-view.css'
 })
 
-export class DiagramEditorView {
+export class DiagramEditorView implements AfterViewInit, OnDestroy {
     @ViewChild('dmnModelerRef', { static: true }) private dmnModelerRef: ElementRef | undefined;
     @ViewChild('editorTabRef', { static: true }) editorTabs!: ElementRef;
 

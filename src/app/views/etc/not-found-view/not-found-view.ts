@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './not-found-view.html',
   styleUrl: './not-found-view.css'
 })
+
 export class NotFoundView implements OnInit{
 
     constructor(

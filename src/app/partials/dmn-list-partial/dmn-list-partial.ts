@@ -27,13 +27,13 @@ export class DmnListPartial implements OnChanges {
     @Input() domains: boolean = false;
     @Input() filter: FormControl = new FormControl('');
 
-    constructor() {
-    }
-
     page = 1;
     pageSize = 10;
     collectionSize = 0;
     allDmnList: any[] = [];
+
+    constructor() {
+    }
 
     ngOnChanges() {
         this.allDmnList = this.dmnList; // store full dataset

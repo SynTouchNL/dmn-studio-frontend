@@ -6,6 +6,7 @@ import { DMNService } from '../../../services/dmn-service/dmn-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { new_dmn } from '../../../new_dmn';
 
 @Component({
     selector: 'app-new-dmn-view',
@@ -53,27 +54,8 @@ export class NewDMNView implements OnInit {
         let new_xml = '';
         if (this.dmnFileContent) {
             new_xml = this.dmnFileContent;
-        } else { //TODO : Generic new_dmn.ts file gebruiken ipv hardcoded xml, misschien een util functie?
-            new_xml = `<?xml version="1.0" encoding="UTF-8"?>
-            <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="${this.sanitizeString(this.dmnName)}" name="${this.dmnName}" namespace="http://camunda.org/schema/1.0/dmn" exporter="dmn-js (https://demo.bpmn.io/dmn)" exporterVersion="17.2.0">
-              <decision id="decision_19w0x1w" name="" camunda:historyTimeToLive="30">
-                <decisionTable id="decisionTable_16f4dkd">
-                  <input id="input1" label="">
-                    <inputExpression id="inputExpression1" typeRef="string">
-                      <text></text>
-                    </inputExpression>
-                  </input>
-                  <output id="output1" label="" name="" typeRef="string" />
-                </decisionTable>
-              </decision>
-              <dmndi:DMNDI>
-                <dmndi:DMNDiagram id="DMNDiagram_0k7uk6v">
-                  <dmndi:DMNShape id="DMNShape_1tqq611" dmnElementRef="decision_19w0x1w">
-                    <dc:Bounds height="80" width="180" x="150" y="80" />
-                  </dmndi:DMNShape>
-                </dmndi:DMNDiagram>
-              </dmndi:DMNDI>
-            </definitions>`;
+        } else {
+            new_xml = new_dmn;
         }
         event.preventDefault();
         const encoder = new TextEncoder();

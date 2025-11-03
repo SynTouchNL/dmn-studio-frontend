@@ -58,7 +58,7 @@ export class DmnDetailView implements OnInit {
         this.dmnService.getDMN(this.dmnId).subscribe(
             data => {
                 this.dmnData = data;
-                this.titleService.setTitle(`DMN Detail - ${this.dmnData.name} v${this.dmnVersion}`)
+                this.titleService.setTitle(`DMN Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
             }
         );
     }
