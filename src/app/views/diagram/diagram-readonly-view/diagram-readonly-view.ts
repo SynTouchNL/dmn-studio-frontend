@@ -3,14 +3,26 @@ import NavigatedViewer from "dmn-js/lib/NavigatedViewer";
 import { from, Observable } from 'rxjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { base64ToXml } from '../../../utils'
 
 // Services
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 
 // Interfaces
 import { ViewList } from '../../../interfaces/view-interface';
+
+
+interface Variable {
+    name: string;
+    typeRef?: string;
+}
+
+interface DecisionVariables {
+    name: string;
+    incoming: Variable[];
+    outgoing: Variable[];
+}
+
 
 @Component({
     selector: 'app-diagram-readonly-view',
@@ -31,6 +43,8 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     dmnFile: any = "";
     dmnStatus: number = 0;
 
+    dmnVariables: DecisionVariables[] = [];
+
     //Tabs
     views: ViewList = [];
     activeViewIdx: number = 0;
@@ -40,7 +54,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private alertService: AlertService,
         private titleService: Title
     ) {
@@ -86,8 +100,10 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
 
     private initDiagram(): void {
         if (!this.dmnFile || this.dmnFile === "") {
+            console.log("Fetching DMN file from server...");
             this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
                 data => {
+                    this.dmnFile = atob(data.fileBlob);
                     this.importDiagram(atob(data.fileBlob));
                 },
                 error => console.log(error)
@@ -114,6 +130,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         this.activeViewIdx = idx;
         try {
             this.dmnJS.open(this.views[idx]);
+            console.log(this.dmnVariables)
         } catch (err) {
             console.error('error opening tab', err);
         }
@@ -132,24 +149,17 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         }
     }
 
-    exportDMN() {
-        this.dmnJS.saveXML({format: true}, (err: any, xml: any) => {
-            const encoder = new TextEncoder();
-            const xmlBytes = encoder.encode(xml);
+    async exportDMN() {
+        const encoder = new TextEncoder();
+        const xmlBytes = encoder.encode(this.dmnFile);
+        const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
 
-            const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/xml;base64,' + xmlBase64);
-            element.setAttribute('download',  this.dmnJS.getDefinitions().id + ` _v${this.dmnVersion}.dmn`);
-
-            console.log();
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-        });
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/xml;base64,' + xmlBase64);
+        element.setAttribute('download',  this.dmnJS.getDefinitions().id + ` _v${this.dmnVersion}.dmn`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
 }

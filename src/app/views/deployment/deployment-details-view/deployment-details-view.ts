@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { DeploymentsInterface } from '../../../interfaces/deployments-interface';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
@@ -24,7 +24,7 @@ export class DeploymentDetailsView implements OnInit {
     // deploymentDetails: any[] = []; // TODO: Implement als hier nog meerwaarde in komt, momenteel niet.
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private router: Router
     ) {}
 

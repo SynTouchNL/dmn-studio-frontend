@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 import camundaModdle from 'camunda-dmn-moddle/resources/camunda.json';
 
 // Services
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 
 // Interfaces
@@ -37,7 +37,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private alertService: AlertService,
         private titleService: Title
     ) {
@@ -53,11 +53,6 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
             position: "absolute",
             moddleExtensions: {
                 camunda: camundaModdle
-            },
-            decisionTable: {
-                keyboard: {
-                    bindTo: document
-                }
             },
             drd: {
                 propertiesPanel: {
@@ -115,7 +110,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
                     this.alertService.error("Error", "Er was een probleem bij het laden van de diagram: " + err.message);
                     throw err;
                 })
-        );
+        )
     }
 
     saveDiagram() {
@@ -162,4 +157,5 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
                 return ""
         }
     }
+
 }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -24,7 +24,7 @@ export class NewDiagramView implements OnInit{
     dmnVersion: number = 0;
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private alertService: AlertService,
         private router: Router,
         private titleService: Title

@@ -5,7 +5,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { DMNVersionInterface } from '../../../interfaces/dmn-interface';
 
 // Services
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { Title } from '@angular/platform-browser';
 
 // Pipes
@@ -36,11 +36,10 @@ export class DmnDetailView implements OnInit {
     private activatedRoute = inject(ActivatedRoute);
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private titleService: Title,
         private router: Router
     ) {
-
         this.activatedRoute.params.subscribe(params => {
             this.dmnVersion = +params['version'];
         });
@@ -69,6 +68,15 @@ export class DmnDetailView implements OnInit {
                 this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, file: atob(data.fileBlob)}})
             }
         )
+    }
+
+    clickTests() {
+        let dmnFile = "";
+        let vars: any[] = [];
+        this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe( async data => {
+            dmnFile = atob(data.fileBlob);
+        })
+        this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/test'], { state: { data: this.dmnData, file: atob(dmnFile) } })
     }
 
     selectedVersion(versions: DMNVersionInterface[]): DMNVersionInterface {

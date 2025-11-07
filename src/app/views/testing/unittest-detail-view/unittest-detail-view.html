@@ -1,1 +1,29 @@
-<p>unittest-detail-view works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Unit tests - {{ this.dmnData.name }}</h3>
+        </div>
+        <div class="col text-end">
+            <div class="btn-group" role="group">
+                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{data: this.dmnData}" type="button">Aanmaken</button>
+                <button class="btn btn-primary" type="button">Controlleren</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                @for(td of this.testData; track td.id) {
+                    <div class="row">
+                        <li class="list-group-item"><a class="text-decoration-none link-dark" [routerLink]="['./', td.id]" [state]="{td}">#{{ td.id }} - {{ td.name }}</a> – <span class="ml-3 badge bg-success">Voldaan</span></li>
+                    </div>
+                } @empty {
+                    <li class="list-group-item"><a class="text-decoration-none link-dark">Geen tests gevonden...</a></li>
+                }
+            </ul>
+        </div>
+        <div class="col col-xxl-4">
+            <div><canvas height="208" style="display: block;width: 416px;height: 208px;" width="416"></canvas></div>
+        </div>
+    </div>
+</div>

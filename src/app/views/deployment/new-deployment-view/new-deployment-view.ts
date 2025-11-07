@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import {
     DMNDomainInterface,
     DMNFileInterface,
@@ -36,7 +36,7 @@ export class NewDeploymentView implements OnInit {
     myForm: any;
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private formBuilder: FormBuilder,
         private alertService: AlertService,
         private router: Router

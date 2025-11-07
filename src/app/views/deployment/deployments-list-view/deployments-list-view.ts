@@ -6,7 +6,7 @@ import {DatePipe} from '@angular/common';
 import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {StatusPipe} from '../../../pipes/status-pipe/status-pipe';
 import {DeploymentsInterface} from '../../../interfaces/deployments-interface';
-import {DMNService} from '../../../services/dmn-service/dmn-service';
+import {HttpService} from '../../../services/http-service/http-service';
 
 @Component({
     selector: 'app-deployments-list-view',
@@ -33,7 +33,7 @@ export class DeploymentsListView implements OnInit, OnChanges {
     myForm: any;
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private formBuilder: FormBuilder
     ) {
     }

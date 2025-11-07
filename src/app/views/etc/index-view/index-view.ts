@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
 
@@ -17,7 +17,7 @@ export class IndexView implements OnInit {
     dmnData: DMNInterface[] = [];
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private titleService: Title
     ) { }
 

@@ -1,1 +1,38 @@
-<p>unittest-list-view works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>DMN Unit-tests - {{ dmnData?.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form>
+                <div class="input-group"></div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Beslissingsnaam</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for(dVar of this.dmnVars; track dVar.id) {
+                    <tr>
+                        <td><a class="text-decoration-none link-dark" [routerLink]="['view']"  [state]="{data: dVar}">{{ dVar.name }}</a></td>
+                    </tr>
+                    } @empty {
+                        <tr>
+                            <td>Geen beslissingen gevonden</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

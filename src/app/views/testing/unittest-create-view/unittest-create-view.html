@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Unit tests {{ dmnData.name }}</h3>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-primary" type="button">
+                <a class="text-decoration-none text-light">Opslaan</a>
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]="myForm">
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Key</label>
+                <select formControlName="input_key" class="form-select">
+                    <option [ngValue]="null" disabled selected>Kies een variabele</option>
+                    @for(i of dmnData.incoming; track i.name) {
+                        <option [ngValue]="i">{{ i.name }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col">
+                <label class="form-label">Value</label>
+                @switch(selected_key?.typeRef) {
+                    @case('string') {
+                        @if(selected_key?.values?.length === 0){
+                            <input class="form-control" type="text" placeholder="Vul hier uw waarde in" formControlName="input_value" />
+                        } @else {
+                            <select class="form-select" formControlName="input_value">
+                                <option [ngValue]="null" disabled selected>Kies een waarde</option>
+                                @for(v of selected_key.values; track v) {
+                                    <option [ngValue]="v">{{ v }}</option>
+                                }
+                            </select>
+                        }
+                    }
+
+                    @case('integer') {
+                        <input class="form-control" type="number" placeholder="Vul hier uw waarde in" formControlName="input_value" />
+                    }
+
+                    @case('boolean') {
+                        <select class="form-select" formControlName="input_value">
+                            <option [ngValue]="null" disabled selected>Kies een waarde</option>
+                            <option [ngValue]="true">True</option>
+                            <option [ngValue]="false">False</option>
+                        </select>
+                    }
+                }
+            </div>
+        </div>
+    </form>
+</div>

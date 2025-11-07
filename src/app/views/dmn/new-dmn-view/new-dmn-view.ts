@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
@@ -24,7 +24,7 @@ export class NewDMNView implements OnInit {
     users: any[] = [];
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private alertService: AlertService,
         private router: Router,
         private keycloakService: KeycloakService

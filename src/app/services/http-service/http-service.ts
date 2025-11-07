@@ -13,7 +13,7 @@ import { EnvironmentsInterface } from '../../interfaces/environments-interface';
     providedIn: 'root'
 })
 
-export class DMNService {
+export class HttpService {
     private baseUrl = 'http://localhost:8080';
     private token: string | undefined = '';
 
@@ -114,8 +114,8 @@ export class DMNService {
         });
     }
 
-    getOperatonDetails(id: String): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/deploy/info/${id}`, {
+    getTests(id: Number, version: Number): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/test/${id}/${version}/tests`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }

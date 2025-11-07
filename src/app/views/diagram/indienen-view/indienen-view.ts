@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../../services/alert-service/alert-service';
 
@@ -15,7 +15,7 @@ export class IndienenView {
     dmnId: number = 0;
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private activatedRoute: ActivatedRoute,
         private alertService: AlertService,
         private router: Router

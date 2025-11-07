@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { DMNService } from './dmn-service';
+import { HttpService } from './http-service';
 
 describe('DmnService', () => {
-    let service: DMNService;
+    let service: HttpService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(DMNService);
+        service = TestBed.inject(HttpService);
     });
 
     it('should be created', () => {

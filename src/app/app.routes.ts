@@ -15,6 +15,9 @@ import { IndienenView } from './views/diagram/indienen-view/indienen-view';
 import { DeploymentsListView } from './views/deployment/deployments-list-view/deployments-list-view';
 import { DeploymentDetailsView } from './views/deployment/deployment-details-view/deployment-details-view';
 import { NewDeploymentView } from './views/deployment/new-deployment-view/new-deployment-view';
+import { UnittestListView } from './views/testing/unittest-list-view/unittest-list-view';
+import {UnittestDetailView} from './views/testing/unittest-detail-view/unittest-detail-view';
+import {UnittestCreateView} from './views/testing/unittest-create-view/unittest-create-view';
 
 export const routes: Routes = [
     // Deployment routes
@@ -44,6 +47,30 @@ export const routes: Routes = [
     },
 
     // DMN routes
+    {
+        path: 'dmns/:id/:version/test',
+        component: UnittestListView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'developer'
+        }
+    },
+    {
+        path: 'dmns/:id/:version/test/view',
+        component: UnittestDetailView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'developer'
+        }
+    },
+    {
+        path: 'dmns/:id/:version/test/create',
+        component: UnittestCreateView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'developer'
+        }
+    },
     {
         path: 'dmns/:id/:version/indienen',
         component: IndienenView,
@@ -117,6 +144,5 @@ export const routes: Routes = [
     {
         path: '**',
         component: NotFoundView,
-        // data: { role: 'editor' }
     },
 ];

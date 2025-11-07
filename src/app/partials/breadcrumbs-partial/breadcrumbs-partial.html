@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col mb-0 pb-0">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a [routerLink]="['/']"><span>Home</span></a></li>
+            @for(breadcrumb of breadcrumbs; track breadcrumb.label){
+                <li class="breadcrumb-item"><a [routerLink]="[breadcrumb.url]">breadcrumb.label</a></li>
+            }
+        </ol>
+    </div>
+</div>

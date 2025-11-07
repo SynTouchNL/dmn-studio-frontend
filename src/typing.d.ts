@@ -1,79 +1,58 @@
-declare module 'dmn-js/lib/Modeler' {
-    import BaseViewer from 'dmn-js/lib/base/Manager'; // or wherever it's from
-    class Modeler extends BaseViewer {
-        _viewers: any;
-        importXML(xml: string): Promise<any>;
-        saveXML(): Promise<{ xml: string }>;
-        attachTo(element: HTMLElement | string): void;
-        detach(): void;
-        destroy(): void;
-        getDefinitions(): void;
-        open: (decision: any) => void;
-        on(changed: string, param2: (event: any) => void) {}
-        get(variableResolver: string) {}
+declare module 'dmn-js/lib/base/Manager' {
+    export default class Manager {
+        constructor(config?: any);
+        get<T = any>(name: string): T;
+        on(event: string, listener: (event: any) => void): void;
     }
-
-    export default Modeler;
 }
 
 declare module 'dmn-js/lib/Viewer' {
     import Manager from 'dmn-js/lib/base/Manager';
-
-    class Viewer extends Manager {
-        constructor(config: any);
-
+    export default class Viewer extends Manager {
+        constructor(config?: any);
         _getViewProviders(): any;
-
         importXML(xml: string): Promise<any>;
-
         attachTo(element: HTMLElement): void;
-
         destroy(): void;
+        get<T = any>(name: string): T;
+        getDefinitions(): any;
+        saveXML(options?: { format?: boolean }, cb?: (err: any, xml: any) => void): void; // added
+        open(decision: any): void; // added
     }
-
-    export default Viewer;
 }
 
 declare module 'dmn-js/lib/NavigatedViewer' {
     import Manager from 'dmn-js/lib/base/Manager';
-
-    class Viewer extends Manager {
-        constructor(config: any);
-
+    import Viewer from 'dmn-js/lib/Viewer';
+    export default class NavigatedViewer extends Manager {
+        constructor(config?: any);
         _getViewProviders(): any;
-
         importXML(xml: string): Promise<any>;
-
         attachTo(element: HTMLElement): void;
-
         destroy(): void;
+        get<T = any>(name: string): T;
+        getDefinitions(): any;
+        saveXML(options?: { format?: boolean }, cb?: (err: any, xml: any) => void): void; // added
+        open(decision: any): void; // added
+        getActiveViewer() : Manager | Viewer | NavigatedViewer
     }
-
-    export default NavigatedViewer;
 }
 
 declare module 'dmn-js/lib/Modeler' {
-    export default class DmnModeler {
-        get(arg0: string) {
-            throw new Error("Method not implemented.");
-        }
-        on(arg0: string, arg1: (event: any) => void) {
-            throw new Error("Method not implemented.");
-        }
-        open(arg0: ViewInterface) {
-            throw new Error("Method not implemented.");
-        }
-        getDefinitions(): any {
-            throw new Error('Method not implemented.');
-        }
-        private _viewers: any;
-        saveXML(arg0: { format: boolean; }, p0: (err: any, xml: any) => void) {
-            throw new Error('Method not implemented.');
-        }
-        constructor(config: any);
+    import Manager from 'dmn-js/lib/base/Manager';
+    import Viewer from 'dmn-js/lib/Viewer';
+    import NavigatedViewer from 'dmn-js/lib/NavigatedViewer';
+    export default class Modeler extends Manager {
+        constructor(config?: any);
+        _viewers: any;
         importXML(xml: string): Promise<any>;
-        attachTo(element: HTMLElement): void;
+        saveXML(options?: { format?: boolean }, cb?: (err: any, xml: any) => void): void;
+        attachTo(element: HTMLElement | string): void;
+        detach(): void;
         destroy(): void;
+        getDefinitions(): any;
+        open(decision: any): void;
+        getActiveViewer(): Manager | Viewer | NavigatedViewer;
     }
 }
 
@@ -91,10 +70,10 @@ declare module 'dmn-js-decision-table/lib/Viewer' {
 }
 
 declare module 'dmn-js-properties-panel' {
-  const DmnPropertiesPanelModule: any;
-  const DmnPropertiesProviderModule: any;
-  const CamundaPropertiesProviderModule: any;
-  export { DmnPropertiesPanelModule, DmnPropertiesProviderModule, CamundaPropertiesProviderModule };
+    const DmnPropertiesPanelModule: any;
+    const DmnPropertiesProviderModule: any;
+    const CamundaPropertiesProviderModule: any;
+    export { DmnPropertiesPanelModule, DmnPropertiesProviderModule, CamundaPropertiesProviderModule };
 }
 
 declare module '@bpmn-io/dmn-variable-resolver' {
@@ -104,3 +83,15 @@ declare module '@bpmn-io/dmn-variable-resolver' {
 }
 
 declare module 'camunda-dmn-moddle/resources/camunda.json';
+
+declare module 'dmn-moddle' {
+    import Moddle from 'moddle';
+    const DmnModdle: Moddle;
+    export default DmnModdle;
+}
+
+declare module 'moddle-xml' {
+    export class Reader {
+        fromXML(xml: string, callback: (err: any, moddleElement: any, context: any) => void): void;
+    }
+}

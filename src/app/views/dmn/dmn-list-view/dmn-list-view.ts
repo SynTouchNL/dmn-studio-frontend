@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
-import { DMNService } from '../../../services/dmn-service/dmn-service';
+import { HttpService } from '../../../services/http-service/http-service';
 import { DMNDomainInterface, DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
@@ -27,9 +27,10 @@ export class DmnListView implements OnInit {
     myForm: any;
 
     constructor(
-        private dmnService: DMNService,
+        private dmnService: HttpService,
         private titleService: Title,
-        private FormBuilder: FormBuilder
+        private FormBuilder: FormBuilder,
+        private router: Router
     ) { }
 
     ngOnInit() {
