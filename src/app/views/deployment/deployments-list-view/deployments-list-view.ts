@@ -1,12 +1,13 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterLink} from '@angular/router';
-import {ClassPipe} from '../../../pipes/class-pipe/class-pipe';
-import {DatePipe} from '@angular/common';
-import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
-import {StatusPipe} from '../../../pipes/status-pipe/status-pipe';
-import {DeploymentsInterface} from '../../../interfaces/deployments-interface';
-import {HttpService} from '../../../services/http-service/http-service';
+import { Component, OnChanges, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
+import { DatePipe } from '@angular/common';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
+import { DeploymentsInterface } from '../../../interfaces/deployments-interface';
+import { HttpService } from '../../../services/http-service/http-service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-deployments-list-view',
@@ -33,13 +34,13 @@ export class DeploymentsListView implements OnInit, OnChanges {
     myForm: any;
 
     constructor(
-        private dmnService: HttpService,
-        private formBuilder: FormBuilder
-    ) {
-    }
+        private http: HttpService,
+        private formBuilder: FormBuilder,
+        private titleService: Title
+    ) {}
 
     ngOnInit(){
-        this.dmnService.getDeployments().subscribe(
+        this.http.getDeployments().subscribe(
             data => {
                 // @ts-ignore
                 this.all_deployments = data;
@@ -47,12 +48,15 @@ export class DeploymentsListView implements OnInit, OnChanges {
                 this.refreshDeployments();
             }
         )
-        this.dmnService.getEnvironments().subscribe(
+
+        this.http.getEnvironments().subscribe(
             //@ts-ignore
             data => {
                 this.environments = Array.isArray(data) ? data : [data];
             }
         )
+
+        this.titleService.setTitle("DMNStudio - Deployment overzicht");
 
         this.myForm = this.formBuilder.group({
             environments: new FormControl(null),
@@ -62,19 +66,29 @@ export class DeploymentsListView implements OnInit, OnChanges {
         this.myForm.get("environments").valueChanges.subscribe(
             (value: { id: number, name: string }) => {
                 if (value !== null) {
-                    this.dmnService.getDeployments().subscribe(
+                    this.http.getDeployments().subscribe(
                         data => {
                             //@ts-ignore
                             this.deployment_list = data.filter(dep => dep.environmentName === value.name);
                         }
                     )
                 } else {
-                    this.dmnService.getDeployments().subscribe(data => {
+                    this.http.getDeployments().subscribe(data => {
                         this.deployment_list = Array.isArray(data) ? data : [data];
                     });
                 }
             }
         );
+
+        this.myForm.get("search").valueChanges.subscribe(
+            (value: string) => {
+                if(value == ""){
+                    this.refreshDeployments();
+                } else {
+                    this.deployment_list = this.deployment_list.filter(dep => dep.dmn.name.toLowerCase().includes(value.toLowerCase()) || dep.deployedBy.toLowerCase().includes(value.toLowerCase()) );
+                }
+            }
+        )
     }
 
     ngOnChanges(){
@@ -90,6 +104,5 @@ export class DeploymentsListView implements OnInit, OnChanges {
             (this.page - 1) * this.pageSize + this.pageSize,
         );
     }
-
 
 }

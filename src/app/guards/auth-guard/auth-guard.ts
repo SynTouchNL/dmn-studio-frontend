@@ -2,11 +2,7 @@ import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { inject } from '@angular/core';
 
-const isAccessAllowed = async (
-    route: ActivatedRouteSnapshot,
-    __: RouterStateSnapshot,
-    authData: AuthGuardData
-): Promise<boolean | UrlTree> => {
+const isAccessAllowed = async (route: ActivatedRouteSnapshot, __: RouterStateSnapshot, authData: AuthGuardData): Promise<boolean | UrlTree> => {
     const { authenticated, grantedRoles } = authData;
 
     const requiredRole = route.data['role'];

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, inject, OnDestroy } from '@angular/core';
+import {Component, AfterViewInit, ElementRef, ViewChild, inject, OnDestroy, OnInit} from '@angular/core';
 import DmnModeler from 'dmn-js/lib/Modeler';
 import { DmnPropertiesPanelModule, CamundaPropertiesProviderModule, DmnPropertiesProviderModule } from 'dmn-js-properties-panel';
 import { from, Observable } from 'rxjs';
@@ -41,7 +41,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
         private alertService: AlertService,
         private titleService: Title
     ) {
-        const navigation = this.router.getCurrentNavigation();
+        const navigation = this.router.getCurrentNavigation(); // TODO: Review deprecation
         this.dmnVersion = navigation?.extras.state?.['version'];
         this.dmnId = navigation?.extras.state?.['id'];
         this.dmnFile = navigation?.extras.state?.['file'];
@@ -92,7 +92,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
         } else {
             this.importDiagram(this.dmnFile);
         }
-        this.titleService.setTitle("DMN Tool - Bewerk DMN");
+        this.titleService.setTitle("DMNStudio - DMN Bewerken - " + (this.dmnDetails?.name || ''));
     }
 
     ngOnDestroy(): void {
@@ -125,13 +125,15 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
                 modifiedBy: 'Mark Akkermans'
             }
 
-            this.dmnService.saveDMNFile(this.dmnId, this.dmnVersion, request).subscribe(response => {
-                if (response) {
-                    this.alertService.success('Diagram opgeslagen', '');
-                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], { state: { file: atob(response.fileBlob) } });
+            this.dmnService.saveDMNFile(this.dmnId, this.dmnVersion, request).subscribe({
+                next: response => {
+                    if (response) {
+                        this.alertService.success('Diagram opgeslagen', '');
+                        this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], {state: {file: atob(response.fileBlob)}});
+                    }
+                }, error: error => {
+                    this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);
                 }
-            }, error => {
-                this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);
             });
         });
     }

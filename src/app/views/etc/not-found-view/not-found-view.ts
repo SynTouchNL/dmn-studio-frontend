@@ -15,6 +15,6 @@ export class NotFoundView implements OnInit{
     ){}
 
     ngOnInit() {
-        this.titleService.setTitle("DMN Tool - 404");
+        this.titleService.setTitle("DMNStudio - 404");
     }
 }

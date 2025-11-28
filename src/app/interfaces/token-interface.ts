@@ -7,4 +7,4 @@ export interface TokenInterface {
     "scope": string;
     "session_state": string;
     "token_type": string;
-}
+} // TODO Unused; to be taken out?

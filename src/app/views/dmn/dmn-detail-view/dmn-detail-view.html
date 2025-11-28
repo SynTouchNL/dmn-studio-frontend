@@ -1,5 +1,5 @@
 <div class="container">
-    @if(!dmnData) {
+    @if(Object.keys(dmnData).length === 0) {
         <div class="row">
             <div class="col">
                 <h3>Onbekende versie gevonden</h3>
@@ -8,80 +8,80 @@
         </div>
     } @else {
         <div class="row">
-        <div class="col col-lg-6">
-            <h3>{{ dmnData.name }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col align-self-center">
-            <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{ selectedVersion(dmnData.versions).version }}</span>
-            <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe}}</span>
-        </div>
-        <div class="col text-center align-self-center">
-            <app-dmn-status-partial [data]="selectedVersion(dmnData.versions)"></app-dmn-status-partial>
-        </div>
-        <div class="col text-end align-self-center">
-            <div class="btn-group" role="group">
-<!--                <button (click)="clickTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>-->
-                <button [routerLink]="['/dmns/' + this.dmnId + '/new']" [state]="{version: this.dmnVersion, status: this.dmnData.status}" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
-                <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Openen</a></button>
+            <div class="col col-lg-6">
+                <h3>{{ dmnData.name }}</h3>
             </div>
         </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-xxl-9">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col col-xxl-6"><span>Eigenaar</span></div>
-                        <div class="col col-xxl-6"><span>{{ dmnData.owner }}</span></div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col col-xxl-6"><span>Domein</span></div>
-                        <div class="col col-xxl-6"><span>{{ dmnData.domain.name }}</span></div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col col-xxl-6"><span>Versie in productie</span></div>
-                        <div class="col col-xxl-6"><span>Versie {{ findLatest(dmnData.versions).version }}</span></div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col col-xxl-6"><span>Huidige status</span></div>
-                        <div class="col col-xxl-6"><span></span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{  selectedVersion(dmnData.versions).version }}</span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe }}</span></div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
-                        <div class="col col-xxl-6"><span>{{  selectedVersion(dmnData.versions).modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy  || "Onbekend" }}</span></div>
-                    </div>
-                </li>
-            </ul>
+        <div class="row">
+            <div class="col align-self-center">
+                <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{ selectedVersion(dmnData.versions).version }}</span>
+                <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe}}</span>
+            </div>
+            <div class="col text-center align-self-center">
+                <app-dmn-status-partial [data]="selectedVersion(dmnData.versions)"></app-dmn-status-partial>
+            </div>
+            <div class="col text-end align-self-center">
+                <div class="btn-group" role="group">
+                    <button (click)="clickTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
+                    <button [routerLink]="['/dmns/' + this.dmnId + '/new']" [state]="{ dmn: this.dmnData, version: this.dmnVersion, status: this.dmnData.status }" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
+                    <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Openen</a></button>
+                </div>
+            </div>
         </div>
-        <div class="col-xxl-3">
-            <ul class="list-group">
-                @for(version of dmnData.versions; track version.version + '-' + version.status) {
-                    @if(this.dmnVersion == version.version) {
-                        <a class="dropdown-item text-secondary" disabled>
-                            <li class="list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
-                        </a>
-                    } @else {
-                        <a class="dropdown-item" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">
-                            <li class="list-group-item">v{{ version.version }} - {{ version.status | statusPipe }}</li>
-                        </a>
-                    }
-                } @empty {
+        <div class="row mt-2">
+            <div class="col-xxl-9">
+                <ul class="list-group">
                     <li class="list-group-item">
-                        <span>Geen versies beschikbaar</span>
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Eigenaar</span></div>
+                            <div class="col col-xxl-6"><span>{{ dmnData.owner }}</span></div>
+                        </div>
                     </li>
-                }
-            </ul>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Domein</span></div>
+                            <div class="col col-xxl-6"><span>{{ dmnData.domain.name }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Versie in productie</span></div>
+                            <div class="col col-xxl-6"><span>Versie {{ findLatest(dmnData.versions).version }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Huidige status</span></div>
+                            <div class="col col-xxl-6"><span></span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{  selectedVersion(dmnData.versions).version }}</span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
+                            <div class="col col-xxl-6"><span>{{  selectedVersion(dmnData.versions).modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy  || "Onbekend" }}</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-3">
+                <ul class="list-group">
+                    @for(version of dmnData.versions; track version.version + '-' + version.status) {
+                        @if(this.dmnVersion == version.version) {
+                            <a class="dropdown-item text-secondary" disabled>
+                                <li class="list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
+                            </a>
+                        } @else {
+                            <a class="dropdown-item" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">
+                                <li class="list-group-item">v{{ version.version }} - {{ version.status | statusPipe }}</li>
+                            </a>
+                        }
+                    } @empty {
+                        <li class="list-group-item">
+                            <span>Geen versies beschikbaar</span>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
-    </div>
     }
 </div>

@@ -12,6 +12,7 @@ import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { EnvironmentsInterface } from '../../../interfaces/environments-interface';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-new-deployment-view',
@@ -34,12 +35,14 @@ export class NewDeploymentView implements OnInit {
     selected_environment: EnvironmentsInterface | null = null;
 
     myForm: any;
+    clicked: boolean = false;
 
     constructor(
         private dmnService: HttpService,
         private formBuilder: FormBuilder,
         private alertService: AlertService,
-        private router: Router
+        private router: Router,
+        private titleService: Title
     ) {
     }
 
@@ -50,6 +53,9 @@ export class NewDeploymentView implements OnInit {
             domains: new FormControl(null),
             versions: new FormControl(null)
         });
+
+        this.titleService.setTitle("DMNStudio - Nieuwe deployment aanmaken");
+
 
         this.dmnService.getEnvironments().subscribe(
             data => {
@@ -110,31 +116,27 @@ export class NewDeploymentView implements OnInit {
         this.dmns = this.dmns_base;
     }
 
-    deployVersion(){
+    onSubmit(event: Event) {
+        event.preventDefault();
+        this.clicked = true;
         if (!this.selected_dmn || !this.selected_version || !this.selected_environment) {
             this.alertService.error("Fout bij het deployen.", "Selecteer een DMN, versie en omgeving om te kunnen deployen.");
-        } else {
-            this.dmnService.getDMNFile(this.selected_dmn.id, this.selected_version.version).subscribe(
-                //@ts-ignore
-                data => {
-                    this.file = data;
-                }
-            );
-
-            if (this.file) {
-                this.dmnService.deployVersion(this.selected_dmn, this.file, this.selected_version.version, this.selected_environment).subscribe(
-                    data => {
-                        if (data) {
-                            // @ts-ignore
-                            this.alertService.success("De DMN versie wordt gedeployed!", this.selected_dmn.name);
-                            this.router.navigate(["/deployments"]);
-                        }
-                    }, error => {
-                        console.log(error);
-                        this.alertService.error("Er is een fout opgetreden bij het deployen van de DMN versie.", error.error.details);
-                    }
-                )
-            }
+            this.clicked = false;
+            return;
         }
+        const dmn = this.selected_dmn;
+        const version = this.selected_version;
+        const env = this.selected_environment;
+
+        this.dmnService.deployVersion(dmn, version.version, env).subscribe({
+            next: (data) => {
+                console.log(data)
+                this.alertService.success("De DMN versie wordt gedeployed!", dmn.name);
+                this.router.navigate(["/deployments"]);
+            },
+            error: (error) => {
+                this.alertService.error("Er is een fout opgetreden bij het deployen van de DMN versie.", error.error.details);
+            }
+        });
     }
 }

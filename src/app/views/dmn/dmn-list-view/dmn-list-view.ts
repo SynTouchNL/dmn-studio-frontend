@@ -44,7 +44,7 @@ export class DmnListView implements OnInit {
             }
         );
 
-        this.titleService.setTitle("DMN Tool - DMN Overzicht ");
+        this.titleService.setTitle("DMNStudio - DMN Overzicht ");
 
         this.myForm = this.FormBuilder.group({
             domain: new FormControl(null),

@@ -5,4 +5,4 @@ export interface UserProfileInterface {
     lastName: string;
     email: string;
     emailVerified: boolean;
-}
+} // TODO unused

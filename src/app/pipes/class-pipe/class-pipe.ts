@@ -19,8 +19,6 @@ export class ClassPipe implements PipeTransform {
                 return 'bg-success';
             case 5: // Gearchiveerd
                 return 'bg-secondary';
-            // case "N/A": // N/A
-            //     return 'bg-secondary';
             default: // Onbekend
                 return 'bg-secondary';
         }

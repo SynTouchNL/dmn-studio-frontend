@@ -57,7 +57,7 @@ export class DmnDetailView implements OnInit {
         this.dmnService.getDMN(this.dmnId).subscribe(
             data => {
                 this.dmnData = data;
-                this.titleService.setTitle(`DMN Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
+                this.titleService.setTitle(`DMNStudio - Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
             }
         );
     }
@@ -65,14 +65,13 @@ export class DmnDetailView implements OnInit {
     clickOpen() {
         this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
             data => {
-                this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, file: atob(data.fileBlob)}})
+                this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, status: data.status, file: atob(data.fileBlob)}})
             }
         )
     }
 
     clickTests() {
         let dmnFile = "";
-        let vars: any[] = [];
         this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe( async data => {
             dmnFile = atob(data.fileBlob);
         })
@@ -80,16 +79,16 @@ export class DmnDetailView implements OnInit {
     }
 
     selectedVersion(versions: DMNVersionInterface[]): DMNVersionInterface {
-        return versions.filter(v => v.version === this.dmnVersion)[0];
+        return versions?.filter(v => v.version === this.dmnVersion)[0];
     }
 
     findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
         const prodStatus = 4;
-        const exact = versions.find(v => v.status === prodStatus);
+        const exact = versions?.find(v => v.status === prodStatus);
         if (exact) return exact;
 
         for (let s = prodStatus - 1; s >= 1; s--) {
-            const found = versions.find(v => v.status === s);
+            const found = versions?.find(v => v.status === s);
             if (found) return found;
         }
         return versions[0];
@@ -117,4 +116,5 @@ export class DmnDetailView implements OnInit {
         return true;
     }
 
+    protected readonly Object = Object;
 }

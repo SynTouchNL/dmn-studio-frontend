@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
-import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
-import { new_dmn } from '../../../new_dmn';
+import { Title } from '@angular/platform-browser';
+import { DocumentService } from '../../../services/document-service/document-service';
 
 @Component({
     selector: 'app-new-dmn-view',
@@ -21,13 +21,13 @@ export class NewDMNView implements OnInit {
     dmnOwner: string = '';
     domains: DMNDomainInterface[] = [];
     dmnFileContent: string = '';
-    users: any[] = [];
 
     constructor(
         private dmnService: HttpService,
         private alertService: AlertService,
         private router: Router,
-        private keycloakService: KeycloakService
+        private titleService: Title,
+        private documentService: DocumentService
     ) { }
 
     ngOnInit(){
@@ -36,18 +36,8 @@ export class NewDMNView implements OnInit {
                 this.domains = Array.isArray(data) ? data : [data];
             }
         );
-        this.keycloakService.getUsers().subscribe(
-            (data: any[]) => {
-                this.users = data;
-            }
-        );
+        this.titleService.setTitle("DMNStudio - Nieuwe DMN aanmaken ");
 
-    }
-
-    private sanitizeString(input: string): string {
-        return input
-            .replace(/\s+/g, '_')
-            .replace(/[^a-zA-Z0-9_]/g, '');
     }
 
     submitForm(event: Event) {
@@ -55,8 +45,10 @@ export class NewDMNView implements OnInit {
         if (this.dmnFileContent) {
             new_xml = this.dmnFileContent;
         } else {
-            new_xml = new_dmn;
+            new_xml = this.documentService.generateNewDiagram(this.dmnName);
+            console.log(new_xml);
         }
+
         event.preventDefault();
         const encoder = new TextEncoder();
         const xmlBytes = encoder.encode(new_xml);

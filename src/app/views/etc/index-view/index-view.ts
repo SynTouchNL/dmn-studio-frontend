@@ -26,6 +26,6 @@ export class IndexView implements OnInit {
             this.dmnData = data;
         });
 
-        this.titleService.setTitle("DMN Tool - Homepagina");
+        this.titleService.setTitle("DMNStudio - Homepagina");
     }
 }

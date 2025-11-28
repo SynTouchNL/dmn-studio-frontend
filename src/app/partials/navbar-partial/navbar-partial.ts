@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import Keycloak from 'keycloak-js';
 import { KeycloakService } from '../../services/keycloak-service/keycloak-service';
 import {
@@ -26,7 +26,10 @@ import {
 export class NavbarPartial implements OnInit {
     userprofile: any;
 
-    constructor(private keycloakService: KeycloakService) {
+    constructor(
+        private keycloakService: KeycloakService,
+        private router: Router
+    ) {
     }
 
     private readonly keycloak = inject(Keycloak);
@@ -36,7 +39,9 @@ export class NavbarPartial implements OnInit {
     }
 
     onClickLogout() {
-        this.keycloak.logout();
+        this.keycloak.logout().then(r =>
+            this.router.navigate(['/']),
+        );
     }
 
     loadUserProfile() {

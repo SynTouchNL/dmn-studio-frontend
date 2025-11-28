@@ -9,18 +9,20 @@
         </div>
     </div>
     <div class="row">
-        <span>Het aanmaken van een nieuwe versie kan alleen als er geen bestaande versie in ontwikkeling is.
-            Kijk eerst of er een bestaande (nieuwe) versie is, en werk hieraan voordat er een nieuwe versie gemaakt wordt. </span>
-        <div class="col-3">
-            <div class="input-group mb-3">
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="reuseDmn" name="reuseDmn">
-                    <option value="" disabled selected>DMN hergebruiken?</option>
-                    <option value="true">Ja</option>
-                    <option value="false">Nee, nieuwe DMN</option>
-                </select>
-                <button (click)="createNewVersion()" class="btn btn-primary">Aanmaken</button>
-            </div>
-
+        <div class="col-6">
+            <label for="reuseDmn" class="form-label">Wilt u de huidige versie van de DMN hergebruiken?</label>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="reuseDmn" name="reuseDmn" required>
+                <option value=1>Ja</option>
+                <option value=2>Nee, nieuwe DMN</option>
+                <option value=3>Nee, importeer een DMN</option>
+            </select>
+            @if(reuseDmn == 3) {
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Importeer DMN bestand</label>
+                    <input class="form-control" type="file" id="formFile" (change)="onFileChange($event)" required>
+                </div>
+            }
+            <button (click)="createNewVersion()" class="btn btn-primary">Aanmaken</button>
         </div>
         <div class="col-4">
 

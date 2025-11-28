@@ -13,6 +13,15 @@ export class KeycloakService {
     constructor(private http: HttpClient) {
     }
 
+    updateToken(): Promise<boolean> {
+        return this.keycloak.updateToken(60)
+    }
+
+    logout(): void {
+        this.keycloak.logout().then(r =>
+        console.log('Logged out', r));
+    }
+
     getUsers(): any {
         return this.http.get(`${this.baseUrl}/auth/users`, {
             headers: {
@@ -30,7 +39,7 @@ export class KeycloakService {
     }
 
     getToken(): string | undefined {
-        return this.keycloak.token;
+        return this.keycloak?.token;
     }
 
     async getUserProfile(){

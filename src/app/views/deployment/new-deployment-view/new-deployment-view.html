@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        <form [formGroup]="myForm">
+        <form [formGroup]="myForm" (submit)="onSubmit($event)">
             <label for="domainSelector">Domein</label>
             <select id="domainSelector" formControlName="domains" class="form-control" required>
                 <option value="" disabled selected>Kies een Domein</option>
@@ -46,7 +46,14 @@
                 LET OP! Controlleer goed of u de juiste DMN versie en omgeving heeft geselecteerd voordat u op "Uitrollen" klikt.
             </div>
             <div class="col-xxl-1 btn-group" role="group">
-                <button class="btn btn-primary " [disabled]="button_disabled" (click)="deployVersion()" type="button">Uitrollen</button>
+                <button class="btn btn-primary" type="submit" [disabled]="button_disabled || clicked">
+                    @if(!clicked){
+                        Uitrollen
+                    } @else {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="sr-only">  Uitrollen</span> <!-- Opzettelijke spaties hiervoor ivm spinner uitlijning -->
+                    }
+                </button>
             </div>
         </form>
     </div>

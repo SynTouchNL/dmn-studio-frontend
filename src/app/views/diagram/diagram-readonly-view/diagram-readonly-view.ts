@@ -12,18 +12,6 @@ import { AlertService } from '../../../services/alert-service/alert-service';
 import { ViewList } from '../../../interfaces/view-interface';
 
 
-interface Variable {
-    name: string;
-    typeRef?: string;
-}
-
-interface DecisionVariables {
-    name: string;
-    incoming: Variable[];
-    outgoing: Variable[];
-}
-
-
 @Component({
     selector: 'app-diagram-readonly-view',
     imports: [
@@ -43,8 +31,6 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     dmnFile: any = "";
     dmnStatus: number = 0;
 
-    dmnVariables: DecisionVariables[] = [];
-
     //Tabs
     views: ViewList = [];
     activeViewIdx: number = 0;
@@ -58,7 +44,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         private alertService: AlertService,
         private titleService: Title
     ) {
-        const navigation = this.router.getCurrentNavigation();
+        const navigation = this.router.getCurrentNavigation(); // TODO decrep
         this.dmnId = navigation?.extras.state?.['id'];
         this.dmnVersion = navigation?.extras.state?.['version'];
         this.dmnFile = navigation?.extras.state?.['file'];
@@ -91,7 +77,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.dmnJS.attachTo(this.dmnViewerRef!.nativeElement);
         this.initDiagram();
-        this.titleService.setTitle("DMN Tool - Bekijk DMN");
+
     }
 
     ngOnDestroy(): void {
@@ -100,14 +86,13 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
 
     private initDiagram(): void {
         if (!this.dmnFile || this.dmnFile === "") {
-            console.log("Fetching DMN file from server...");
-            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
-                data => {
+            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe({
+                next: data => {
                     this.dmnFile = atob(data.fileBlob);
                     this.importDiagram(atob(data.fileBlob));
                 },
-                error => console.log(error)
-            )
+                error: error => console.log(error)
+            });
         } else {
             this.importDiagram(this.dmnFile);
         }
@@ -117,6 +102,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         return from(
             this.dmnJS.importXML(xml)
                 .then((result: any) => {
+                    this.titleService.setTitle("DMNStudio - DMN bekijken - " + (this.dmnJS.getDefinitions()?.name || '') + " - v" + this.dmnVersion);
                     return result;
                 })
                 .catch((err: any) => {
@@ -130,7 +116,6 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         this.activeViewIdx = idx;
         try {
             this.dmnJS.open(this.views[idx]);
-            console.log(this.dmnVariables)
         } catch (err) {
             console.error('error opening tab', err);
         }
@@ -162,4 +147,9 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         element.click();
         document.body.removeChild(element);
     }
+
+    canBeEdited(){
+        return this.dmnStatus <= 3;
+    }
+
 }

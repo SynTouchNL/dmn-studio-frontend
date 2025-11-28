@@ -16,6 +16,6 @@ export class UnauthorizedView implements OnInit {
     ){}
 
     ngOnInit() {
-        this.titleService.setTitle("DMN Tool - Geen toegang");
+        this.titleService.setTitle("DMNStudio - Toegang geweigerd");
     }
 }

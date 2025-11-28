@@ -1,4 +1,4 @@
-import { DMNVersionInterface } from './dmn-interface';
+import { DMNInterface, DMNVersionInterface } from './dmn-interface';
 
 export interface DeploymentsInterface {
     id: number;
@@ -16,24 +16,7 @@ export interface DeploymentsInterface {
         createdBy: string;
         createdDate: string;
     }
-    dmn: {
-        id: number;
-        name: string;
-        owner: string;
-        domain: {
-            id: number;
-            name: string;
-        }
-        versions: {
-            id: number;
-            version: number;
-            status: number;
-            modifiedBy: string;
-            modifiedDate: string;
-            createdBy: string;
-            createdDate: string;
-        }
-    }
+    dmn: DMNInterface;
 }
 
 export interface GenericDeployment {

@@ -5,6 +5,8 @@ import { DeploymentsInterface } from '../../../interfaces/deployments-interface'
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { DatePipe } from '@angular/common';
+import { Title } from '@angular/platform-browser';
+import {AlertService} from '../../../services/alert-service/alert-service';
 
 @Component({
   selector: 'app-deployment-details-view',
@@ -21,34 +23,39 @@ import { DatePipe } from '@angular/common';
 export class DeploymentDetailsView implements OnInit {
     deploymentData: DeploymentsInterface[] = [];
     private activatedRoute = inject(ActivatedRoute);
-    // deploymentDetails: any[] = []; // TODO: Implement als hier nog meerwaarde in komt, momenteel niet.
+    deploymentId: number = 0;
 
     constructor(
-        private dmnService: HttpService,
-        private router: Router
+        private http: HttpService,
+        private router: Router,
+        private titleService: Title,
+        private alertService: AlertService
     ) {}
 
     ngOnInit() {
-        this.activatedRoute.params.subscribe(
-            (params) => {
-                if (typeof +params['id'] == 'number'){
-                    this.dmnService.getDeploymentDetails(+params['id']).subscribe(
-                        data => {
-                            this.deploymentData = Array.isArray(data) ? data : [data];
-                            // this.dmnService.getOperatonDetails(this.deploymentData[0].deploymentRef).subscribe(
-                            //     d => {
-                            //         console.log(d)
-                            //         this.deploymentDetails = d;
-                            //     }
-                            // )
-                        }
-                    )
-                }
+        this.deploymentId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+        this.http.getDeploymentDetails(this.deploymentId).subscribe(
+            data => {
+                this.deploymentData = Array.isArray(data) ? data : [data];
             }
-        );
+        )
+        this.titleService.setTitle("DMNStudio - Details deployment");
     }
 
     clickOpen() {
         this.router.navigate([`/dmns/${this.deploymentData[0].dmnId}/${this.deploymentData[0].dmnVersion.version}`])
     }
+
+    clickDelete(){
+        this.http.deleteDeployment(this.deploymentData[0].id).subscribe({
+            next: (data) => {
+                this.alertService.success('Deployment succesvol verwijderd.', this.deploymentData[0].dmn.name + " deployment verwijderd.");
+                this.router.navigate(['/deployments']);
+            },
+            error: (error) => {
+                this.alertService.error('Fout bij verwijderen deployment.', 'Er is een fout opgetreden bij het verwijderen van de deployment.');
+            }
+        });
+    }
+
 }

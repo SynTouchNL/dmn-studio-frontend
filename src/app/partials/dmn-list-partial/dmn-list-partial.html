@@ -24,8 +24,8 @@
                 <td>
                     {{ dmn.owner }}
                 </td>
-                @if(dmn.modifiedDate != null){
-                    <td>{{ dmn.modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
+                @if(findLatest(dmn.versions).modifiedDate != null){
+                    <td>{{ findLatest(dmn.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
                 } @else {
                     <td>Geen wijziging</td>
                 }

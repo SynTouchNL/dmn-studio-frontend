@@ -1,6 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col">
+            <app-breadcrumbs-partial [breadcrumbs]="breadcrumb"></app-breadcrumbs-partial>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <h3>DMN Unit-tests - {{ dmnData?.name }}</h3>
         </div>
     </div>
@@ -13,26 +18,80 @@
     </div>
     <div class="row">
         <div class="col">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Beslissingsnaam</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @for(dVar of this.dmnVars; track dVar.id) {
-                    <tr>
-                        <td><a class="text-decoration-none link-dark" [routerLink]="['view']"  [state]="{data: dVar}">{{ dVar.name }}</a></td>
-                    </tr>
-                    } @empty {
-                        <tr>
-                            <td>Geen beslissingen gevonden</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+            <ul ngbNav #nav="ngbNav" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <button class="text-decoration-none" ngbNavLink>Aanmaken</button>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Beslissingsnaam</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @for(dVar of this.dmnVars; track dVar.id) {
+                                        <tr>
+                                            <td><a class="text-decoration-none link-dark" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td>Geen beslissingen gevonden</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <button ngbNavLink>Uitgevoerde tests</button>
+                    <ng-template ngbNavContent>
+                        <div class="row g-3">
+                            @for(td of this.testData; track td.id) {
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0">{{ td.title }}</h5>
+                                            <span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">{{ td.passed ? 'PASS' : 'FAIL' }}</span>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table mb-0">
+                                                    <thead class="table-light">
+                                                    <tr>
+                                                        <th scope="col">Variabel</th>
+                                                        <th scope="col">Waarde</th>
+                                                        <th scope="col">Type</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @for(item of td.values; track $index) {
+                                                            <tr>
+                                                                <td class="col-6">{{ item.key }}</td>
+                                                                <td class="col-4">{{ item.value }}</td>
+                                                                <td class="col-2"><span class="badge bg-primary">{{ item.valueType }}</span><span class="badge  {{ item.isInput ? 'bg-secondary' : 'bg-success' }}">{{ item.isInput ? 'Input' : 'Output' }}</span></td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            } @empty {
+                                <div class="col-12">
+                                    <div class="alert alert-secondary mb-0">Geen tests gevonden...</div>
+                                </div>
+                            }
+                        </div>
+                    </ng-template>
+                </li>
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
         </div>
     </div>
 </div>

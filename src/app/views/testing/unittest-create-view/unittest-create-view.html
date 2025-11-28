@@ -1,56 +1,98 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h3>Unit tests {{ dmnData.name }}</h3>
-        </div>
-        <div class="col text-end">
-            <button class="btn btn-primary" type="button">
-                <a class="text-decoration-none text-light">Opslaan</a>
-            </button>
+            <app-breadcrumbs-partial [breadcrumbs]="breadcrumb"></app-breadcrumbs-partial>
         </div>
     </div>
-
-    <form [formGroup]="myForm">
-        <div class="row mb-3">
-            <div class="col">
-                <label class="form-label">Key</label>
-                <select formControlName="input_key" class="form-select">
-                    <option [ngValue]="null" disabled selected>Kies een variabele</option>
-                    @for(i of dmnData.incoming; track i.name) {
-                        <option [ngValue]="i">{{ i.name }}</option>
-                    }
-                </select>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-10 mb-1">
+                <h3>Unittest {{ dmnData.name }}</h3>
+                <div class="alert alert-info" role="alert">
+                    <span class="fw-bold">Hit policy:</span>
+                    <span> {{ hitPolicyMetadata(dmnData.hitPolicy).label || "Onbekend" }} </span><br>
+                    <span> {{ hitPolicyMetadata(dmnData.hitPolicy).nl_description }}</span>
+                </div>
             </div>
-
-            <div class="col">
-                <label class="form-label">Value</label>
-                @switch(selected_key?.typeRef) {
-                    @case('string') {
-                        @if(selected_key?.values?.length === 0){
-                            <input class="form-control" type="text" placeholder="Vul hier uw waarde in" formControlName="input_value" />
-                        } @else {
-                            <select class="form-select" formControlName="input_value">
-                                <option [ngValue]="null" disabled selected>Kies een waarde</option>
-                                @for(v of selected_key.values; track v) {
-                                    <option [ngValue]="v">{{ v }}</option>
-                                }
-                            </select>
-                        }
-                    }
-
-                    @case('integer') {
-                        <input class="form-control" type="number" placeholder="Vul hier uw waarde in" formControlName="input_value" />
-                    }
-
-                    @case('boolean') {
-                        <select class="form-select" formControlName="input_value">
-                            <option [ngValue]="null" disabled selected>Kies een waarde</option>
-                            <option [ngValue]="true">True</option>
-                            <option [ngValue]="false">False</option>
-                        </select>
-                    }
-                }
+            <div class="col-1 text-end align-self-center">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-primary" [disabled]="form.invalid" type="submit">Uitvoeren</button>
+                    <button class="btn btn-primary" type="button">Opslaan</button>
+                </div>
             </div>
         </div>
+        @if (hasResult) {
+            <div class="alert alert-{{ resultStatus ? 'success' : 'warning' }}" role="alert">
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Test rapport</h5>
+                        <span>Test is {{ resultStatus ? '' : 'niet'}} succesvol afgerond.</span>
+                    </div>
+
+                    <div class="card border-0 col-6 p-0 rounded-0">
+                        <div class="card-header bg-light text-dark fw-semibold text-center">Verwachtte uitkomst</div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                @for (expected of expectedResult; track $index) {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">{{ expected.key }}</span>:
+                                        <span class="text-muted">{{ expected.value }}</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 col-6 p-0 rounded-0">
+                        <div class="card-header bg-light text-dark fw-semibold text-center">Daadwerkelijke uitkomst</div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                @for (actual of actualResult; track $index) {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">{{ actual.key }}</span>:
+                                        <span class="text-muted">{{ actual.value }}</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="testTitle" class="form-label">Titel</label>
+            <input formControlName="title" type="text" class="form-control" id="testTitle">
+        </div>
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
+            <li ngbNavItem>
+                <button ngbNavLink>Invoer</button>
+                <ng-template ngbNavContent>
+                    <app-key-pair-form
+                        [title]="'Te gebruiken invoer'"
+                        [hitPolicy]="dmnData.hitPolicy"
+                        [variables]="dmnData.incoming"
+                        [formArray]="inputPairs"
+                        [maxRows]="dmnData.incoming.length"
+                        [isInput]="true">
+                    </app-key-pair-form>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem>
+                <button ngbNavLink>Uitkomst</button>
+                <ng-template ngbNavContent>
+                    <app-key-pair-form
+                        [title]="'Verwachte uitkomst'"
+                        [hitPolicy]="dmnData.hitPolicy"
+                        [variables]="dmnData.outgoing"
+                        [formArray]="outputPairs"
+                        [maxRows]="dmnData.outgoing.length"
+                        [isInput]="false">
+                    </app-key-pair-form>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
     </form>
 </div>

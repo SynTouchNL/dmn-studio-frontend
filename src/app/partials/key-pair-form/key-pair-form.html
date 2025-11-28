@@ -1,0 +1,62 @@
+<div class="row mb-3">
+    <div class="col text-start">
+        <h4>{{ title }}</h4>
+    </div>
+    <div class="col text-end">
+        <button class="btn btn-primary" type="button" [disabled]="maxRows && formArray.length >= maxRows && isInput" (click)="addPair()">Toevoegen</button>
+    </div>
+</div>
+
+@for(pair of rows; track $index){
+    <div [formGroup]="pair" class="mb-2">
+        <div class="row">
+            <div class="col col-xxl-6">
+                <label class="form-label">Key</label>
+                <select formControlName="key" class="form-select form-control">
+                    <option [ngValue]="null" disabled selected>Kies een variabele</option>
+                    @for(v of variables; track v.name){
+                        <option [ngValue]="v.name">{{ v.name }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col col-xxl-5">
+                <label class="form-label">Value</label>
+                @let selected = getSelectedKey($index);
+                @switch(selected?.typeRef) {
+                    @case('string') {
+                        @if(!selected?.values?.length) {
+                            <input formControlName="value" class="form-control" type="text" />
+                        } @else {
+                            <select formControlName="value" class="form-select">
+                                <option [ngValue]="null" disabled selected>Kies een waarde</option>
+                                @for(v of selected.values; track v){
+                                    <option [ngValue]="v">{{ v }}</option>
+                                }
+                            </select>
+                        }
+                    }
+                    @case('integer') {
+                        <input formControlName="value" class="form-control" type="number" />
+                    }
+                    @case('boolean') {
+                        <select formControlName="value" class="form-select">
+                            <option [ngValue]="null" disabled selected>Kies een waarde</option>
+                            <option [ngValue]="true">True</option>
+                            <option [ngValue]="false">False</option>
+                        </select>
+                    } <!-- TODO Andere types ook ondersteunen -->
+                    @default {
+                        <input formControlName="value" readonly class="form-control" />
+                    }
+                }
+            </div>
+
+            <div class="col text-center align-self-end">
+                <button class="btn btn-danger" type="button" (click)="removePair($index)">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}

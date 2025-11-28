@@ -11,6 +11,5 @@ import { RouterLink } from '@angular/router';
 })
 
 export class BreadcrumbsPartial {
-  @Input() breadcrumbs: { label: string; url: string }[] = [];
-
+  @Input() breadcrumbs: { label: string; url: string, current: boolean}[] = [];
 }

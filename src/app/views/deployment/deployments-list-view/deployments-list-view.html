@@ -1,10 +1,9 @@
 <div class="container">
-
     <div class="row">
         <div class="col-md-12">
             <div class="row gx-0 gy-0">
                 <div class="col col-xxl-12">
-                        <h3>Deployment - Overzicht</h3>
+                    <h3>Deployment - Overzicht</h3>
                 </div>
             </div>
         </div>
@@ -17,7 +16,7 @@
         <div class="col-xxl-2">
             <form [formGroup]="myForm">
                 <select formControlName="environments" class="form-select">
-                    <option [ngValue]="null" selected>Alle domeinen</option>
+                    <option [ngValue]="null" selected>Alle omgevingen</option>
                     @for(env of environments; track env.id + " - " + env.name) {
                         <option [ngValue]="env">{{ env.name }}</option>
                     }
@@ -26,12 +25,12 @@
         </div>
         <div class="offset-6 col-xxl-3">
             <div class="input-group">
-<!--                <form [formGroup]="myForm">-->
-<!--                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />-->
-<!--                </form>-->
-<!--                <button class="btn btn-primary" type="button">-->
-<!--                    <i class="fas fa-search"></i>-->
-<!--                </button>-->
+                <form [formGroup]="myForm">
+                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
+                </form>
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -41,19 +40,22 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th scope="col">Versie</th>
                     <th scope="col">Omgeving</th>
                     <th scope="col">DMN</th>
-                    <th scope="col">Versie</th>
                     <th scope="col">Door</th>
-                    <th scope="col">Timestamp</th>
+                    <th scope="col">Tijdstip</th>
                 </tr>
                 </thead>
                 <tbody>
                     @for(dep of deployment_list; track dep.id) {
                         <tr [routerLink]="['/deployments/', dep.id]" style="cursor: pointer;">
+                            <td>
+                                <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span>
+                                <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span>
+                            </td>
                             <td>{{ dep.environmentName }}</td>
                             <td>{{ dep.dmn.name }}</td>
-                            <td><span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span><span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span></td>
                             <td>{{ dep.deployedBy }}</td>
                             <td>{{ dep.deployedTime | date:'dd-MM-yyyy HH:mm' }}</td>
                         </tr>

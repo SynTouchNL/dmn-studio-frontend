@@ -8,6 +8,7 @@ import {
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
+import {UnitTestPayload} from '../../interfaces/decisions-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -16,15 +17,25 @@ import { EnvironmentsInterface } from '../../interfaces/environments-interface';
 export class HttpService {
     private baseUrl = 'http://localhost:8080';
     private token: string | undefined = '';
+    private refresh = 5 * 60 * 1000; // Try to refresh the JWT token every 5 mins
 
     constructor(
         private http: HttpClient,
         private keycloak: KeycloakService
     ) {
         this.token = this.keycloak.getToken();
+        setInterval(() => {
+            this.keycloak.updateToken().then((refreshed) => {
+                if (refreshed) {
+                    this.token = this.keycloak.getToken();
+                }
+            }).catch(() => {
+                console.error('Failed to refresh token');
+                this.keycloak.logout();
+            })
+        }, this.refresh);
     }
 
-    // GET
     /**
      * Get all DMNs.
      * @returns DMNListInterface of all DMNs.
@@ -81,6 +92,19 @@ export class HttpService {
     }
 
     /**
+     * Get all environments.
+     * @returns EnvironmentsInterface with environments.
+     * @internal
+     */
+    getEnvironments(): Observable<EnvironmentsInterface>{
+        return this.http.get<any>(`${this.baseUrl}/environment`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        })
+    }
+
+    /**
      * Get all deployments.
      * @returns DeploymentsInterface with deployments.
      * @internal
@@ -94,18 +118,11 @@ export class HttpService {
     }
 
     /**
-     * Get all environments.
-     * @returns EnvironmentsInterface with environments.
+     * Get deployment details by ID.
+     * @param id - DMN ID
+     * @returns Observable with deployment details
      * @internal
      */
-    getEnvironments(): Observable<EnvironmentsInterface>{
-        return this.http.get<any>(`${this.baseUrl}/environment`, {
-            headers: {
-                'Authorization': `Bearer ${this.token}`
-            }
-        })
-    }
-
     getDeploymentDetails(id: Number): Observable<DeploymentsInterface> {
         return this.http.get<any>(`${this.baseUrl}/deployments/${id}`, {
             headers: {
@@ -114,9 +131,39 @@ export class HttpService {
         });
     }
 
-    getTests(id: Number, version: Number): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/test/${id}/${version}/tests`, {
+    /**
+     * Get Operaton deployment details by reference.
+     * @param ref - Deployment reference
+     * @returns Observable with deployment details
+     * @internal
+     */
+    getOperatonDeploymentDetails(ref: String): Observable<DeploymentsInterface> {
+        return this.http.get<any>(`${this.baseUrl}/deployments/operaton/${ref}`, {
             headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Get all tests for specific DMN version.
+     * @param id - DMN ID
+     * @param version - DMN version number
+     * @returns Observable with tests data
+     * @internal
+     */
+    getTests(id: Number, version: Number): Observable<any> { // TODO Typing
+        return this.http.get<any>(`${this.baseUrl}/test-deployment/${id}/${version}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    executeUnitTest(data: UnitTestPayload): Observable<any> { // TODO Typing
+        return this.http.post<any>(`${this.baseUrl}/test-deployment`, data, {
+            headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.token}`
             }
         });
@@ -191,7 +238,15 @@ export class HttpService {
     }
 
     // TODO Implement activiationTime parameter to schedule deployment. TODO: JDoc
-    deployVersion(dmn: DMNInterface, file: DMNFileInterface, version: number, environment: EnvironmentsInterface){
+    /**
+     * Deploy specific DMN version to environment.
+     * @param dmn - DMNInterface of the DMN to deploy
+     * @param version - Version number of the DMN to deploy
+     * @param environment - EnvironmentsInterface of the environment to deploy to
+     * @returns Observable with deployment result
+     * @internal
+     */
+    deployVersion(dmn: DMNInterface, version: number, environment: EnvironmentsInterface){
         const body = {
             dmn: dmn,
             version: version,
@@ -201,14 +256,27 @@ export class HttpService {
             deployChangedOnly: false,
             enableDuplicateFiltering: true,
             deploymentName: dmn.name,
-            activiationTime: null, //TODO implementeren voor scheduled deployment.
-            data: file.fileBlob
+            activiationTime: null //TODO implementeren voor scheduled deployment.
         }
 
-        return this.http.post<any>(`${this.baseUrl}/deploy`, body, {
+        return this.http.post<any>(`${this.baseUrl}/deployments`, body, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Delete a deployment by ID.
+     * @param id - ID of the deployment to delete.
+     * @returns Observable<void> indicating completion.
+     * @internal
+     */
+    deleteDeployment(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/deployments/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`,
             }
         });
     }

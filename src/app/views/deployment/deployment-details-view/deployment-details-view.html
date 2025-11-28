@@ -20,6 +20,7 @@
             <div class="col text-end align-self-center">
                 <div class="btn-group" role="group">
                     <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Bekijken</a></button>
+                    <button (click)="clickDelete()" class="btn btn-danger" type="button"><a class="text-decoration-none text-light">Verwijderen</a></button>
                 </div>
             </div>
         </div>
@@ -40,14 +41,20 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col col-xxl-6"><span>Versie in productie</span></div>
-<!--                            <div class="col col-xxl-6"><span>Versie {{ findLatest(dmnData.versions).version }}</span></div>-->
+                            <div class="col col-xxl-6"><span>Omgeving</span></div>
+                            <div class="col col-xxl-6"><span>{{ deploymentData[0].environmentName }}</span></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-xxl-6"><span>Operaton referentie</span></div>
+                            <div class="col col-xxl-6"><span>{{ deploymentData[0].deploymentRef }}</span></div>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col col-xxl-6"><span>Huidige status</span></div>
-                            <div class="col col-xxl-6"><span></span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{  deploymentData[0].dmnVersion.version }}</span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe }}</span></div>
+                            <div class="col col-xxl-6"><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{  deploymentData[0].dmnVersion.version }}</span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe }}</span></div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -56,6 +63,7 @@
                             <div class="col col-xxl-6"><span>{{ deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></div>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>
