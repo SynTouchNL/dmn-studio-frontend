@@ -60,7 +60,6 @@ export class UnittestListView implements OnInit {
     ngOnInit(){
         this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
-        this.loadDMN();
 
         this.titleService.setTitle("DMNStudio - Test overzicht ");
 
@@ -70,8 +69,8 @@ export class UnittestListView implements OnInit {
             { label: 'Unit-tests', url: '/dmns/' + this.dmnId + '/' + this.dmnVersion +'/test', current: true }
         ]
 
-        this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-        this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
+        this.loadDMN();
+
         if (this.dmnId && this.dmnVersion) {
             this.http.getTests(+this.dmnId, +this.dmnVersion).subscribe(
                 data => {

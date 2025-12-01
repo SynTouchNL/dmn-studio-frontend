@@ -34,14 +34,13 @@ import {parseJson} from '@angular/cli/src/utilities/json-file';
 })
 
 export class UnittestCreateView implements OnInit {
-    dmnData: DecisionVariables;
+    dmnData: any = {};
     form: FormGroup;
     dmnId: number = 0;
     dmnVersion: number = 0;
+    importedVars: any = {};
+
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
-
-    imported_vars: any = {};
-
     hasResult: boolean = false;
     actualResult: any = null;
     expectedResult: any = null;
@@ -56,16 +55,17 @@ export class UnittestCreateView implements OnInit {
     ) {
         const navState = this.router.currentNavigation()?.extras?.state as any | undefined;
         this.dmnData = navState.data || [];
+        const title = navState.fresh ? '' : navState.import.title;
 
         this.form = this.formBuilder.group({
-            title: ['', Validators.required],
+            title: [title, Validators.required],
             inputPairs: this.formBuilder.array([], Validators.required),
             outputPairs: this.formBuilder.array([], Validators.required),
         });
 
         if (navState.fresh !== true){
-            this.imported_vars = navState.import || {};
-            this.importVariables(this.imported_vars);
+            this.importedVars = navState.import || {};
+            this.importVariables(this.importedVars);
         }
     }
 
