@@ -116,8 +116,6 @@ export class UnittestCreateView implements OnInit {
 
         this.http.executeUnitTest(data).subscribe({
             next: (response: any) => {
-                console.log(this.extractFieldData(JSON.parse(response.expected)))
-                console.log(this.extractFieldData(JSON.parse(response.actual)))
                 this.expectedResult = this.extractFieldData(JSON.parse(response.expected));
                 this.actualResult = this.extractFieldData(JSON.parse(response.actual));
                 this.resultStatus = response.result;

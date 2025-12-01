@@ -57,7 +57,6 @@ export class NewDiagramView implements OnInit{
         let xmlBase64 = '';
         this.new_xml = this.documentService.generateNewDiagram(this.dmnData.name);
         if (this.reuseDmn == 2) { // new XML
-            console.log(this.new_xml);
             const xmlBytes = encoder.encode(this.new_xml);
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
             input = xmlBase64;
@@ -91,9 +90,7 @@ export class NewDiagramView implements OnInit{
                 this.alertService.success('Nieuwe versie aangemaakt', "");
                 this.router.navigate(['/dmns/', this.dmn_id, this.dmnVersion+1]);
             },
-
             error: error => {
-                console.log(error);
                 if(error.status === 409){
                     this.alertService.error('Geen nieuwe versie mogelijk', 'Er is al een nieuwe versie in concept.');
                 } else {
