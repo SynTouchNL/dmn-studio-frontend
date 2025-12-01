@@ -1,0 +1,3 @@
+input:not(:placeholder-shown):invalid {
+    background-color: lightpink;
+}

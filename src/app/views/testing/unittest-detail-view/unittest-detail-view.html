@@ -6,22 +6,17 @@
     </div>
     <div class="row">
         <div class="col">
-            <h3>Unittest - {{ this.dmnData.name }}</h3>
+            <h3>Unittest - {{ this.data.title }}</h3>
         </div>
         <div class="col text-end">
             <div class="btn-group" role="group">
-                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{data: this.dmnData}" type="button">Aanmaken</button>
+                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Invoegen</button>
                 <button class="btn btn-primary" type="button">Controlleren</button>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <ul class="list-group">
-            </ul>
-        </div>
-        <div class="col col-xxl-4">
-            <div><canvas height="208" style="display: block;width: 416px;height: 208px;" width="416"></canvas></div>
-        </div>
+        <div class="col-6"></div>
+        <div class="col-6"></div>
     </div>
 </div>

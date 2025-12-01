@@ -18,7 +18,6 @@ export class KeyPairForm implements OnInit {
     @Input() maxRows?: number;
     @Input() isInput = false;
 
-
     constructor(private fb: FormBuilder) {}
 
     get rows(): FormGroup[] {
@@ -64,11 +63,5 @@ export class KeyPairForm implements OnInit {
         const keyName = this.formArray.at(index).get('key')?.value;
         return this.variables.find(v => v.name === keyName);
     }
-
-    // hitPolicyOutputCanBeMultiple(hitPolicy: String): boolean {
-    //     if ()
-    //
-    //
-    // }
 
 }

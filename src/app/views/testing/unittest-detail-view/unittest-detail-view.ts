@@ -15,8 +15,10 @@ import {BreadcrumbsPartial} from '../../../partials/breadcrumbs-partial/breadcru
 })
 
 export class UnittestDetailView implements OnInit {
+    data: any = {};
     dmnData: any = {};
-    testData: any = {};
+    dmnVars: any = {};
+    filtered_dmnVars: any = {};
 
     dmnId: number = 0;
     dmnVersion: number = 0;
@@ -30,8 +32,9 @@ export class UnittestDetailView implements OnInit {
         private titleService: Title
     ) {
         const navState = this.router.currentNavigation()?.extras?.state as any | undefined;
-        this.dmnData = navState.data ?? this.dmnData;
-        this.dmnName = navState.name ?? this.dmnName;
+        this.data = navState.data ?? this.data;
+        this.dmnData = navState.dmnData ?? this.dmnData;
+        this.dmnVars = navState.dmnVars ?? this.dmnVars;
 
         this.titleService.setTitle("DMNStudio - Test details - " + (this.dmnData.name || ''));
         this.breadcrumb = [
@@ -44,12 +47,11 @@ export class UnittestDetailView implements OnInit {
     ngOnInit(){
         this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
-        if (this.dmnId && this.dmnVersion) {
-            this.http.getTests(+this.dmnId, +this.dmnVersion).subscribe(
-                data => {
-                    this.testData = data || [];
-                }
-            );
-        }
+        console.log(this.dmnData);
+        this.filtered_dmnVars = this.dmnVars.filter(
+            (variable: any) => variable.id === this.data.decisionName
+        )
+        // console.log(this.dmnData);
+        // console.log(this.data);
     }
 }

@@ -15,7 +15,6 @@ import { KeyPairForm } from '../../../partials/key-pair-form/key-pair-form';
 import { BreadcrumbsPartial } from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import {parseJson} from '@angular/cli/src/utilities/json-file';
-import {JsonPipe} from '@angular/common';
 
 @Component({
     selector: 'app-unittest-create-view',
@@ -28,8 +27,7 @@ import {JsonPipe} from '@angular/common';
         NgbNavLinkButton,
         NgbNavItem,
         KeyPairForm,
-        BreadcrumbsPartial,
-        JsonPipe
+        BreadcrumbsPartial
     ],
     templateUrl: './unittest-create-view.html',
     styleUrl: './unittest-create-view.css'
@@ -42,6 +40,8 @@ export class UnittestCreateView implements OnInit {
     dmnVersion: number = 0;
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
 
+    imported_vars: any = {};
+
     hasResult: boolean = false;
     actualResult: any = null;
     expectedResult: any = null;
@@ -52,22 +52,23 @@ export class UnittestCreateView implements OnInit {
         private http: HttpService,
         private formBuilder: FormBuilder,
         private titleService: Title,
-        private activatedRoute: ActivatedRoute,
-        private alertService: AlertService
+        private activatedRoute: ActivatedRoute
     ) {
         const navState = this.router.currentNavigation()?.extras?.state as any | undefined;
         this.dmnData = navState.data || [];
-        if (navState.fresh !== true){
-
-        } else {
-
-        }
 
         this.form = this.formBuilder.group({
             title: ['', Validators.required],
             inputPairs: this.formBuilder.array([], Validators.required),
             outputPairs: this.formBuilder.array([], Validators.required),
         });
+
+        if (navState.fresh !== true){
+            this.imported_vars = navState.import || {};
+            this.importVariables(this.imported_vars);
+        } else {
+            console.log("start fresh!!!")
+        }
     }
 
     ngOnInit(){
@@ -77,7 +78,6 @@ export class UnittestCreateView implements OnInit {
         this.breadcrumb = [
             { label: 'DMN-overzicht', url:'/dmns', current: false },
             { label: 'DMN details', url:'/dmns/' + this.dmnId + '/' + this.dmnVersion, current: false },
-            //{ label: 'Unit-tests', url:'/dmns/' + this.dmnId + '/' + this.dmnVersion + '/test', current: false }, //TODO look into fixing routing issue??
             { label: this.dmnData?.name + ' details', url:'/dmns/' + this.dmnId + '/' + this.dmnVersion + '/test/view', current: true }
         ]
     }
@@ -85,6 +85,25 @@ export class UnittestCreateView implements OnInit {
     get inputPairs() { return this.form.get('inputPairs') as FormArray; }
     get outputPairs() { return this.form.get('outputPairs') as FormArray; }
     get title() { return this.form?.get('title'); }
+
+    importVariables(input: any) {
+        // Populate input pairs
+        input.values.forEach((inputVar: any) => {
+            if (inputVar.isInput) {
+                this.inputPairs.push(this.formBuilder.group({
+                    key: [inputVar.key, Validators.required],
+                    value: [inputVar.value, Validators.required],
+                    typeRef: [inputVar.valueType, Validators.required]
+                }));
+            } else {
+                this.outputPairs.push(this.formBuilder.group({
+                    key: [inputVar.key, Validators.required],
+                    value: [inputVar.value, Validators.required],
+                    typeRef: [inputVar.valueType, Validators.required]
+                }));
+            }
+        });
+    }
 
     onSubmit() {
         const data: UnitTestPayload = {
@@ -100,10 +119,10 @@ export class UnittestCreateView implements OnInit {
 
         this.http.executeUnitTest(data).subscribe({
             next: (response: any) => {
-                this.expectedResult = this.extractFieldData(JSON.parse(response.expected))[0];
-                this.actualResult = this.extractFieldData(JSON.parse(response.actual))[0];
-                console.log(this.actualResult[0]);
-                console.log(this.expectedResult[0]);
+                console.log(this.extractFieldData(JSON.parse(response.expected)))
+                console.log(this.extractFieldData(JSON.parse(response.actual)))
+                this.expectedResult = this.extractFieldData(JSON.parse(response.expected));
+                this.actualResult = this.extractFieldData(JSON.parse(response.actual));
                 this.resultStatus = response.result;
                 this.hasResult = true;
             }, error: (error: any) => {

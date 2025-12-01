@@ -46,7 +46,7 @@ declare module 'dmn-js/lib/Modeler' {
         constructor(config?: any);
         _viewers: any;
         importXML(xml: string): Promise<any>;
-        saveXML(options?: { format?: boolean }, cb?: (err: any, xml: any) => void): void;
+        saveXML(options?: { format?: boolean }, cb?: (err: any, xml: any) => void): Promise<any>;
         attachTo(element: HTMLElement | string): void;
         detach(): void;
         destroy(): void;

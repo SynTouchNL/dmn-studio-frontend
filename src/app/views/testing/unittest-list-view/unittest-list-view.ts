@@ -6,7 +6,16 @@ import { Title } from '@angular/platform-browser';
 
 import { BreadcrumbsPartial } from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
 import { DocumentService } from '../../../services/document-service/document-service';
-import { NgbNav, NgbNavItem, NgbNavModule, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbAccordionBody,
+    NgbAccordionButton, NgbAccordionCollapse,
+    NgbAccordionDirective, NgbAccordionHeader,
+    NgbAccordionItem,
+    NgbNav,
+    NgbNavItem,
+    NgbNavModule,
+    NgbNavOutlet
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-unittest-list-view',
