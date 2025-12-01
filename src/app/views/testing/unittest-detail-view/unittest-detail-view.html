@@ -16,7 +16,53 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6"></div>
+        <div class="col-6">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Key</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(input of this.data.values; track input.key) {
+                            @if(input.isInput){
+                                <tr>
+                                    <td>{{ input.key }}</td>
+                                    <td>{{ input.value }}</td>
+                                    <td>{{ input.valueType }}</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @for(input of this.data.values; track input.key) {
+                            @if(!input.isInput){
+                                <tr>
+                                    <td>{{ input.key }}</td>
+                                    <td>{{ input.value }}</td>
+                                    <td>{{ input.valueType }}</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

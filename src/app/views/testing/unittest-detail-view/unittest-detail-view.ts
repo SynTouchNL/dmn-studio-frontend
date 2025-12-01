@@ -22,36 +22,31 @@ export class UnittestDetailView implements OnInit {
 
     dmnId: number = 0;
     dmnVersion: number = 0;
-    dmnName: string = "";
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private http: HttpService,
         private titleService: Title
     ) {
         const navState = this.router.currentNavigation()?.extras?.state as any | undefined;
         this.data = navState.data ?? this.data;
         this.dmnData = navState.dmnData ?? this.dmnData;
         this.dmnVars = navState.dmnVars ?? this.dmnVars;
+    }
 
+    ngOnInit(){
+        this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+        this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
         this.titleService.setTitle("DMNStudio - Test details - " + (this.dmnData.name || ''));
         this.breadcrumb = [
             { label: 'DMN overzicht', url:'/dmns', current: false },
             { label: 'DMN details', url:'/dmns/' + this.dmnId + '/' + this.dmnVersion, current: false },
             { label: this.dmnData?.name + ' details', url:'/dmns/' + this.dmnId + '/' + this.dmnVersion + '/test/view', current: true }
         ]
-    }
 
-    ngOnInit(){
-        this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-        this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
-        console.log(this.dmnData);
         this.filtered_dmnVars = this.dmnVars.filter(
             (variable: any) => variable.id === this.data.decisionName
         )
-        // console.log(this.dmnData);
-        // console.log(this.data);
     }
 }

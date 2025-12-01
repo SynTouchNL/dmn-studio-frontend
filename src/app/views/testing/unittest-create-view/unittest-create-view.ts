@@ -66,8 +66,6 @@ export class UnittestCreateView implements OnInit {
         if (navState.fresh !== true){
             this.imported_vars = navState.import || {};
             this.importVariables(this.imported_vars);
-        } else {
-            console.log("start fresh!!!")
         }
     }
 
@@ -87,7 +85,6 @@ export class UnittestCreateView implements OnInit {
     get title() { return this.form?.get('title'); }
 
     importVariables(input: any) {
-        // Populate input pairs
         input.values.forEach((inputVar: any) => {
             if (inputVar.isInput) {
                 this.inputPairs.push(this.formBuilder.group({
