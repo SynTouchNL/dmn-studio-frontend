@@ -280,4 +280,20 @@ export class HttpService {
             }
         });
     }
+
+    /**
+     * Delete a Test by ID.
+     * @param dmnId - ID of the test to delete.
+     * @param version - Version of the DMN to delete.
+     * @param testId - ID of the DMN to delete.
+     * @returns Observable<void> indicating completion.
+     * @internal
+     */
+    deleteTest(dmnId: number, version: number, testId: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/test-deployment/${dmnId}/${version}/${testId}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`,
+            }
+        });
+    }
 }

@@ -89,4 +89,11 @@ export class UnittestListView implements OnInit {
         });
     }
 
+    deleteTest(testId: number) {
+        this.http.deleteTest(this.dmnId, this.dmnVersion, testId).subscribe(
+            () => {
+                this.testData = this.testData.filter(test => test.id !== testId);
+            }
+        );
+    }
 }

@@ -54,19 +54,23 @@
                                         <th scope="col">Beslissingsnaam</th>
                                         <th scope="col">Test naam</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Actie</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @for(td of this.testData; track td.id) {
-                                        <tr [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
-                                            <td>
+                                        <tr>
+                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
                                                 <span>{{ td.decisionName }}</span>
                                             </td>
-                                            <td>
+                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
                                                 <span>{{ td.title }}</span>
                                             </td>
                                             <td>
                                                 <div class="align-self-center"><span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">{{ td.passed ? 'PASS' : 'FAIL' }}</span></div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" (click)="deleteTest(td.id)"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     } @empty {
