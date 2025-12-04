@@ -1,124 +1,124 @@
 {
-    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-    "version": 1,
-    "newProjectRoot": "projects",
-    "projects": {
-        "dmn-tool-frontend": {
-            "projectType": "application",
-            "schematics": {},
-            "root": "",
-            "sourceRoot": "src",
-            "prefix": "app",
-            "architect": {
-                "build": {
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "dmn-studio-frontend": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
                     "builder": "@angular/build:application",
-                    "options": {
-                        "browser": "src/main.ts",
-                        "polyfills": [
-                            "zone.js",
-                            "@angular/localize/init"
-                        ],
-                        "tsConfig": "tsconfig.app.json",
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            },
-                            {
-                                "glob": "**/*",
-                                "input": "src/assets",
-                                "output": "/assets"
-                            }
-                        ],
-                        "styles": [
-                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "src/styles.css",
-                            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-
-                            "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn.css",
-                            "node_modules/bpmn-js/dist/assets/diagram-js.css",
-                            "node_modules/dmn-js/dist/assets/diagram-js.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-shared.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-decision-table-controls.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-decision-table.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-drd.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-literal-expression.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-boxed-expression.css",
-                            "node_modules/dmn-js/dist/assets/dmn-js-boxed-expression-controls.css",
-                            "node_modules/dmn-js/dist/assets/dmn-font/css/dmn-codes.css",
-                            "node_modules/dmn-js/dist/assets/dmn-font/css/dmn-embedded.css",
-                            "node_modules/dmn-js/dist/assets/dmn-font/css/dmn.css",
-                            "node_modules/dmn-js-properties-panel/dist/assets/properties-panel.css"
-                        ],
-                        "scripts": [
-                            "./node_modules/jquery/dist/jquery.min.js",
-                            "./node_modules/popper.js/dist/popper.js",
-                            "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-                        ]
-                    },
-                    "configurations": {
-                        "production": {
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "500kB",
-                                    "maximumError": "1MB"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "4kB",
-                                    "maximumError": "8kB"
-                                }
-                            ],
-                            "outputHashing": "all"
-                        },
-                        "development": {
-                            "optimization": false,
-                            "extractLicenses": false,
-                            "sourceMap": true
-                        }
-                    },
-                    "defaultConfiguration": "production"
+          "options": {
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js",
+              "@angular/localize/init"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn.css",
+              "node_modules/bpmn-js/dist/assets/diagram-js.css",
+              "node_modules/dmn-js/dist/assets/diagram-js.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-shared.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-decision-table-controls.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-decision-table.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-drd.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-literal-expression.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-boxed-expression.css",
+              "node_modules/dmn-js/dist/assets/dmn-js-boxed-expression-controls.css",
+              "node_modules/dmn-js/dist/assets/dmn-font/css/dmn-codes.css",
+              "node_modules/dmn-js/dist/assets/dmn-font/css/dmn-embedded.css",
+              "node_modules/dmn-js/dist/assets/dmn-font/css/dmn.css",
+              "node_modules/dmn-js-properties-panel/dist/assets/properties-panel.css"
+            ],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/popper.js/dist/popper.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "3MB"
                 },
-                "serve": {
-                    "builder": "@angular/build:dev-server",
-                    "configurations": {
-                        "production": {
-                            "buildTarget": "dmn-tool-frontend:build:production"
-                        },
-                        "development": {
-                            "buildTarget": "dmn-tool-frontend:build:development"
-                        }
-                    },
-                    "defaultConfiguration": "development"
-                },
-                "extract-i18n": {
-                    "builder": "@angular/build:extract-i18n"
-                },
-                "test": {
-                    "builder": "@angular/build:karma",
-                    "options": {
-                        "polyfills": [
-                            "zone.js",
-                            "zone.js/testing",
-                            "@angular/localize/init"
-                        ],
-                        "tsConfig": "tsconfig.spec.json",
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            }
-                        ],
-                        "styles": [
-                            "src/styles.css"
-                        ]
-                    }
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+                    "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "dmn-studio-frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "dmn-studio-frontend:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {}
+        },
+        "extract-i18n": {
+                    "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+                    "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing",
+              "@angular/localize/init"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ]
+          }
         }
-    },
-    "cli": {
-        "analytics": false
+      }
     }
+  },
+  "cli": {
+    "analytics": false
+  }
 }
