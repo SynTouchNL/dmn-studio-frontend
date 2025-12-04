@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
         provideKeycloak({
             config: {
                 url: 'http://localhost:8181',
-                realm: 'dmn_tool',
+                realm: 'dmn_studio',
                 clientId: 'angular-frontend'
             },
             initOptions: {
