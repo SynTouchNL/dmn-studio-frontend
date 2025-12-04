@@ -6,7 +6,16 @@ import { Title } from '@angular/platform-browser';
 
 import { BreadcrumbsPartial } from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
 import { DocumentService } from '../../../services/document-service/document-service';
-import { NgbNav, NgbNavItem, NgbNavModule, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbAccordionBody,
+    NgbAccordionButton, NgbAccordionCollapse,
+    NgbAccordionDirective, NgbAccordionHeader,
+    NgbAccordionItem,
+    NgbNav,
+    NgbNavItem,
+    NgbNavModule,
+    NgbNavOutlet
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-unittest-list-view',
@@ -51,7 +60,6 @@ export class UnittestListView implements OnInit {
     ngOnInit(){
         this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
-        this.loadDMN();
 
         this.titleService.setTitle("DMNStudio - Test overzicht ");
 
@@ -61,8 +69,8 @@ export class UnittestListView implements OnInit {
             { label: 'Unit-tests', url: '/dmns/' + this.dmnId + '/' + this.dmnVersion +'/test', current: true }
         ]
 
-        this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-        this.dmnVersion = Number(this.activatedRoute.snapshot.paramMap.get('version'));
+        this.loadDMN();
+
         if (this.dmnId && this.dmnVersion) {
             this.http.getTests(+this.dmnId, +this.dmnVersion).subscribe(
                 data => {
@@ -80,4 +88,11 @@ export class UnittestListView implements OnInit {
         });
     }
 
+    deleteTest(testId: number) {
+        this.http.deleteTest(this.dmnId, this.dmnVersion, testId).subscribe(
+            () => {
+                this.testData = this.testData.filter(test => test.id !== testId);
+            }
+        );
+    }
 }

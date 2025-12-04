@@ -17,11 +17,11 @@ import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-new-deployment-view',
     imports: [FormsModule, ReactiveFormsModule, StatusPipe],
-    templateUrl: './new-deployment-view.html',
-    styleUrl: './new-deployment-view.css'
+    templateUrl: './deployment-create-view.html',
+    styleUrl: './deployment-create-view.css'
 })
 
-export class NewDeploymentView implements OnInit {
+export class DeploymentCreateView implements OnInit {
     environments: any[] = [];
     domains: DMNDomainInterface[] = [];
     dmns: DMNListInterface = [];

@@ -36,18 +36,45 @@
                             </select>
                         }
                     }
+
                     @case('integer') {
-                        <input formControlName="value" class="form-control" type="number" />
+                        <input formControlName="value" class="form-control" type="number" placeholder="Vul een getal in" />
                     }
+
                     @case('boolean') {
                         <select formControlName="value" class="form-select">
                             <option [ngValue]="null" disabled selected>Kies een waarde</option>
                             <option [ngValue]="true">True</option>
                             <option [ngValue]="false">False</option>
                         </select>
-                    } <!-- TODO Andere types ook ondersteunen -->
+                    }
+
+                    @case('date') {
+                        <input formControlName="value" class="form-control" type="date" />
+                    }
+
+                    @case('time'){
+                        <input formControlName="value" class="form-control" type="time" />
+                    }
+
+                    @case('dateTime'){
+                        <input formControlName="value" class="form-control" type="datetime-local" />
+                    }
+
+                    @case('dayTimeDuration') {
+                        <input formControlName="value" class="form-control" type="text"
+                               pattern="^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$"
+                               placeholder="Voorbeeld: P1D, PT2H30M, P1DT2H30M5S">
+                    }
+
+                    @case('yearMonthDuration') {
+                        <input formControlName="value" class="form-control" type="text"
+                               pattern="^P(?:(\d+)Y)?(?:(\d+)M)?$"
+                               placeholder="Voorbeeld: P2Y, P6M, P1Y3M">
+                    }
+
                     @default {
-                        <input formControlName="value" readonly class="form-control" />
+                        <input formControlName="value" class="form-control" type="text">
                     }
                 }
             </div>

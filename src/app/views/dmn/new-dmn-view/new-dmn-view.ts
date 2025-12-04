@@ -46,7 +46,6 @@ export class NewDMNView implements OnInit {
             new_xml = this.dmnFileContent;
         } else {
             new_xml = this.documentService.generateNewDiagram(this.dmnName);
-            console.log(new_xml);
         }
 
         event.preventDefault();

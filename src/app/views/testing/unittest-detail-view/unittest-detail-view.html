@@ -6,22 +6,63 @@
     </div>
     <div class="row">
         <div class="col">
-            <h3>Unittest - {{ this.dmnData.name }}</h3>
+            <h3>Unittest - {{ this.data.title }}</h3>
         </div>
         <div class="col text-end">
             <div class="btn-group" role="group">
-                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{data: this.dmnData}" type="button">Aanmaken</button>
+                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Invoegen</button>
                 <button class="btn btn-primary" type="button">Controlleren</button>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <ul class="list-group">
-            </ul>
+        <div class="col-6">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Key</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(input of this.data.values; track input.key) {
+                            @if(input.isInput){
+                                <tr>
+                                    <td>{{ input.key }}</td>
+                                    <td>{{ input.value }}</td>
+                                    <td>{{ input.valueType }}</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col col-xxl-4">
-            <div><canvas height="208" style="display: block;width: 416px;height: 208px;" width="416"></canvas></div>
+        <div class="col-6">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @for(input of this.data.values; track input.key) {
+                            @if(!input.isInput){
+                                <tr>
+                                    <td>{{ input.key }}</td>
+                                    <td>{{ input.value }}</td>
+                                    <td>{{ input.valueType }}</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

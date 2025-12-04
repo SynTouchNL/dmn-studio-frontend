@@ -47,50 +47,47 @@
                 <li [ngbNavItem]="2">
                     <button ngbNavLink>Uitgevoerde tests</button>
                     <ng-template ngbNavContent>
-                        <div class="row g-3">
-                            @for(td of this.testData; track td.id) {
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-0">{{ td.title }}</h5>
-                                            <span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">{{ td.passed ? 'PASS' : 'FAIL' }}</span>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <div class="table-responsive">
-                                                <table class="table mb-0">
-                                                    <thead class="table-light">
-                                                    <tr>
-                                                        <th scope="col">Variabel</th>
-                                                        <th scope="col">Waarde</th>
-                                                        <th scope="col">Type</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @for(item of td.values; track $index) {
-                                                            <tr>
-                                                                <td class="col-6">{{ item.key }}</td>
-                                                                <td class="col-4">{{ item.value }}</td>
-                                                                <td class="col-2"><span class="badge bg-primary">{{ item.valueType }}</span><span class="badge  {{ item.isInput ? 'bg-secondary' : 'bg-success' }}">{{ item.isInput ? 'Input' : 'Output' }}</span></td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            } @empty {
-                                <div class="col-12">
-                                    <div class="alert alert-secondary mb-0">Geen tests gevonden...</div>
-                                </div>
-                            }
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Beslissingsnaam</th>
+                                        <th scope="col">Test naam</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actie</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for(td of this.testData; track td.id) {
+                                        <tr>
+                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
+                                                <span>{{ td.decisionName }}</span>
+                                            </td>
+                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
+                                                <span>{{ td.title }}</span>
+                                            </td>
+                                            <td>
+                                                <div class="align-self-center"><span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">{{ td.passed ? 'PASS' : 'FAIL' }}</span></div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" (click)="deleteTest(td.id)"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td>
+                                                <div class="alert alert-secondary mb-0">Geen tests gevonden...</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </ng-template>
                 </li>
             </ul>
 
             <div [ngbNavOutlet]="nav" class="mt-2"></div>
-
 
         </div>
     </div>

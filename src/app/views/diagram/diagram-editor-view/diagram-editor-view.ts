@@ -113,32 +113,48 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
         )
     }
 
-    saveDiagram() {
-        this.dmnJS.saveXML({format: true}, (err: any, xml: any) => {
-            const encoder = new TextEncoder();
-            const xmlBytes = encoder.encode(xml);
+    async saveDiagram() {
+        try {
+            this.dmnJS.saveXML({format: true})
+                .then((result: any) => {
+                    this.processSave(result.xml);
+                })
+                .catch((err: any) => {
+                    this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + err.message);
+                    return;
+                });
 
-            const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
+        } catch(err: any) {
+            this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + err.message);
+            return;
+        }
+    }
 
-            let request = {
-                fileBlob: xmlBase64,
-                modifiedBy: 'Mark Akkermans'
-            }
+    private processSave(xml: string){
+        const encoder = new TextEncoder();
+        const xmlBytes = encoder.encode(xml);
 
-            this.dmnService.saveDMNFile(this.dmnId, this.dmnVersion, request).subscribe({
-                next: response => {
-                    if (response) {
-                        this.alertService.success('Diagram opgeslagen', '');
-                        this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], {state: {file: atob(response.fileBlob)}});
-                    }
-                }, error: error => {
-                    this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);
+        const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
+
+        let request = {
+            fileBlob: xmlBase64,
+            modifiedBy: 'Mark Akkermans'
+        };
+
+        this.dmnService.saveDMNFile(this.dmnId, this.dmnVersion, request).subscribe({
+            next: response => {
+                if (response) {
+                    this.alertService.success('Diagram opgeslagen', '');
+                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], {state: {file: atob(response.fileBlob)}});
                 }
-            });
+            }, error: error => {
+                this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);
+            }
         });
     }
 
-    async openView(idx: number){
+
+    openView(idx: number){
         this.activeViewIdx = idx;
         try {
             this.dmnJS.open(this.views[idx]);
