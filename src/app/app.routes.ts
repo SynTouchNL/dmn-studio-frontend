@@ -9,15 +9,16 @@ import { DmnDetailView } from './views/dmn/dmn-detail-view/dmn-detail-view';
 import { DiagramEditorView } from './views/diagram/diagram-editor-view/diagram-editor-view';
 import { DiagramReadonlyView } from './views/diagram/diagram-readonly-view/diagram-readonly-view';
 import { NewDMNView } from './views/dmn/new-dmn-view/new-dmn-view';
-import { NewDiagramView } from './views/diagram/new-diagram-view/new-diagram-view';
+import { DiagramCreateView } from './views/diagram/diagram-create-view/diagram-create-view';
 import { UnauthorizedView } from './views/etc/unauthorized-view/unauthorized-view';
-import { IndienenView } from './views/diagram/indienen-view/indienen-view';
+import { DiagramSubmitView } from './views/diagram/diagram-submit-view/diagram-submit-view';
 import { DeploymentsListView } from './views/deployment/deployments-list-view/deployments-list-view';
 import { DeploymentDetailsView } from './views/deployment/deployment-details-view/deployment-details-view';
-import { DeploymentCreateView } from './views/deployment/new-deployment-view/deployment-create-view';
+import { DeploymentCreateView } from './views/deployment/deployment-create-view/deployment-create-view';
 import { UnittestListView } from './views/testing/unittest-list-view/unittest-list-view';
 import {UnittestDetailView} from './views/testing/unittest-detail-view/unittest-detail-view';
 import {UnittestCreateView} from './views/testing/unittest-create-view/unittest-create-view';
+import {DmnReviewView} from './views/dmn/dmn-review-view/dmn-review-view';
 
 export const routes: Routes = [
     // Deployment routes
@@ -73,7 +74,7 @@ export const routes: Routes = [
     },
     {
         path: 'dmns/:id/:version/indienen',
-        component: IndienenView,
+        component: DiagramSubmitView,
         canActivate: [canActivateAuthRole],
         data: {
             role: 'editor'
@@ -96,8 +97,16 @@ export const routes: Routes = [
         }
     },
     {
+        path: 'dmns/:id/:version/review',
+        component: DmnReviewView,
+        canActivate: [canActivateAuthRole],
+        data: {
+            role: 'editor'
+        }
+    },
+    {
         path: 'dmns/:id/new',
-        component: NewDiagramView,
+        component: DiagramCreateView,
         canActivate: [canActivateAuthRole],
         data: {
             role: 'developer'

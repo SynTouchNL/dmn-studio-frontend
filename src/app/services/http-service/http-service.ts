@@ -132,20 +132,6 @@ export class HttpService {
     }
 
     /**
-     * Get Operaton deployment details by reference.
-     * @param ref - Deployment reference
-     * @returns Observable with deployment details
-     * @internal
-     */
-    getOperatonDeploymentDetails(ref: String): Observable<DeploymentsInterface> {
-        return this.http.get<any>(`${this.baseUrl}/deployments/operaton/${ref}`, {
-            headers: {
-                'Authorization': `Bearer ${this.token}`
-            }
-        });
-    }
-
-    /**
      * Get all tests for specific DMN version.
      * @param id - DMN ID
      * @param version - DMN version number
@@ -153,13 +139,113 @@ export class HttpService {
      * @internal
      */
     getTests(id: Number, version: Number): Observable<any> { // TODO Typing
-        return this.http.get<any>(`${this.baseUrl}/test-deployment/${id}/${version}`, {
+        return this.http.get<any>(`${this.baseUrl}/test-deployment/${id}/${version}/tests`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }
         });
     }
 
+
+    /**
+     * Get review details for DMN version.
+     * @param id
+     * @param version
+     */
+    getReview(id: number, version: number): Observable<any> { // TODO Typing
+        return this.http.get<any>(`${this.baseUrl}/lifecycle/${id}/${version}/review`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Get comments for DMN version.
+     * @param id
+     * @param version
+     * @returns Observable with comments data
+     * @internal
+     */
+    getComments(id: number, version: number): Observable<any> { // TODO Typing
+        return this.http.get<any>(`${this.baseUrl}/lifecycle/${id}/${version}/comments`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Submit DMN version for review.
+     * @param id - DMN ID
+     * @param version - DMN version number
+     * @param description - Change description
+     * @param reviewer - Reviewer username
+     * @returns Observable with submission result
+     * @internal
+     */
+    submitForReview(id: number, version: number, description: String, reviewer: string): Observable<any> {
+        const body = {
+            dmnId: id,
+            version: version,
+            changeDescription: description,
+            assignedTo: reviewer
+        };
+        return this.http.post<any>(`${this.baseUrl}/lifecycle/${id}/${version}/submit`, body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Cancel review for DMN version.
+     * @param id
+     * @param version
+     * @param changeId
+     * @returns Observable with cancellation result
+     * @internal
+     */
+    cancelReview(id: number, version: number, changeId: number): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/lifecycle/${id}/${version}/${changeId}/cancel`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Submit review for DMN version.
+     * @param id
+     * @param version
+     * @param changeId
+     * @param approved
+     * @param comment
+     * @returns Observable with review submission result
+     * @internal
+     */
+    submitReview(id: number, version: number, changeId: number, approved: boolean, comment: string): Observable<any> {
+        const body = {
+            changeId: changeId,
+            approved: approved,
+            comments: comment || ''
+        }
+        return this.http.post<any>(`${this.baseUrl}/lifecycle/${id}/${version}/${changeId}/review`, body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /**
+     * Execute unit test deployment.
+     * @param data
+     * @returns Observable with test execution result
+     * @internal
+     */
     executeUnitTest(data: UnitTestPayload): Observable<any> { // TODO Typing
         return this.http.post<any>(`${this.baseUrl}/test-deployment`, data, {
             headers: {
@@ -237,7 +323,7 @@ export class HttpService {
         });
     }
 
-    // TODO Implement activiationTime parameter to schedule deployment. TODO: JDoc
+    // TODO Implement activiationTime parameter to schedule deployment.
     /**
      * Deploy specific DMN version to environment.
      * @param dmn - DMNInterface of the DMN to deploy
@@ -290,7 +376,7 @@ export class HttpService {
      * @internal
      */
     deleteTest(dmnId: number, version: number, testId: number): Observable<void> {
-        return this.http.delete<void>(`${this.baseUrl}/test-deployment/${dmnId}/${version}/${testId}`, {
+        return this.http.delete<void>(`${this.baseUrl}/test-deployment/${dmnId}/${version}/tests/${testId}`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`,
             }

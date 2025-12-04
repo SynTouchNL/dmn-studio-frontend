@@ -1,4 +1,4 @@
-import { Component, DoCheck, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DmnStatusPartial } from '../../../partials/dmn-status-partial/dmn-status-partial';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,6 @@ import { Title } from '@angular/platform-browser';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
     selector: 'app-dmn-detail-view',
@@ -32,6 +31,7 @@ export class DmnDetailView implements OnInit {
     dmnId: number = 0;
     dmnVersion: number = 0;
     dmnData: any = [];
+    comments: any[] = [];
 
     private activatedRoute = inject(ActivatedRoute);
 
@@ -60,6 +60,17 @@ export class DmnDetailView implements OnInit {
                 this.titleService.setTitle(`DMNStudio - Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
             }
         );
+
+        this.dmnService.getComments(this.dmnId, this.dmnVersion).subscribe(
+            {
+                next: data => {
+                    this.comments = data || [];
+                },
+                error: error => {
+                    console.error('Error fetching comments:', error);
+                }
+            }
+        );
     }
 
     clickOpen() {
@@ -68,6 +79,10 @@ export class DmnDetailView implements OnInit {
                 this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, status: data.status, file: atob(data.fileBlob)}})
             }
         )
+    }
+
+    clickReview() {
+        this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/review'], {state: {data: this.dmnData}});
     }
 
     clickTests() {
@@ -110,7 +125,7 @@ export class DmnDetailView implements OnInit {
 
         if (status < 4) { // anders, zo lang hoogste status
             const hasHigher = versions.some(v => v.status > status);
-            if (hasHigher) return false; // there is already a higher status
+            if (hasHigher || versions.length == 1) return false; // there is already a higher status
         }
 
         return true;

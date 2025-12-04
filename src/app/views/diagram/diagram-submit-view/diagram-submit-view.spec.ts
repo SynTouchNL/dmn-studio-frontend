@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewDiagramView } from './new-diagram-view';
+import { DiagramSubmitView } from './diagram-submit-view';
 
-describe('NewDiagramView', () => {
-  let component: NewDiagramView;
-  let fixture: ComponentFixture<NewDiagramView>;
+describe('DiagramSubmitView', () => {
+  let component: DiagramSubmitView;
+  let fixture: ComponentFixture<DiagramSubmitView>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewDiagramView]
+      imports: [DiagramSubmitView]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NewDiagramView);
+    fixture = TestBed.createComponent(DiagramSubmitView);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

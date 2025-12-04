@@ -7,20 +7,20 @@ import { Title } from '@angular/platform-browser';
 import {DocumentService} from '../../../services/document-service/document-service';
 
 @Component({
-  selector: 'app-new-diagram-view',
+  selector: 'app-diagram-create-view',
     imports: [
         FormsModule,
         ReactiveFormsModule
     ],
-  templateUrl: './new-diagram-view.html',
-  styleUrl: './new-diagram-view.css'
+  templateUrl: './diagram-create-view.html',
+  styleUrl: './diagram-create-view.css'
 })
 
-export class NewDiagramView implements OnInit{
+export class DiagramCreateView implements OnInit{
     private activatedRoute = inject(ActivatedRoute);
     new_xml = "";
     creator = 'Mark Akkermans'; // TODO: ref
-    dmn_id: number = 0;
+    dmnId: number = 0;
     reuseDmn: number = 0;
     dmnVersion: number = 0;
     importDMN: string = "";
@@ -38,28 +38,25 @@ export class NewDiagramView implements OnInit{
         const navigation = this.router.getCurrentNavigation();
         this.dmnData = navigation?.extras.state?.['dmn'];
         this.dmnVersion = navigation?.extras.state?.['version'];
-        this.activatedRoute.params.subscribe((params) => {
-            this.dmn_id = +params['id'] || 0;
-        });
+
     }
 
     ngOnInit() {
+        this.dmnId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.titleService.setTitle("DMNStudio - Nieuwe versie aanmaken");
-            this.myForm = this.formBuilder.group({
-                input_key: new FormControl(null),
-            });
-            this.titleService.setTitle("DMNStudio - Test aanmaken ");
+        this.myForm = this.formBuilder.group({
+            input_key: new FormControl(null),
+        });
     }
 
     createNewVersion() {
         const encoder = new TextEncoder();
-        let input = '';
-        let xmlBase64 = '';
+        let xmlBase64: string = '';
         this.new_xml = this.documentService.generateNewDiagram(this.dmnData.name);
         if (this.reuseDmn == 2) { // new XML
             const xmlBytes = encoder.encode(this.new_xml);
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-            input = xmlBase64;
+            this.prepareVersion(xmlBase64);
         } else if (this.reuseDmn == 3) { // import XML
             if (this.importDMN === '') {
                 this.alertService.error('Geen bestand geselecteerd', 'Selecteer een geldig DMN bestand.');
@@ -67,20 +64,19 @@ export class NewDiagramView implements OnInit{
             }
             const xmlBytes = encoder.encode(this.importDMN);
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-            input = xmlBase64;
+            this.prepareVersion(xmlBase64);
         } else { // reuse existing
-            this.dmnService.getDMNFile(this.dmn_id, this.dmnVersion).subscribe(
+            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
                 data => {
-                    input = data.fileBlob;
+                    this.prepareVersion(data.fileBlob);
                 }
             );
         }
-        this.prepareVersion(input);
     }
 
     prepareVersion(xmlBase64: string){
         const newVersion = {
-            dmnId: this.dmn_id,
+            dmnId: this.dmnId,
             fileBlob: xmlBase64,
             createdBy: this.creator
         };
@@ -88,7 +84,7 @@ export class NewDiagramView implements OnInit{
         this.dmnService.createDMNVersion(newVersion).subscribe({
             next: response => {
                 this.alertService.success('Nieuwe versie aangemaakt', "");
-                this.router.navigate(['/dmns/', this.dmn_id, this.dmnVersion+1]);
+                this.router.navigate(['/dmns/', this.dmnId, this.dmnVersion+1]);
             },
             error: error => {
                 if(error.status === 409){

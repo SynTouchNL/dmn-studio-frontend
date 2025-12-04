@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    selector: 'app-new-deployment-view',
+    selector: 'app-deployment-create-view',
     imports: [FormsModule, ReactiveFormsModule, StatusPipe],
     templateUrl: './deployment-create-view.html',
     styleUrl: './deployment-create-view.css'
