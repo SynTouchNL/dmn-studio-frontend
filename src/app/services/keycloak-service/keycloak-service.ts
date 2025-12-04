@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { HttpClient } from '@angular/common/http';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -8,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class KeycloakService {
     private keycloak = inject(Keycloak)
-    private baseUrl = 'http://localhost:8080';
+    private baseUrl = environment.quarkusUrl;
 
     constructor(private http: HttpClient) {
     }

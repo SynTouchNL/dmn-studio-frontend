@@ -9,13 +9,14 @@ import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
 import {UnitTestPayload} from '../../interfaces/decisions-interface';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class HttpService {
-    private baseUrl = 'http://localhost:8080';
+    private baseUrl = environment.quarkusUrl;
     private token: string | undefined = '';
     private refresh = 5 * 60 * 1000; // Try to refresh the JWT token every 5 mins
 

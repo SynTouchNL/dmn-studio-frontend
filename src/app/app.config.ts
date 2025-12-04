@@ -3,20 +3,20 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideKeycloak } from 'keycloak-angular';
-
+import { environment } from './../environments/environment';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideKeycloak({
             config: {
-                url: 'http://localhost:8181',
-                realm: 'dmn_tool',
-                clientId: 'angular-frontend'
+                url: environment.keycloak.url,
+                realm: environment.keycloak.realm,
+                clientId: environment.keycloak.clientId
             },
             initOptions: {
                 onLoad: 'login-required',
                 checkLoginIframe: false,
-                redirectUri: 'http://localhost:4200/',
+                redirectUri: environment.keycloak.redirect,
                 silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
                 enableLogging: true
             }
