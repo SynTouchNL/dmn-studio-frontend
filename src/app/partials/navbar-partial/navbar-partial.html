@@ -22,7 +22,7 @@
                     <div ngbDropdown class="col col-xxl-2 text-end align-self-center">
                         <img ngbDropdownToggle class="rounded-circle img-fluid object-fit-scale" alt="a man smoking a cigarette" src="default_profile_image.png" width="40px" height="40px"/>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button disabled ngbDropdownItem>{{ this.userprofile?.firstName }} {{ this.userprofile?.lastName}}</button>
+                            <button disabled ngbDropdownItem>{{ this.userProfile.firstName }} {{ this.userProfile.lastName}}</button>
                             <button (click)="onClickLogout()" ngbDropdownItem>Log uit</button>
                         </div>
                     </div>

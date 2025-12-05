@@ -6,6 +6,9 @@ import {StatusPipe} from '../../../pipes/status-pipe/status-pipe';
 import {DatePipe} from '@angular/common';
 import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ClassPipe} from '../../../pipes/class-pipe/class-pipe';
+import {KeycloakService} from '../../../services/keycloak-service/keycloak-service';
+import {AlertService} from '../../../services/alert-service/alert-service';
+import {KeycloakProfile} from 'keycloak-js';
 
 @Component({
     selector: 'app-dmn-review-view',
@@ -28,13 +31,17 @@ export class DmnReviewView implements OnInit {
     show_comment: boolean = true;
     approved: boolean = false;
     comment: string = '';
+    can_review: boolean = false;
+    currentUser?: KeycloakProfile;
 
     constructor(
         private http: HttpService,
         private activatedRoute: ActivatedRoute,
         private title: Title,
         private router: Router,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private keycloakService: KeycloakService,
+        private alertService: AlertService
     )
     {
         const navState = this.router.currentNavigation()?.extras?.state as any | undefined;
@@ -53,6 +60,14 @@ export class DmnReviewView implements OnInit {
             {
                 next: data => {
                     this.changeData = data;
+                    this.keycloakService.getUserProfile().then(
+                        profile => {
+                            this.currentUser = profile;
+                            if (profile.username == this.changeData.assignedTo){
+                                this.can_review = true;
+                            }
+                        }
+                    )
                 },
                 error: error => {
                     console.error('Error fetching review data:', error);
@@ -61,6 +76,8 @@ export class DmnReviewView implements OnInit {
         )
 
         this.title.setTitle("DMNStudio - Nakijken - " + (this.dmnData.name || ''));
+
+
 
         this.myForm.get("approved").valueChanges.subscribe(
             (value: boolean) => {
@@ -77,9 +94,9 @@ export class DmnReviewView implements OnInit {
     }
 
     submitReview() {
-        console.log('Submitting review for DMN ID:', this.dmnId, 'Version:', this.dmnVersion, 'Approved:', this.approved, 'Comment:', this.comment);
-        this.http.submitReview(this.dmnId, this.dmnVersion, this.changeData.id, this.approved, this.comment).subscribe({
+        this.http.submitReview(this.dmnId, this.dmnVersion, this.changeData.id, this.approved).subscribe({
             next: data => {
+                this.alertService.success("Review ingediend.", "De review is succesvol ingediend.");
                 this.router.navigate([`/dmns/${this.dmnId}/${this.dmnVersion}`], { state: { data: data }})
             },
             error: error => {
@@ -88,4 +105,30 @@ export class DmnReviewView implements OnInit {
         });
     }
 
+    clickOpen() {
+        this.http.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
+            data => {
+                this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, status: data.status, file: atob(data.fileBlob)}})
+            }
+        )
+    }
+
+    clickCancel() {
+        if(this.currentUser?.username == this.changeData.submittedBy){
+            if (!confirm("Weet u zeker dat u deze review wilt annuleren? De DMN zal teruggezet worden naar Concept status.")){
+                return;
+            }
+            this.http.cancelReview(this.dmnId, this.dmnVersion, this.changeData.id).subscribe({
+                next: data => {
+                    this.alertService.success('Review geannuleerd.', 'De DMN is teruggezet naar Concept status.');
+                    this.router.navigate([`/dmns/${this.dmnId}/${this.dmnVersion}`], { state: { data: data }})
+                },
+                error: error => {
+                    console.error('Error cancelling review:', error);
+                }
+            });
+        } else {
+            this.alertService.warning("U kunt geen review annuleren die niet door u is ingediend.", "Geen toestemming");
+        }
+    }
 }

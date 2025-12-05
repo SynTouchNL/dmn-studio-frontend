@@ -8,7 +8,7 @@ import { DmnListView } from './views/dmn/dmn-list-view/dmn-list-view';
 import { DmnDetailView } from './views/dmn/dmn-detail-view/dmn-detail-view';
 import { DiagramEditorView } from './views/diagram/diagram-editor-view/diagram-editor-view';
 import { DiagramReadonlyView } from './views/diagram/diagram-readonly-view/diagram-readonly-view';
-import { NewDMNView } from './views/dmn/new-dmn-view/new-dmn-view';
+import { DmnCreateView } from './views/dmn/dmn-create-view/dmn-create-view';
 import { DiagramCreateView } from './views/diagram/diagram-create-view/diagram-create-view';
 import { UnauthorizedView } from './views/etc/unauthorized-view/unauthorized-view';
 import { DiagramSubmitView } from './views/diagram/diagram-submit-view/diagram-submit-view';
@@ -27,7 +27,7 @@ export const routes: Routes = [
         component: DeploymentsListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['deployer', 'developer']
         }
     },
     {
@@ -35,7 +35,7 @@ export const routes: Routes = [
         component: DeploymentCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['deployer']
         }
     },
     {
@@ -43,7 +43,7 @@ export const routes: Routes = [
         component: DeploymentDetailsView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['deployer']
         }
     },
 
@@ -53,7 +53,7 @@ export const routes: Routes = [
         component: UnittestListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {
@@ -61,7 +61,7 @@ export const routes: Routes = [
         component: UnittestDetailView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {
@@ -69,7 +69,7 @@ export const routes: Routes = [
         component: UnittestCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'deployer']
         }
     },
     {
@@ -77,7 +77,7 @@ export const routes: Routes = [
         component: DiagramSubmitView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'deployer']
         }
     },
     {
@@ -85,7 +85,7 @@ export const routes: Routes = [
         component: DiagramEditorView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'deployer']
         }
     },
     {
@@ -93,7 +93,7 @@ export const routes: Routes = [
         component: DiagramReadonlyView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {
@@ -101,7 +101,7 @@ export const routes: Routes = [
         component: DmnReviewView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {
@@ -109,7 +109,7 @@ export const routes: Routes = [
         component: DiagramCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'deployer']
         }
     },
     {
@@ -117,15 +117,15 @@ export const routes: Routes = [
         component: DmnDetailView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {
         path: 'dmns/new',
-        component: NewDMNView,
+        component: DmnCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'developer'
+            role: ['developer', 'deployer']
         }
     },
     {
@@ -133,7 +133,7 @@ export const routes: Routes = [
         component: DmnListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'approver', 'deployer']
         }
     },
 
@@ -143,7 +143,7 @@ export const routes: Routes = [
         component: IndexView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: 'editor'
+            role: ['developer', 'approver', 'deployer']
         }
     },
     {

@@ -1,0 +1,2 @@
+<label for="typeahead-basic">{{ title }}</label>
+<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" name="owner"  [resultFormatter]="formatter" [inputFormatter]="formatter" [ngbTypeahead]="search" (selectItem)="onUserSelected($event)" placeholder="Zoek een gebruiker"/>

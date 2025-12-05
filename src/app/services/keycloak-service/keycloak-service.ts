@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import Keycloak from 'keycloak-js';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import Keycloak, {KeycloakProfile} from 'keycloak-js';
 
 @Injectable({
     providedIn: 'root'
@@ -9,41 +7,21 @@ import { environment } from '../../../environments/environment';
 
 export class KeycloakService {
     private keycloak = inject(Keycloak)
-    private baseUrl = environment.quarkusUrl;
-
-    constructor(private http: HttpClient) {
-    }
+    constructor() {}
 
     updateToken(): Promise<boolean> {
         return this.keycloak.updateToken(60)
     }
 
     logout(): void {
-        this.keycloak.logout().then(r =>
-        console.log('Logged out', r));
-    }
-
-    getUsers(): any {
-        return this.http.get(`${this.baseUrl}/auth/users`, {
-            headers: {
-                'Authorization': `Bearer ${this.getToken()}`
-            }
-        });
-    }
-
-    getUserByGroup(groupId: string): any {
-        return this.http.get(`${this.baseUrl}/auth/group-users/${groupId}`).subscribe(
-            data => {
-                return data
-            }
-        );
+        this.keycloak.logout().then();
     }
 
     getToken(): string | undefined {
         return this.keycloak?.token;
     }
 
-    async getUserProfile(){
+    async getUserProfile(): Promise<KeycloakProfile>{
         return await this.keycloak.loadUserProfile();
     }
 }

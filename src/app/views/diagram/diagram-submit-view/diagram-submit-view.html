@@ -21,17 +21,18 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select formControlName="reviewer" class="custom-select">
-                                <option selected>Kies een collega voor nakijken</option>
-                                <option [ngValue]="'Mark Akkermans'">Mark Akkermans</option>
-                                <option [ngValue]="'Piet Klaassen'">Piet Klaassen</option>
-                                <option [ngValue]="'Henk Janssen'">Henk Janssen</option>
+                            <label for="form_new_dmn_owner">Controleur DMN</label>
+                            <select class="form-control" id="form_new_dmn_owner" formControlName="reviewer" required>
+                                <option value="" disabled selected>Kies een controleur</option>
+                                @for(review of possibleReviewers; track review.id) {
+                                    <option value="{{ review.username }}">{{ review.firstName + " " + review.lastName }}</option>
+                                }
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button (click)="handInChanges()" class="btn btn-primary">Indienen.</button>
+                            <button (click)="handInChanges()" class="btn btn-primary">Indienen</button>
                         </div>
                     </div>
                 </div>
