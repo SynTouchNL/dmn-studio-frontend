@@ -8,8 +8,8 @@ import {
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
-import {UnitTestPayload} from '../../interfaces/decisions-interface';
-import {environment} from '../../../environments/environment';
+import { UnitTestPayload } from '../../interfaces/decisions-interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'

@@ -1,10 +1,10 @@
 export const environment = {
     production: false,
     keycloak: {
-        url: 'localhost:8081',
-        realm: 'dmn_tool',
-        clientId: 'angular-frontend',
-        redirect: 'localhost:4200/'
+        url: import.meta.env.DMNSTUDIO_KEYCLOAK_URL,
+        realm: import.meta.env.DMNSTUDIO_KEYCLOAK_REALM,
+        clientId: import.meta.env.DMNSTUDIO_KEYCLOAK_CLIENT_ID,
+        redirect: import.meta.env.DMNSTUDIO_URL
     },
-    quarkusUrl: 'http://localhost:8080',
+    quarkusUrl: import.meta.env.DMNSTUDIO_QUARKUS_URL,
 };

@@ -1,5 +1,5 @@
 {
-    "name": "dmn-tool-frontend",
+    "name": "dmn-studio-frontend",
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
