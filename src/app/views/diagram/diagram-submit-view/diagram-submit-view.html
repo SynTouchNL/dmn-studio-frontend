@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="row gx-0 gy-0">
+                <div class="col col-xxl-12">
+                    <h3>Nieuwe DMN Versie aanmaken</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <form [formGroup]="myForm">
+                <span>Weet u zeker dat u deze diagram wilt indienen? <br> <b>LET OP:</b> Dan kan deze hierna niet meer aangepast worden!</span>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label for="inputDescription">Beschrijving van de wijzigingen</label>
+                            <textarea formControlName="description" class="form-control" id="inputDescription" placeholder="Beschrijf wijzigingen" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <select formControlName="reviewer" class="custom-select">
+                                <option selected>Kies een collega voor nakijken</option>
+                                <option [ngValue]="'Mark Akkermans'">Mark Akkermans</option>
+                                <option [ngValue]="'Piet Klaassen'">Piet Klaassen</option>
+                                <option [ngValue]="'Henk Janssen'">Henk Janssen</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button (click)="handInChanges()" class="btn btn-primary">Indienen.</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

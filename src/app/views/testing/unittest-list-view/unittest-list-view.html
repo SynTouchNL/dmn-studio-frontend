@@ -20,31 +20,6 @@
         <div class="col">
             <ul ngbNav #nav="ngbNav" class="nav-tabs">
                 <li [ngbNavItem]="1">
-                    <button class="text-decoration-none" ngbNavLink>Aanmaken</button>
-                    <ng-template ngbNavContent>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Beslissingsnaam</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @for(dVar of this.dmnVars; track dVar.id) {
-                                        <tr>
-                                            <td><a class="text-decoration-none link-dark" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
-                                        </tr>
-                                    } @empty {
-                                        <tr>
-                                            <td>Geen beslissingen gevonden</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </ng-template>
-                </li>
-                <li [ngbNavItem]="2">
                     <button ngbNavLink>Uitgevoerde tests</button>
                     <ng-template ngbNavContent>
                         <div class="table-responsive">
@@ -76,8 +51,36 @@
                                     } @empty {
                                         <tr>
                                             <td>
-                                                <div class="alert alert-secondary mb-0">Geen tests gevonden...</div>
+                                                Geen tests gevonden...
                                             </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <button class="text-decoration-none" ngbNavLink>Aanmaken</button>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Beslissingsnaam</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @for(dVar of this.dmnVars; track dVar.id) {
+                                        <tr>
+                                            <td><a class="text-decoration-none link-dark" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td>Geen beslissingen gevonden</td>
                                         </tr>
                                     }
                                 </tbody>

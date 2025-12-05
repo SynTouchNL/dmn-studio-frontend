@@ -34,12 +34,6 @@ export class DmnStatusPartial implements OnChanges {
                 active: this.data.status >= 1
             },
             {
-                key: 'unittest',
-                tooltip: 'Unittest',
-                label: 'T',
-                active: this.data.status >= 2
-            },
-            {
                 key: 'approval',
                 tooltip: 'Goedkeuring',
                 label: 'G',

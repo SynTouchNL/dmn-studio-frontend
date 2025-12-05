@@ -23,7 +23,11 @@
             <div class="col text-end align-self-center">
                 <div class="btn-group" role="group">
                     <button (click)="clickTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
-                    <button [routerLink]="['/dmns/' + this.dmnId + '/new']" [state]="{ dmn: this.dmnData, version: this.dmnVersion, status: this.dmnData.status }" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
+                    @if(selectedVersion(dmnData.versions).status == 3){
+                        <button (click)="clickReview()" class="btn btn-primary" type="button">Review Bekijken</button>
+                    } @else {
+                        <button [routerLink]="['/dmns/' + dmnId + '/new']" [state]="{ dmn: dmnData, version: dmnVersion, status: dmnData.status }" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
+                    }
                     <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Openen</a></button>
                 </div>
             </div>
@@ -83,5 +87,33 @@
                 </ul>
             </div>
         </div>
+<!--        <div class="row">-->
+<!--            <h5>Comments op de DMN versie</h5>-->
+<!--            @for (comment of comments; track comment.id) {-->
+<!--                <div class="col-xxl-9 mb-1">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-6">-->
+<!--                                    <span class="fw-bold">-->
+<!--                                        <div class="col-9">{{ comment.commenter }}</div>-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                                <div class="col-6 text-end">-->
+<!--                                    <span>{{ comment.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            <p class="card-text">{{ comment.comment }}</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            } @empty {-->
+<!--                <div class="col">-->
+<!--                    <span>Geen comments beschikbaar.</span>-->
+<!--                </div>-->
+<!--            }-->
+<!--        </div>-->
     }
 </div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IndienenView } from './indienen-view';
+import { DmnReviewView } from './dmn-review-view';
 
-describe('IndienenView', () => {
-  let component: IndienenView;
-  let fixture: ComponentFixture<IndienenView>;
+describe('DmnReviewView', () => {
+  let component: DmnReviewView;
+  let fixture: ComponentFixture<DmnReviewView>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IndienenView]
+      imports: [DmnReviewView]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(IndienenView);
+    fixture = TestBed.createComponent(DmnReviewView);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
