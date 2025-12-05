@@ -1,0 +1,18 @@
+services:
+  dmn-studio-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dmn-studio-frontend
+    ports:
+      - "4200:8080"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - dmn-studio-network
+
+networks:
+  dmn-studio-network:
+    driver: bridge
+
