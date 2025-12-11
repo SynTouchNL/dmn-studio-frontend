@@ -130,7 +130,6 @@ export class DeploymentCreateView implements OnInit {
 
         this.dmnService.deployVersion(dmn, version.version, env).subscribe({
             next: (data) => {
-                console.log(data)
                 this.alertService.success("De DMN versie wordt gedeployed!", dmn.name);
                 this.router.navigate(["/deployments"]);
             },
