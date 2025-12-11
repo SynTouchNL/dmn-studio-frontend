@@ -1,11 +1,10 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import {HttpClient, provideHttpClient} from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import {
     ApplicationConfig,
     provideZoneChangeDetection,
-    provideBrowserGlobalErrorListeners,
-    APP_INITIALIZER, provideAppInitializer, inject
+    provideBrowserGlobalErrorListeners, provideAppInitializer, inject
 } from '@angular/core';
 import { provideKeycloak } from 'keycloak-angular';
 import { App } from './app/app';

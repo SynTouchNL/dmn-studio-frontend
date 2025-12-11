@@ -5,5 +5,5 @@ export interface EnvironmentalValuesInterface {
         "clientId": string
     },
     redirect: string,
-    quarkusUrl: string
+    backendUrl: string
 }

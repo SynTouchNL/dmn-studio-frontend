@@ -36,7 +36,7 @@ export class HttpService {
                 this.keycloak.logout();
             })
         }, this.refresh);
-        this.baseUrl = this.configService.getConfig().quarkusUrl;
+        this.baseUrl = this.configService.getConfig().backendUrl;
     }
 
     /**
