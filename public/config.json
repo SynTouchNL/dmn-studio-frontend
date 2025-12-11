@@ -1,0 +1,9 @@
+{
+    "keycloak": {
+        "url": "http://localhost:8181",
+        "realm": "dmn_studio",
+        "clientId": "angular-frontend"
+    },
+    "redirect": "http://localhost:4200",
+    "backendUrl": "http://localhost:8080"
+}
