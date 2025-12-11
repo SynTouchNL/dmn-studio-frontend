@@ -7,20 +7,23 @@ import { AlertService } from '../../../services/alert-service/alert-service';
 import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
 import { DocumentService } from '../../../services/document-service/document-service';
+import { TypeaheadUsersPartial } from '../../../partials/typeahead-partial/typeahead-users-partial';
+import {UserInterface} from '../../../interfaces/user-interface';
 
 @Component({
-    selector: 'app-new-dmn-view',
-    imports: [RouterLink, FormsModule],
-    templateUrl: './new-dmn-view.html',
-    styleUrl: './new-dmn-view.css'
+    selector: 'app-dmn-create-view',
+    imports: [RouterLink, FormsModule, TypeaheadUsersPartial],
+    templateUrl: './dmn-create-view.html',
+    styleUrl: './dmn-create-view.css'
 })
 
-export class NewDMNView implements OnInit {
+export class DmnCreateView implements OnInit {
     dmnName: string = '';
     dmnDomain: string = '';
     dmnOwner: string = '';
     domains: DMNDomainInterface[] = [];
     dmnFileContent: string = '';
+    dmnUsers: UserInterface[] = [];
 
     constructor(
         private dmnService: HttpService,
@@ -36,8 +39,17 @@ export class NewDMNView implements OnInit {
                 this.domains = Array.isArray(data) ? data : [data];
             }
         );
+        this.dmnService.getUsers().subscribe({
+            next: data => {
+                this.dmnUsers = data ? data : [];
+            }
+        })
         this.titleService.setTitle("DMNStudio - Nieuwe DMN aanmaken ");
 
+    }
+
+    onUserPicked(user: UserInterface){
+        this.dmnOwner = user.username;
     }
 
     submitForm(event: Event) {

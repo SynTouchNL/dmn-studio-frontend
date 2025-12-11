@@ -4,7 +4,10 @@
             <h3>Nakijken - {{ dmnData.name }}</h3>
         </div>
         <div class="col text-end">
-            <div class="btn-group" role="group"><button class="btn btn-primary" type="button">Bekijken</button><button class="btn btn-danger" type="button">Cancel</button></div>
+            <div class="btn-group" role="group">
+                <button class="btn btn-primary" (click)="clickOpen()" type="button">Bekijken</button>
+                <button class="btn btn-danger" (click)="clickCancel()" type="button">Cancel</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -49,7 +52,7 @@
             </ul>
         </div>
     </div>
-    @if(changeData.approved == false) {
+    @if(changeData.approved == false && can_review) {
         <div class="row">
             <div class="col">
                 <form [formGroup]="myForm">
@@ -58,5 +61,20 @@
                 <button (click)="submitReview()" class="btn btn-primary" type="button">Indienen</button>
             </div>
         </div>
+    } @else {
+        @if(changeData.approved){
+            <div class="row mt-2">
+                <div class="col">
+                    <span class="text-success">Deze wijziging is al goedgekeurd.</span>
+                </div>
+            </div>
+        }
+        @if(!can_review){
+            <div class="row mt-2">
+                <div class="col">
+                    <span class="text-danger">Dit is niet uw beoordeling.</span>
+                </div>
+            </div>
+        }
     }
 </div>

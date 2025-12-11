@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewDMNView } from './new-dmn-view';
+import { DmnCreateView } from './dmn-create-view';
 
-describe('NewDMNView', () => {
-  let component: NewDMNView;
-  let fixture: ComponentFixture<NewDMNView>;
+describe('DmnCreateView', () => {
+  let component: DmnCreateView;
+  let fixture: ComponentFixture<DmnCreateView>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewDMNView]
+      imports: [DmnCreateView]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NewDMNView);
+    fixture = TestBed.createComponent(DmnCreateView);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

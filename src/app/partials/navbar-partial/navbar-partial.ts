@@ -1,13 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import Keycloak from 'keycloak-js';
-import { KeycloakService } from '../../services/keycloak-service/keycloak-service';
-import {
-    NgbDropdown,
-    NgbDropdownItem,
-    NgbDropdownMenu,
-    NgbDropdownToggle
-} from '@ng-bootstrap/ng-bootstrap';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import Keycloak, {KeycloakProfile} from 'keycloak-js';
+import {KeycloakService} from '../../services/keycloak-service/keycloak-service';
+import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-navbar-partial',
@@ -24,7 +19,7 @@ import {
 })
 
 export class NavbarPartial implements OnInit {
-    userprofile: any;
+    userProfile: KeycloakProfile = {};
 
     constructor(
         private keycloakService: KeycloakService,
@@ -35,7 +30,7 @@ export class NavbarPartial implements OnInit {
     private readonly keycloak = inject(Keycloak);
 
     async ngOnInit() {
-        this.userprofile = await this.loadUserProfile();
+        await this.loadUserProfile()
     }
 
     onClickLogout() {
@@ -44,7 +39,11 @@ export class NavbarPartial implements OnInit {
         );
     }
 
-    loadUserProfile() {
-        return this.keycloakService.getUserProfile();
+    async loadUserProfile(): Promise<void> {
+        try {
+            this.userProfile = await this.keycloakService.getUserProfile();
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+        }
     }
 }
