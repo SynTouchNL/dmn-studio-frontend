@@ -9,20 +9,21 @@ import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
 import { UnitTestPayload } from '../../interfaces/decisions-interface';
-import { environment } from '../../../environments/environment';
+import {ConfigService} from '../config-service/config-service';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class HttpService {
-    private baseUrl = environment.quarkusUrl;
+    private baseUrl = "";
     private token: string | undefined = '';
     private refresh = 5 * 60 * 1000; // Try to refresh the JWT token every 5 mins
 
     constructor(
         private http: HttpClient,
-        private keycloak: KeycloakService
+        private keycloak: KeycloakService,
+        private configService: ConfigService
     ) {
         this.token = this.keycloak.getToken();
         setInterval(() => {
@@ -35,6 +36,7 @@ export class HttpService {
                 this.keycloak.logout();
             })
         }, this.refresh);
+        this.baseUrl = this.configService.getConfig().quarkusUrl;
     }
 
     /**

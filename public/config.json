@@ -1,10 +1,9 @@
 {
-  "keycloak": {
-    "url": "http://localhost:8182",
-    "realm": "dmn-studio",
-    "clientId": "dmn-studio-frontend"
-  },
-  "redirect": "http://localhost:4200",
-  "quarkusUrl": "http://localhost:8081"
+    "keycloak": {
+        "url": "http://localhost:8181",
+        "realm": "dmn_studio",
+        "clientId": "angular-frontend"
+    },
+    "redirect": "http://localhost:4200",
+    "quarkusUrl": "http://localhost:8080"
 }
-

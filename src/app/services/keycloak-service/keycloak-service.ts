@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import {ConfigService} from '../config-service/config-service';
 
 @Injectable({
     providedIn: 'root'
@@ -9,9 +9,10 @@ import { environment } from '../../../environments/environment';
 
 export class KeycloakService {
     private keycloak = inject(Keycloak)
-    private baseUrl = environment.quarkusUrl;
+    private baseUrl = "";
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private configService: ConfigService) {
+        this.baseUrl = this.configService.getConfig().keycloak.url;
     }
 
     updateToken(): Promise<boolean> {

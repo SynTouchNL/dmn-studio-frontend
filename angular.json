@@ -11,7 +11,7 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@ngx-env/builder:application",
+                    "builder": "@angular/build:application",
                     "options": {
                         "browser": "src/main.ts",
                         "polyfills": [
@@ -19,9 +19,6 @@
                             "@angular/localize/init"
                         ],
                         "tsConfig": "tsconfig.app.json",
-                        "ngxEnv": {
-                            "prefix": "DMNSTUDIO_"
-                        },
                         "assets": [
                             {
                                 "glob": "**/*",
@@ -72,13 +69,7 @@
                                     "maximumError": "8kB"
                                 }
                             ],
-                            "outputHashing": "all",
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.production.ts"
-                                }
-                            ]
+                            "outputHashing": "all"
                         },
                         "development": {
                             "optimization": false,
@@ -86,10 +77,10 @@
                             "sourceMap": true
                         }
                     },
-                    "defaultConfiguration": "production"
+                    "defaultConfiguration": "development"
                 },
                 "serve": {
-                    "builder": "@ngx-env/builder:dev-server",
+                    "builder": "@angular/build:dev-server",
                     "configurations": {
                         "production": {
                             "buildTarget": "dmn-studio-frontend:build:production"
@@ -102,11 +93,11 @@
                     "options": {}
                 },
                 "extract-i18n": {
-                    "builder": "@ngx-env/builder:extract-i18n",
+                    "builder": "@angular/build:extract-i18n",
                     "options": {}
                 },
                 "test": {
-                    "builder": "@ngx-env/builder:karma",
+                    "builder": "@angular/build:karma",
                     "options": {
                         "polyfills": [
                             "zone.js",
@@ -127,10 +118,8 @@
                 }
             }
         }
-      }
+    },
+    "cli": {
+        "analytics": false
     }
-  },
-  "cli": {
-    "analytics": false
-  }
 }
