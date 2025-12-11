@@ -91,7 +91,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
                     this.dmnFile = atob(data.fileBlob);
                     this.importDiagram(atob(data.fileBlob));
                 },
-                error: error => console.log(error)
+                error: error => console.error(error)
             });
         } else {
             this.importDiagram(this.dmnFile);

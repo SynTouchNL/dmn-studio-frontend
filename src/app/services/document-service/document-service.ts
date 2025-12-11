@@ -38,7 +38,6 @@ export class DocumentService {
 
         try {
             const { rootElement: definitions } = await model.fromXML(xml);
-            console.log(definitions);
             const decisions = (definitions.drgElement || []).filter((d: any) => d.$type === 'dmn:InformationRequirement' ? false : d.$type === 'dmn:Decision');
             let hitPolicy = "";
 

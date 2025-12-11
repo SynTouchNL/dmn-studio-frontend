@@ -9,7 +9,8 @@ import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
 import { UnitTestPayload } from '../../interfaces/decisions-interface';
-import {ConfigService} from '../config-service/config-service';
+import { ConfigService } from '../config-service/config-service';
+import { UserInterface } from '../../interfaces/user-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -39,13 +40,29 @@ export class HttpService {
         this.baseUrl = this.configService.getConfig().backendUrl;
     }
 
+    getUsers(): Observable<UserInterface[]> {
+        return this.http.get<any>(`${this.baseUrl}/auth/users`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    getUsersByRole(role: string): Observable<UserInterface[]> {
+        return this.http.get<any>(`${this.baseUrl}/auth/${role}/users`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
     /**
      * Get all DMNs.
      * @returns DMNListInterface of all DMNs.
      * @internal
      */
     getDMNs(): Observable<DMNListInterface> {
-        return this.http.get<DMNListInterface>(`${this.baseUrl}/dmn`, {
+        return this.http.get<DMNListInterface>(`${this.baseUrl}/dmns`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }
@@ -164,21 +181,6 @@ export class HttpService {
     }
 
     /**
-     * Get comments for DMN version.
-     * @param id
-     * @param version
-     * @returns Observable with comments data
-     * @internal
-     */
-    getComments(id: number, version: number): Observable<any> { // TODO Typing
-        return this.http.get<any>(`${this.baseUrl}/lifecycle/${id}/${version}/comments`, {
-            headers: {
-                'Authorization': `Bearer ${this.token}`
-            }
-        });
-    }
-
-    /**
      * Submit DMN version for review.
      * @param id - DMN ID
      * @param version - DMN version number
@@ -211,7 +213,7 @@ export class HttpService {
      * @internal
      */
     cancelReview(id: number, version: number, changeId: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/lifecycle/${id}/${version}/${changeId}/cancel`, {}, {
+        return this.http.delete<any>(`${this.baseUrl}/lifecycle/${id}/${version}/${changeId}/cancel`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.token}`
@@ -225,15 +227,13 @@ export class HttpService {
      * @param version
      * @param changeId
      * @param approved
-     * @param comment
      * @returns Observable with review submission result
      * @internal
      */
-    submitReview(id: number, version: number, changeId: number, approved: boolean, comment: string): Observable<any> {
+    submitReview(id: number, version: number, changeId: number, approved: boolean): Observable<any> {
         const body = {
             changeId: changeId,
-            approved: approved,
-            comments: comment || ''
+            approved: approved
         }
         return this.http.post<any>(`${this.baseUrl}/lifecycle/${id}/${version}/${changeId}/review`, body, {
             headers: {

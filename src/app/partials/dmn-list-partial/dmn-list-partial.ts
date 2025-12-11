@@ -50,6 +50,7 @@ export class DmnListPartial implements OnChanges {
             );
     }
 
+
     findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
         const prodStatus = 4;
         // Try exact match first

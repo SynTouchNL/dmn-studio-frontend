@@ -26,15 +26,11 @@
             </div>
             <br>
             <div class="form-group">
-                <label for="exampleFormControlSelect1">Eigenaar DMN</label>  <!-- TODO fix -->
-                <select class="form-control" id="form_new_dmn_owner" [(ngModel)]="dmnOwner" name="dmnOwner" required>
-                    <option value="" disabled selected>Kies een eigenaar</option>
-                    <option value="Mark Akkermans">Mark Akkermans</option>
-                </select>
+                <app-typeahead-users-partial [title]="'Eigenaar DMN'" [data]="dmnUsers"></app-typeahead-users-partial>
             </div>
             <br>
             <div class="form-group">
-                <label for="formFile" class="form-label">Importeer Camunda-bestand</label>
+                <label for="formFile" class="form-label">Importeer een DMN diagram</label>
                 <input class="form-control" type="file" name="dmnFile" id="formFile" (change)="onFileChange($event)">
             </div>
             <br>

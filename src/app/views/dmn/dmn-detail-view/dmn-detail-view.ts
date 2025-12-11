@@ -31,12 +31,11 @@ export class DmnDetailView implements OnInit {
     dmnId: number = 0;
     dmnVersion: number = 0;
     dmnData: any = [];
-    comments: any[] = [];
 
     private activatedRoute = inject(ActivatedRoute);
 
     constructor(
-        private dmnService: HttpService,
+        private http: HttpService,
         private titleService: Title,
         private router: Router
     ) {
@@ -54,27 +53,17 @@ export class DmnDetailView implements OnInit {
     }
 
     fetchData(){
-        this.dmnService.getDMN(this.dmnId).subscribe(
+        this.http.getDMN(this.dmnId).subscribe(
             data => {
                 this.dmnData = data;
                 this.titleService.setTitle(`DMNStudio - Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
             }
         );
 
-        this.dmnService.getComments(this.dmnId, this.dmnVersion).subscribe(
-            {
-                next: data => {
-                    this.comments = data || [];
-                },
-                error: error => {
-                    console.error('Error fetching comments:', error);
-                }
-            }
-        );
     }
 
     clickOpen() {
-        this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
+        this.http.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
             data => {
                 this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/view'], {state: {id: data.id, version: data.version, status: data.status, file: atob(data.fileBlob)}})
             }
@@ -87,7 +76,7 @@ export class DmnDetailView implements OnInit {
 
     clickTests() {
         let dmnFile = "";
-        this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe( async data => {
+        this.http.getDMNFile(this.dmnId, this.dmnVersion).subscribe( async data => {
             dmnFile = atob(data.fileBlob);
         })
         this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/test'], { state: { data: this.dmnData, file: atob(dmnFile) } })

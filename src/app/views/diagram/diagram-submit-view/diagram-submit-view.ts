@@ -5,6 +5,7 @@ import {AlertService} from '../../../services/alert-service/alert-service';
 import {Title} from '@angular/platform-browser';
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EnvironmentsInterface} from '../../../interfaces/environments-interface';
+import {KeycloakProfile} from 'keycloak-js';
 
 @Component({
     selector: 'app-diagram-submit-view',
@@ -21,6 +22,7 @@ export class DiagramSubmitView implements OnInit {
     dmnId: number = 0;
     description: string = '';
     myForm: any;
+    possibleReviewers: KeycloakProfile[] = [];
 
     constructor(
         private http: HttpService,
@@ -40,6 +42,11 @@ export class DiagramSubmitView implements OnInit {
             reviewer: new FormControl(null)
         });
 
+        this.http.getUsersByRole("approver").subscribe(
+            (data: KeycloakProfile[]) => {
+                this.possibleReviewers = data;
+            }
+        );
         this.myForm.get("description").valueChanges.subscribe(
             (value: string) => {
                 this.description = value;
@@ -66,5 +73,7 @@ export class DiagramSubmitView implements OnInit {
             }
         });
     }
+
+
 
 }

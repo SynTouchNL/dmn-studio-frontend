@@ -1,0 +1,29 @@
+export interface UserInterface {
+    id: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    notBefore: number;
+    origin: any;
+    groups: any;
+    realmRoles: any;
+    requiredActions: any;
+    self: any;
+    serviceAccountClientId: any;
+    socialLinks: any;
+    totp: boolean;
+    userProfileMetadata: any;
+    access: string;
+    applicationRoles: any;
+    attributes: any;
+    clientConsents: any;
+    clientRoles: any;
+    createdTimestamp: number;
+    credentials: any;
+    disableableCredentialTypes: any;
+    email: string;
+    emailVerified: boolean;
+    enabled: boolean;
+    federatedIdentities: any;
+    federationLink: any;
+}
