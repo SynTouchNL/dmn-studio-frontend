@@ -12,7 +12,6 @@ export class ConfigService {
         this.#config = config;
     }
 
-
     getConfig(): EnvironmentalValuesInterface {
         return this.#config;
     }
