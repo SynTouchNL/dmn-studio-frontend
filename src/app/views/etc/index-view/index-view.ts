@@ -3,6 +3,7 @@ import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-part
 import { HttpService } from '../../../services/http-service/http-service';
 import { DMNInterface } from '../../../interfaces/dmn-interface';
 import { Title } from '@angular/platform-browser';
+import {DocumentService} from '../../../services/document-service/document-service';
 
 @Component({
   selector: 'app-index-view',
@@ -18,14 +19,12 @@ export class IndexView implements OnInit {
 
     constructor(
         private dmnService: HttpService,
-        private titleService: Title
+        private titleService: Title,
+        private documentService: DocumentService
     ) { }
 
     ngOnInit() {
-        this.dmnService.getDMNs().subscribe(data => {
-            this.dmnData = data;
-        });
-
+        this.dmnService.getDMNs().subscribe(data => { this.dmnData = data; });
         this.titleService.setTitle("DMNStudio - Homepagina");
     }
 }

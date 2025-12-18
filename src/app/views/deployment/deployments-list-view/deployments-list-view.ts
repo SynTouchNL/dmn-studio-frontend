@@ -42,6 +42,7 @@ export class DeploymentsListView implements OnInit, OnChanges {
     ngOnInit(){
         this.http.getDeployments().subscribe(
             data => {
+                console.log(data)
                 // @ts-ignore
                 this.all_deployments = data;
                 this.collectionSize = this.all_deployments.length;

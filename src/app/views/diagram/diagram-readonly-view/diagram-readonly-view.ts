@@ -77,12 +77,9 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.dmnJS.attachTo(this.dmnViewerRef!.nativeElement);
         this.initDiagram();
-
     }
 
-    ngOnDestroy(): void {
-        this.dmnJS?.destroy();
-    }
+    ngOnDestroy(): void { this.dmnJS?.destroy(); }
 
     private initDiagram(): void {
         if (!this.dmnFile || this.dmnFile === "") {
@@ -148,8 +145,6 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         document.body.removeChild(element);
     }
 
-    canBeEdited(){
-        return this.dmnStatus <= 3;
-    }
+    canBeEdited(): boolean { return this.dmnStatus <= 3; }
 
 }

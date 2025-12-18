@@ -26,14 +26,14 @@ export class DmnListPartial implements OnChanges {
     @Input() dmnList: any = [];  // incoming full list
     @Input() domains: boolean = false;
     @Input() filter: FormControl = new FormControl('');
+    @Input() showDropdown: boolean = true;
 
     page = 1;
     pageSize = 10;
     collectionSize = 0;
     allDmnList: any[] = [];
 
-    constructor() {
-    }
+    constructor() {}
 
     ngOnChanges() {
         this.allDmnList = this.dmnList; // store full dataset
@@ -53,17 +53,14 @@ export class DmnListPartial implements OnChanges {
 
     findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
         const prodStatus = 4;
-        // Try exact match first
         const exact = versions.find(v => v.status === prodStatus);
         if (exact) return exact;
 
-        // Otherwise, go down from targetStatus - 1 until 1
         for (let s = prodStatus - 1; s >= 1; s--) {
             const found = versions.find(v => v.status === s);
             if (found) return found;
         }
 
-        // If none of 4..1 exist, just return the first version as fallback
         return versions[0];
     }
 }

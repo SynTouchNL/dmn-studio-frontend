@@ -36,6 +36,7 @@ export class DeploymentDetailsView implements OnInit {
         this.deploymentId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.http.getDeploymentDetails(this.deploymentId).subscribe(
             data => {
+                console.log(data);
                 this.deploymentData = Array.isArray(data) ? data : [data];
             }
         )
@@ -49,11 +50,11 @@ export class DeploymentDetailsView implements OnInit {
     clickDelete(){
         this.http.deleteDeployment(this.deploymentData[0].id).subscribe({
             next: (data) => {
-                this.alertService.success('Deployment succesvol verwijderd.', this.deploymentData[0].dmn.name + " deployment verwijderd.");
+                this.alertService.success('Deployment succesvol verwijderd', this.deploymentData[0].dmn.name + " deployment verwijderd.");
                 this.router.navigate(['/deployments']);
             },
             error: (error) => {
-                this.alertService.error('Fout bij verwijderen deployment.', 'Er is een fout opgetreden bij het verwijderen van de deployment.');
+                this.alertService.error('Fout bij verwijderen deployment', 'Er is een fout opgetreden bij het verwijderen van de deployment.');
             }
         });
     }

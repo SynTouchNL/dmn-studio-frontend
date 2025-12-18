@@ -6,47 +6,49 @@
         <div class="col text-end">
             <div class="btn-group" role="group">
                 <button class="btn btn-primary" (click)="clickOpen()" type="button">Bekijken</button>
-                <button class="btn btn-danger" (click)="clickCancel()" type="button">Cancel</button>
+                @if(this.currentUser?.username == this.changeData.submittedBy) {
+                    <button class="btn btn-danger" (click)="clickCancel()" type="button">Cancel</button>
+                }
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-xxl-12">
+        <div class="col-12">
             <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Wijziging door</span></div>
-                        <div class="col col-xxl-6"><span>{{ changeData.submittedBy }}</span></div>
+                        <div class="col col-6"><span>Wijziging door</span></div>
+                        <div class="col col-6"><span>{{ changeData.submittedBy }}</span></div>
                     </div>
                 </li>
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Controleur</span></div>
-                        <div class="col col-xxl-6"><span>{{ changeData.assignedTo}}</span></div>
+                        <div class="col col-6"><span>Controleur</span></div>
+                        <div class="col col-6"><span>{{ changeData.assignedTo}}</span></div>
                     </div>
                 </li>
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Domein</span></div>
-                        <div class="col col-xxl-6"><span>{{ dmnData.domain.name }}</span></div>
+                        <div class="col col-6"><span>Domein</span></div>
+                        <div class="col col-6"><span>{{ dmnData.domain.name }}</span></div>
                     </div>
                 </li>
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Huidige status</span></div>
-                        <div class="col col-xxl-6"><span></span><span class="badge {{ dmnData.versions[0].status | classPipe }} me-1">v{{ dmnData.versions[0].version }}</span><span class="badge {{ dmnData.versions[0].status | classPipe }} me-1">{{ dmnData.versions[0].status | statusPipe }}</span></div>
+                        <div class="col col-6"><span>Huidige status</span></div>
+                        <div class="col col-6"><span></span><span class="badge {{ dmnData.versions[0].status | classPipe }} me-1">v{{ dmnData.versions[0].version }}</span><span class="badge {{ dmnData.versions[0].status | classPipe }} me-1">{{ dmnData.versions[0].status | statusPipe }}</span></div>
                     </div>
                 </li>
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
-                        <div class="col col-xxl-6"><span>{{ dmnData.versions[0].modifiedDate | date:'dd-MM-yyyy HH:mm' }} - {{ dmnData.versions[0].modifiedBy }}</span></div>
+                        <div class="col col-6"><span>Laatste wijziging</span></div>
+                        <div class="col col-6"><span>{{ dmnData.versions[0].modifiedDate | date:'dd-MM-yyyy HH:mm' }} - {{ dmnData.versions[0].modifiedBy }}</span></div>
                     </div>
                 </li>
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col col-xxl-6"><span>Beschrijving</span></div>
-                        <div class="col col-xxl-6"><span>{{ changeData.changeDescription }}</span></div>
+                        <div class="col col-6"><span>Beschrijving</span></div>
+                        <div class="col col-6"><span>{{ changeData.changeDescription }}</span></div>
                     </div>
                 </li>
             </ul>

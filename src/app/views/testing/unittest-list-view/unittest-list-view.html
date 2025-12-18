@@ -28,7 +28,7 @@
                                     <tr>
                                         <th scope="col">Beslissingsnaam</th>
                                         <th scope="col">Test naam</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Voldaan</th>
                                         <th scope="col">Actie</th>
                                     </tr>
                                 </thead>
@@ -42,7 +42,15 @@
                                                 <span>{{ td.title }}</span>
                                             </td>
                                             <td>
-                                                <div class="align-self-center"><span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">{{ td.passed ? 'PASS' : 'FAIL' }}</span></div>
+                                                <div class="align-self-center">
+                                                    <span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">
+                                                        @if(td.passed){
+                                                            <i class="fa-solid fa-check"></i>
+                                                        } @else {
+                                                            <i class="fa-solid fa-x"></i>
+                                                        }
+                                                    </span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" (click)="deleteTest(td.id)"><i class="fa fa-trash"></i></button>
@@ -50,9 +58,7 @@
                                         </tr>
                                     } @empty {
                                         <tr>
-                                            <td>
-                                                Geen tests gevonden...
-                                            </td>
+                                            <td>Geen tests gevonden...</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -89,9 +95,7 @@
                     </ng-template>
                 </li>
             </ul>
-
             <div [ngbNavOutlet]="nav" class="mt-2"></div>
-
         </div>
     </div>
 </div>

@@ -35,10 +35,9 @@ export class DiagramCreateView implements OnInit{
         private formBuilder: FormBuilder,
         private documentService: DocumentService
     ) {
-        const navigation = this.router.getCurrentNavigation();
+        const navigation = this.router.currentNavigation();
         this.dmnData = navigation?.extras.state?.['dmn'];
         this.dmnVersion = navigation?.extras.state?.['version'];
-
     }
 
     ngOnInit() {
@@ -52,26 +51,33 @@ export class DiagramCreateView implements OnInit{
     createNewVersion() {
         const encoder = new TextEncoder();
         let xmlBase64: string = '';
-        this.new_xml = this.documentService.generateNewDiagram(this.dmnData.name);
+
+        if(this.reuseDmn === 0) {
+            this.alertService.error('Geen optie geselecteerd', 'Selecteer een optie om een nieuwe versie aan te maken.');
+            return;
+        }
+
+        if (this.reuseDmn === 3 && this.importDMN === '') {
+            this.alertService.error('Geen bestand geselecteerd', 'Selecteer een geldig DMN bestand.');
+            return;
+        }
+
         if (this.reuseDmn == 2) { // new XML
-            const xmlBytes = encoder.encode(this.new_xml);
+            const xmlBytes = encoder.encode(this.documentService.generateNewDiagram(this.dmnData.name));
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
             this.prepareVersion(xmlBase64);
         } else if (this.reuseDmn == 3) { // import XML
-            if (this.importDMN === '') {
-                this.alertService.error('Geen bestand geselecteerd', 'Selecteer een geldig DMN bestand.');
-                return;
-            }
             const xmlBytes = encoder.encode(this.importDMN);
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-            this.prepareVersion(xmlBase64);
         } else { // reuse existing
             this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
                 data => {
-                    this.prepareVersion(data.fileBlob);
+                    xmlBase64 = data.fileBlob;
                 }
             );
+
         }
+        this.prepareVersion(xmlBase64);
     }
 
     prepareVersion(xmlBase64: string){

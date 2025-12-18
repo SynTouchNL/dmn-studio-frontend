@@ -42,7 +42,6 @@ export class UnittestListView implements OnInit {
     selectedDMN_naam: string = "";
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
 
-
     constructor
     (
         private activatedRoute: ActivatedRoute,

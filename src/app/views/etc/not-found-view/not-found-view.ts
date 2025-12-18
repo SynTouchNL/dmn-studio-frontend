@@ -9,12 +9,9 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class NotFoundView implements OnInit{
-
     constructor(
         private titleService: Title
     ){}
 
-    ngOnInit() {
-        this.titleService.setTitle("DMNStudio - 404");
-    }
+    ngOnInit() { this.titleService.setTitle("DMNStudio - 404"); }
 }

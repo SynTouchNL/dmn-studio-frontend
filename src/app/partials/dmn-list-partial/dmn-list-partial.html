@@ -18,20 +18,14 @@
                 @if(this.domains){
                     <td>{{ dmn.domain.name }}</td>
                 }
-                <td>
-                    {{ dmn.name }}
-                </td>
-                <td>
-                    {{ dmn.owner }}
-                </td>
+                <td>{{ dmn.name }}</td>
+                <td>{{ dmn.owner }}</td>
                 @if(findLatest(dmn.versions).modifiedDate != null){
                     <td>{{ findLatest(dmn.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
                 } @else {
                     <td>Geen wijziging</td>
                 }
-                <td>
-                    <span class="badge {{ findLatest(dmn.versions).status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ findLatest(dmn.versions).status | statusPipe }}</span>
-                </td>
+                <td><span class="badge {{ findLatest(dmn.versions).status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ findLatest(dmn.versions).status | statusPipe }}</span></td>
             </tr>
         } @empty {
             <tr>
@@ -41,17 +35,19 @@
     </tbody>
 </table>
 
-<div class="d-flex justify-content-between p-2">
-    <ngb-pagination
-        [collectionSize]="collectionSize"
-        [(page)]="page"
-        [pageSize]="pageSize"
-        (pageChange)="refreshDMNs()">
-    </ngb-pagination>
+@if(showDropdown){
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshDMNs()">
+        </ngb-pagination>
 
-    <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDMNs()">
-        <option [ngValue]="10">10 DMNs per pagina</option>
-        <option [ngValue]="25">25 DMNs per pagina</option>
-        <option [ngValue]="50">50 DMNs per pagina</option>
-    </select>
-</div>
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDMNs()">
+            <option [ngValue]="10">10 DMNs per pagina</option>
+            <option [ngValue]="25">25 DMNs per pagina</option>
+            <option [ngValue]="50">50 DMNs per pagina</option>
+        </select>
+    </div>
+}

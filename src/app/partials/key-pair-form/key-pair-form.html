@@ -10,7 +10,7 @@
 @for(pair of rows; track $index){
     <div [formGroup]="pair" class="mb-2">
         <div class="row">
-            <div class="col col-xxl-6">
+            <div class="col col-6">
                 <label class="form-label">Key</label>
                 <select formControlName="key" class="form-select form-control">
                     <option [ngValue]="null" disabled selected>Kies een variabele</option>
@@ -20,7 +20,7 @@
                 </select>
             </div>
 
-            <div class="col col-xxl-5">
+            <div class="col col-5">
                 <label class="form-label">Value</label>
                 @let selected = getSelectedKey($index);
                 @switch(selected?.typeRef) {

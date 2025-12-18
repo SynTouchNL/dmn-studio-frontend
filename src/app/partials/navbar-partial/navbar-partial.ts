@@ -34,9 +34,7 @@ export class NavbarPartial implements OnInit {
     }
 
     onClickLogout() {
-        this.keycloak.logout().then(r =>
-            this.router.navigate(['/']),
-        );
+        this.keycloak.logout().then(r => this.router.navigate(['/']));
     }
 
     async loadUserProfile(): Promise<void> {

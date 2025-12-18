@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -48,12 +48,12 @@ export class DmnCreateView implements OnInit {
 
     }
 
-    onUserPicked(user: UserInterface){
-        this.dmnOwner = user.username;
-    }
-
     submitForm(event: Event) {
         let new_xml = '';
+        if (!this.dmnName || !this.dmnDomain || !this.dmnOwner) {
+            this.alertService.error('Formulier onvolledig', 'Vul alle verplichte velden in om een nieuwe DMN aan te maken.');
+            return;
+        }
         if (this.dmnFileContent) {
             new_xml = this.dmnFileContent;
         } else {
@@ -78,6 +78,16 @@ export class DmnCreateView implements OnInit {
                 this.router.navigate(['/dmns']);
             }
         );
+    }
+
+    onUserPicked(user: UserInterface) {
+        if (user.username){
+            this.dmnOwner = user.username;
+            return;
+        } else {
+            this.alertService.error('Gebruiker niet gevonden', 'Selecteer een geldige gebruiker als eigenaar.');
+            return;
+        }
     }
 
     onFileChange(event: Event) {

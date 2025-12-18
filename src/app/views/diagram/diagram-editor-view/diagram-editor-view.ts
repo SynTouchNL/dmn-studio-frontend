@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ElementRef, ViewChild, inject, OnDestroy, OnInit} from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, inject, OnDestroy } from '@angular/core';
 import DmnModeler from 'dmn-js/lib/Modeler';
 import { DmnPropertiesPanelModule, CamundaPropertiesProviderModule, DmnPropertiesProviderModule } from 'dmn-js-properties-panel';
 import { from, Observable } from 'rxjs';
@@ -41,7 +41,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
         private alertService: AlertService,
         private titleService: Title
     ) {
-        const navigation = this.router.getCurrentNavigation(); // TODO: Review deprecation
+        const navigation = this.router.currentNavigation(); // TODO: Review deprecation
         this.dmnVersion = navigation?.extras.state?.['version'];
         this.dmnId = navigation?.extras.state?.['id'];
         this.dmnFile = navigation?.extras.state?.['file'];
@@ -102,10 +102,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
     private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
         return from(
             this.dmnJS.importXML(xml)
-                .then((result: any) => {
-                    //this.dmnDetails = this.dmnJS.getDefinitions();
-                    return result;
-                })
+                .then((result: any) => { return result; })
                 .catch((err: any) => {
                     this.alertService.error("Error", "Er was een probleem bij het laden van de diagram: " + err.message);
                     throw err;
@@ -116,9 +113,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
     async saveDiagram() {
         try {
             this.dmnJS.saveXML({format: true})
-                .then((result: any) => {
-                    this.processSave(result.xml);
-                })
+                .then((result: any) => { this.processSave(result.xml); })
                 .catch((err: any) => {
                     this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + err.message);
                     return;
@@ -134,10 +129,8 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
         const encoder = new TextEncoder();
         const xmlBytes = encoder.encode(xml);
 
-        const xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-
         let request = {
-            fileBlob: xmlBase64,
+            fileBlob: btoa(String.fromCharCode(...xmlBytes)),
             modifiedBy: 'Mark Akkermans'
         };
 
@@ -145,7 +138,7 @@ export class DiagramEditorView implements AfterViewInit, OnDestroy {
             next: response => {
                 if (response) {
                     this.alertService.success('Diagram opgeslagen', '');
-                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/view'], {state: {file: atob(response.fileBlob)}});
+                    this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion]);
                 }
             }, error: error => {
                 this.alertService.error("Error", "Er was een probleem bij het opslaan van de diagram: " + error.message);

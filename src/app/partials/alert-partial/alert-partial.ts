@@ -18,9 +18,7 @@ export class AlertPartial implements OnInit {
     constructor(private alertService: AlertService) {}
 
     ngOnInit() {
-        this.alertService.alerts$.subscribe(alert => {
-            this.alert = alert;
-        });
+        this.alertService.alerts$.subscribe(alert => this.alert = alert);
     }
 
     close() {
