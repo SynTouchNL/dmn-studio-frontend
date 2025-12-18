@@ -36,8 +36,8 @@ const initializeApp = async () => {
                     initOptions: {
                         onLoad: 'login-required',
                         checkLoginIframe: false,
-                        redirectUri: config.redirect,
-                        silentCheckSsoRedirectUri: globalThis.location.origin + '/assets/silent-check-sso.html',
+                        //redirectUri: config.redirect,
+                        //silentCheckSsoRedirectUri: globalThis.location.origin + '/assets/silent-check-sso.html',
                         enableLogging: true
                     }
                 }),
