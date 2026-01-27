@@ -6,7 +6,7 @@
     </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row">
-            <div class="col-10 mb-1">
+            <div class="col-11 mb-1">
                 <h3>Unittest {{ dmnData.name }}</h3>
                 <div class="alert alert-info" role="alert">
                     <span class="fw-bold">Hit policy:</span>
@@ -17,7 +17,6 @@
             <div class="col-1 text-end align-self-center">
                 <div class="btn-group" role="group">
                     <button class="btn btn-primary" [disabled]="form.invalid" type="submit">Uitvoeren</button>
-                    <button class="btn btn-primary" type="button">Opslaan</button>
                 </div>
             </div>
         </div>
@@ -28,7 +27,6 @@
                         <h5>Test rapport</h5>
                         <span>Test is {{ resultStatus ? '' : 'niet'}} succesvol afgerond.</span>
                     </div>
-
                     <div class="card border-0 col-6 p-0 rounded-0">
                         <div class="card-header bg-light text-dark fw-semibold text-center">Verwachtte uitkomst</div>
                         <div class="card-body">
@@ -42,7 +40,6 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="card border-0 col-6 p-0 rounded-0">
                         <div class="card-header bg-light text-dark fw-semibold text-center">Daadwerkelijke uitkomst</div>
                         <div class="card-body">
@@ -56,7 +53,6 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         }
@@ -78,7 +74,6 @@
                     </app-key-pair-form>
                 </ng-template>
             </li>
-
             <li ngbNavItem>
                 <button ngbNavLink>Uitkomst</button>
                 <ng-template ngbNavContent>

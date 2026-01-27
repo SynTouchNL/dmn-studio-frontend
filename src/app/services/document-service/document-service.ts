@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import DmnModdle from 'dmn-moddle';
 import camundaModdle from 'camunda-dmn-moddle/resources/camunda.json';
 import { DecisionVariables, Variable } from '../../interfaces/decisions-interface';
+import { DMNVersionInterface } from '../../interfaces/dmn-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -103,4 +104,32 @@ export class DocumentService {
             .replace(/[^a-zA-Z0-9_]/g, '');
     }
 
+    canStartNewVersion(versions: DMNVersionInterface[], status: number): boolean {
+        if (status === 5) return false; // Archived
+
+        if (status === 4) { // Production
+            const hasLower = versions.some(v => v.status < 4);
+            if (hasLower) return false;// there is already a lower status
+        }
+
+        if (status === 1) return false; // Bestaande concept
+
+        if (status < 4) { // anders, zo lang hoogste status
+            const hasHigher = versions.some(v => v.status > status);
+            if (hasHigher || versions.length == 1) return false; // there is already a higher status
+        }
+        return true;
+    }
+
+    findLatest(dmnVersions: DMNVersionInterface[]): DMNVersionInterface {
+        const prodStatus = 4;
+        const exact = dmnVersions?.find(v => v.status === prodStatus);
+        if (exact) return exact;
+
+        for (let s = prodStatus - 1; s >= 1; s--) {
+            const found = dmnVersions?.find(v => v.status === s);
+            if (found) return found;
+        }
+        return dmnVersions[0];
+    }
 }

@@ -8,11 +8,6 @@ import {EnvironmentalValuesInterface} from '../../interfaces/environmental-value
 export class ConfigService {
     #config!: EnvironmentalValuesInterface;
 
-    setConfig(config: EnvironmentalValuesInterface) {
-        this.#config = config;
-    }
-
-    getConfig(): EnvironmentalValuesInterface {
-        return this.#config;
-    }
+    setConfig(config: EnvironmentalValuesInterface) { this.#config = config; }
+    getConfig(): EnvironmentalValuesInterface { return this.#config; }
 }

@@ -47,13 +47,13 @@ export class DeploymentDetailsView implements OnInit {
     }
 
     clickDelete(){
-        this.http.deleteDeployment(this.deploymentData[0].id).subscribe({
+        this.http.deleteDeployment(this.deploymentData[0].deploymentId, this.deploymentData[0].environmentId).subscribe({
             next: (data) => {
-                this.alertService.success('Deployment succesvol verwijderd.', this.deploymentData[0].dmn.name + " deployment verwijderd.");
+                this.alertService.success('Deployment succesvol verwijderd', this.deploymentData[0].dmn.name + " deployment verwijderd.");
                 this.router.navigate(['/deployments']);
             },
             error: (error) => {
-                this.alertService.error('Fout bij verwijderen deployment.', 'Er is een fout opgetreden bij het verwijderen van de deployment.');
+                this.alertService.error('Fout bij verwijderen deployment', 'Er is een fout opgetreden bij het verwijderen van de deployment.');
             }
         });
     }

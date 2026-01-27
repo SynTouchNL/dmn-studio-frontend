@@ -26,8 +26,7 @@ const isAccessAllowed = async (
         return true;
     }
 
-    const router = inject(Router);
-    return router.parseUrl('/not-authorized');
+    return inject(Router).parseUrl('/not-authorized');
 };
 
 export const canActivateAuthRole = createAuthGuard<CanActivateFn>(isAccessAllowed);

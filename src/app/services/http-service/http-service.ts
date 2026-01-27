@@ -124,18 +124,7 @@ export class HttpService {
         })
     }
 
-    /**
-     * Get all deployments.
-     * @returns DeploymentsInterface with deployments.
-     * @internal
-     */
-    getDeployments(): Observable<DeploymentsInterface> {
-        return this.http.get<DeploymentsInterface>(`${this.baseUrl}/deployments`, {
-            headers: {
-                'Authorization': `Bearer ${this.token}`
-            }
-        });
-    }
+
 
     /**
      * Get deployment details by ID.
@@ -144,7 +133,19 @@ export class HttpService {
      * @internal
      */
     getDeploymentDetails(id: Number): Observable<DeploymentsInterface> {
-        return this.http.get<any>(`${this.baseUrl}/deployments/${id}`, {
+        return this.http.get<any>(`${this.baseUrl}/deploy/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+    /**
+     * Get all deployments.
+     * @returns DeploymentsInterface with deployments.
+     * @internal
+     */
+    getDeployments(): Observable<DeploymentsInterface> {
+        return this.http.get<DeploymentsInterface>(`${this.baseUrl}/deploy`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }
@@ -166,11 +167,28 @@ export class HttpService {
         });
     }
 
+    /**
+     * Get deployment details for DMN version in specific environment.
+     * @param id
+     * @param version
+     * @param environmentId
+     * @return Observable with deployment details
+     * @internal
+     */
+    getVersionInEnv(id: number, version: number, environmentId: number): Observable<any> { // TODO Typing
+        return this.http.get<any>(`${this.baseUrl}/deployments/${id}/${version}/${environmentId}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
 
     /**
      * Get review details for DMN version.
      * @param id
      * @param version
+     * @return Observable with review details
+     * @internal
      */
     getReview(id: number, version: number): Observable<any> { // TODO Typing
         return this.http.get<any>(`${this.baseUrl}/lifecycle/${id}/${version}/review`, {
@@ -348,7 +366,7 @@ export class HttpService {
             activiationTime: null //TODO implementeren voor scheduled deployment.
         }
 
-        return this.http.post<any>(`${this.baseUrl}/deployments`, body, {
+        return this.http.post<any>(`${this.baseUrl}/deploy`, body, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.token}`
@@ -362,8 +380,8 @@ export class HttpService {
      * @returns Observable<void> indicating completion.
      * @internal
      */
-    deleteDeployment(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.baseUrl}/deployments/${id}`, {
+    deleteDeployment(id: number, envId: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/deploy/${envId}/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`,
             }

@@ -8,13 +8,11 @@ import {
     FormsModule,
     ReactiveFormsModule, Validators,
 } from '@angular/forms';
-import { DecisionVariables, UnitTestPayload } from '../../../interfaces/decisions-interface';
+import { UnitTestPayload } from '../../../interfaces/decisions-interface';
 import { Title} from '@angular/platform-browser';
 import { NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { KeyPairForm } from '../../../partials/key-pair-form/key-pair-form';
 import { BreadcrumbsPartial } from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
-import { AlertService } from '../../../services/alert-service/alert-service';
-import {parseJson} from '@angular/cli/src/utilities/json-file';
 
 @Component({
     selector: 'app-unittest-create-view',

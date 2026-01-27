@@ -41,20 +41,16 @@ export class DmnStatusPartial implements OnChanges {
             },
             {
                 key: 'production',
-                tooltip: 'Productie',
+                tooltip: 'Akkoord',
                 label: `v${this.data.version}`,
                 active: this.data.status >= 4
             },
             {
                 key: 'archived',
-                tooltip: 'Gearchiveerd',
+                tooltip: 'Archief',
                 label: `A`,
                 active: this.data.status >= 5
             }
         ];
-    }
-
-    trackByBadge(index: number, badge: any) {
-        return index;
     }
 }

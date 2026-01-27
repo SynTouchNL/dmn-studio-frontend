@@ -3,7 +3,7 @@ export interface DMNInterface {
     name: string;
     owner: string;
     domain: DMNDomainInterface;
-    versions: DMNVersionInterface;
+    versions: DMNVersionInterface[];
 }
 
 export interface DMNInterfaceNoVersion {

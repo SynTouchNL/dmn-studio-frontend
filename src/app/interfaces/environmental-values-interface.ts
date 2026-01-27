@@ -1,9 +1,9 @@
 export interface EnvironmentalValuesInterface {
-    keycloak: {
+    "keycloak": {
         "url": string,
         "realm": string,
         "clientId": string
     },
-    redirect: string,
-    backendUrl: string
+    "redirect": string,
+    "backendUrl": string
 }

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row gx-0 gy-0">
-                <div class="col col-xxl-12">
+                <div class="col col-12">
                     <h3>Nieuwe DMN aanmaken</h3>
                 </div>
             </div>
@@ -26,7 +26,7 @@
             </div>
             <br>
             <div class="form-group">
-                <app-typeahead-users-partial [title]="'Eigenaar DMN'" [data]="dmnUsers"></app-typeahead-users-partial>
+                <app-typeahead-users-partial [title]="'Eigenaar DMN'" [data]="dmnUsers" (selected)="onUserPicked($event)"></app-typeahead-users-partial>
             </div>
             <br>
             <div class="form-group">

@@ -8,7 +8,7 @@
         </div>
     } @else {
         <div class="row">
-            <div class="col col-lg-6">
+            <div class="col col-6">
                 <h3>{{ dmnData.name }}</h3>
             </div>
         </div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col-xxl-9">
+            <div class="col-9">
                 <ul class="list-group">
                     <li class="list-group-item">
                         <div class="row">
@@ -50,7 +50,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col col-xxl-6"><span>Versie in productie</span></div>
-                            <div class="col col-xxl-6"><span>Versie {{ findLatest(dmnData.versions).version }}</span></div>
+                            <div class="col col-xxl-6"><span> {{ versionInProduction != 0 ? "Versie " + versionInProduction : "Geen versie in productie" }}</span></div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -62,17 +62,17 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
-                            <div class="col col-xxl-6"><span>{{  selectedVersion(dmnData.versions).modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy  || "Onbekend" }}</span></div>
+                            <div class="col col-xxl-6"><span>{{ selectedVersion(dmnData.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy || "Onbekend" }}</span></div>
                         </div>
                     </li>
                 </ul>
             </div>
-            <div class="col-xxl-3">
+            <div class="col-3">
                 <ul class="list-group">
                     @for(version of dmnData.versions; track version.version + '-' + version.status) {
                         @if(this.dmnVersion == version.version) {
                             <a class="dropdown-item text-secondary" disabled>
-                                <li class="list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
+                                <li class="bg-secondary border-secondary list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
                             </a>
                         } @else {
                             <a class="dropdown-item" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">
@@ -87,33 +87,5 @@
                 </ul>
             </div>
         </div>
-<!--        <div class="row">-->
-<!--            <h5>Comments op de DMN versie</h5>-->
-<!--            @for (comment of comments; track comment.id) {-->
-<!--                <div class="col-xxl-9 mb-1">-->
-<!--                    <div class="card">-->
-<!--                        <div class="card-header">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-6">-->
-<!--                                    <span class="fw-bold">-->
-<!--                                        <div class="col-9">{{ comment.commenter }}</div>-->
-<!--                                    </span>-->
-<!--                                </div>-->
-<!--                                <div class="col-6 text-end">-->
-<!--                                    <span>{{ comment.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="card-body">-->
-<!--                            <p class="card-text">{{ comment.comment }}</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            } @empty {-->
-<!--                <div class="col">-->
-<!--                    <span>Geen comments beschikbaar.</span>-->
-<!--                </div>-->
-<!--            }-->
-<!--        </div>-->
     }
 </div>

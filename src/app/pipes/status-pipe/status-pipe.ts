@@ -11,14 +11,14 @@ export class StatusPipe implements PipeTransform {
                 return 'Nieuw';
             case 1:
                 return 'Concept';
-            case 2:
-                return 'Testen';
+            // case 2:
+            //     return 'Testen'; // Removed as per new requirements
             case 3:
                 return 'Goedkeuring';
             case 4:
-                return 'Productie';
+                return 'Akkoord';
             case 5:
-                return 'Gearchiveerd';
+                return 'Archief';
             default:
                 return 'Onbekend';
         }

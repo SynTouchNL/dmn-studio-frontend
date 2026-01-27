@@ -12,6 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { DatePipe } from '@angular/common';
+import {DocumentService} from '../../../services/document-service/document-service';
 
 @Component({
     selector: 'app-dmn-detail-view',
@@ -31,25 +32,34 @@ export class DmnDetailView implements OnInit {
     dmnId: number = 0;
     dmnVersion: number = 0;
     dmnData: any = [];
+    versionInProduction: number = 0;
 
     private activatedRoute = inject(ActivatedRoute);
 
     constructor(
         private http: HttpService,
         private titleService: Title,
-        private router: Router
+        private router: Router,
+        private documentService: DocumentService
     ) {
         this.activatedRoute.params.subscribe(params => {
-            this.dmnVersion = +params['version'];
+            this.dmnVersion = Number(params['version']) || 0;
         });
-
         this.activatedRoute.params.subscribe((params) => {
-            this.dmnId = +params['id'] || 0;
+            this.dmnId = Number(params['id']) || 0;
         });
     }
 
     ngOnInit() {
         this.fetchData();
+        this.http.getVersionInEnv(this.dmnId, this.dmnVersion, 3).subscribe({
+            next: (data) => {
+                this.versionInProduction = data.version || 0;
+            },
+            error: (err) => {
+                console.error('Error fetching version in production:', err);
+            }
+        });
     }
 
     fetchData(){
@@ -59,7 +69,6 @@ export class DmnDetailView implements OnInit {
                 this.titleService.setTitle(`DMNStudio - Detail - ${this.dmnData.name} - v${this.dmnVersion}`)
             }
         );
-
     }
 
     clickOpen() {
@@ -86,39 +95,14 @@ export class DmnDetailView implements OnInit {
         return versions?.filter(v => v.version === this.dmnVersion)[0];
     }
 
-    findLatest(versions: DMNVersionInterface[]): DMNVersionInterface {
-        const prodStatus = 4;
-        const exact = versions?.find(v => v.status === prodStatus);
-        if (exact) return exact;
-
-        for (let s = prodStatus - 1; s >= 1; s--) {
-            const found = versions?.find(v => v.status === s);
-            if (found) return found;
-        }
-        return versions[0];
+    findLatest(dmnVersions: DMNVersionInterface[]): DMNVersionInterface {
+        return this.documentService.findLatest(dmnVersions);
     }
 
-    canStartNewVersion(versions: DMNVersionInterface[], status: number): boolean {
-        if (status === 5) { // Archived
-            return false;
-        }
-
-        if (status === 4) { // Production
-            const hasLower = versions.some(v => v.status < 4);
-            if (hasLower) return false;// there is already a lower status
-        }
-
-        if (status === 1) { // Bestaande concept
-            return false;
-        }
-
-        if (status < 4) { // anders, zo lang hoogste status
-            const hasHigher = versions.some(v => v.status > status);
-            if (hasHigher || versions.length == 1) return false; // there is already a higher status
-        }
-
-        return true;
+    canStartNewVersion(dmnVersions: DMNVersionInterface[], statusNum: number): boolean {
+        return this.documentService.canStartNewVersion(dmnVersions, statusNum)
     }
+
 
     protected readonly Object = Object;
 }

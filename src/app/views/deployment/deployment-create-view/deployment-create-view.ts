@@ -91,8 +91,6 @@ export class DeploymentCreateView implements OnInit {
             (value: DMNInterface) => {
                 if (value !== null && Array.isArray(value.versions)) {
                     this.dmn_versions = value.versions;
-                } else {
-                    this.dmn_versions.push(value.versions);
                 }
                 this.selected_dmn = value;
             }
@@ -120,21 +118,23 @@ export class DeploymentCreateView implements OnInit {
         event.preventDefault();
         this.clicked = true;
         if (!this.selected_dmn || !this.selected_version || !this.selected_environment) {
-            this.alertService.error("Fout bij het deployen.", "Selecteer een DMN, versie en omgeving om te kunnen deployen.");
+            this.alertService.error("Fout bij het deployen", "Selecteer een DMN, versie en omgeving om te kunnen deployen.");
             this.clicked = false;
             return;
         }
+
         const dmn = this.selected_dmn;
         const version = this.selected_version;
         const env = this.selected_environment;
 
         this.dmnService.deployVersion(dmn, version.version, env).subscribe({
             next: (data) => {
-                this.alertService.success("De DMN versie wordt gedeployed!", dmn.name);
+                this.alertService.success("De DMN versie wordt uitgerold ", dmn.name);
                 this.router.navigate(["/deployments"]);
             },
             error: (error) => {
-                this.alertService.error("Er is een fout opgetreden bij het deployen van de DMN versie.", error.error.details);
+                this.alertService.error("Er is een fout opgetreden bij het uitrollen van de DMN versie", error.error.message || 'Onbekende fout.');
+                this.clicked = false;
             }
         });
     }

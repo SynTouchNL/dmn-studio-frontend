@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../../services/http-service/http-service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService} from '../../../services/alert-service/alert-service';
-import {Title} from '@angular/platform-browser';
-import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EnvironmentsInterface} from '../../../interfaces/environments-interface';
-import {KeycloakProfile} from 'keycloak-js';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from '../../../services/alert-service/alert-service';
+import { Title } from '@angular/platform-browser';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { KeycloakProfile } from 'keycloak-js';
 
 @Component({
     selector: 'app-diagram-submit-view',
@@ -47,6 +46,7 @@ export class DiagramSubmitView implements OnInit {
                 this.possibleReviewers = data;
             }
         );
+
         this.myForm.get("description").valueChanges.subscribe(
             (value: string) => {
                 this.description = value;
@@ -63,12 +63,12 @@ export class DiagramSubmitView implements OnInit {
     handInChanges(){
         this.http.submitForReview(this.dmnId, this.dmnVersion, this.description, this.reviewer).subscribe({
             next: data => {
-                this.alertService.success('Nieuwe wijziging ingediend voor review.', 'De wijziging is succesvol ingediend en zal worden beoordeeld door de aangewezen reviewer.');
+                this.alertService.success('Nieuwe wijziging ingediend voor review', 'De wijziging is succesvol ingediend en zal worden beoordeeld door de aangewezen reviewer.');
                 this.router.navigate([`/dmns/${this.dmnId}/${this.dmnVersion}`], { state: { data: data }})
             },
             error: error => {
                 if (error.status === 400) {
-                    this.alertService.error('Fout bij het indienen van de wijzigingen.', 'Alleen diagrammen met status Concept en Testing mogen ingediend worden!');
+                    this.alertService.error('Fout bij het indienen van de wijzigingen', 'Alleen diagrammen met status Concept en Testing mogen ingediend worden!');
                 }
             }
         });

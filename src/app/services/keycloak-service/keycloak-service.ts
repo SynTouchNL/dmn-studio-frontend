@@ -8,19 +8,8 @@ import Keycloak, { KeycloakProfile } from 'keycloak-js';
 export class KeycloakService {
     private keycloak = inject(Keycloak)
 
-    updateToken(): Promise<boolean> {
-        return this.keycloak.updateToken(60)
-    }
-
-    logout(): void {
-        this.keycloak.logout().then();
-    }
-
-    getToken(): string | undefined {
-        return this.keycloak?.token;
-    }
-
-    async getUserProfile(): Promise<KeycloakProfile>{
-        return await this.keycloak.loadUserProfile();
-    }
+    updateToken(): Promise<boolean> { return this.keycloak.updateToken(60); }
+    logout(): void { this.keycloak.logout().then(); }
+    getToken(): string | undefined { return this.keycloak?.token; }
+    async getUserProfile(): Promise<KeycloakProfile>{ return await this.keycloak.loadUserProfile(); }
 }

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row gx-0 gy-0">
-                <div class="col col-xxl-12">
+                <div class="col col-12">
                     @if(this.domain_selected == '') {
                         <h3>DMN Overzicht</h3>
                     } @else {
@@ -12,12 +12,11 @@
             </div>
         </div>
     </div>
-
     <div class="row mb-2 align-items-center">
-        <div class="col-xxl-1 btn-group" role="group">
+        <div class="col-1 btn-group" role="group">
             <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button">Nieuw</button>
         </div>
-        <div class="col-xxl-2">
+        <div class="col-2">
             <form [formGroup]="myForm">
                 <select [formControlName]='"domain"' class="form-select">
                     <option [ngValue]="null" selected>Alle domeinen</option>
@@ -27,7 +26,7 @@
                 </select>
             </form>
         </div>
-        <div class="offset-6 col-xxl-3">
+        <div class="offset-6 col-3">
             <div class="input-group">
                 <form [formGroup]="myForm">
                     <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
@@ -38,11 +37,9 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col">
-            <app-dmn-list-partial [dmnList]="dmnData" [domains]="true"></app-dmn-list-partial>
+            <app-dmn-list-partial [showDropdown]="true" [dmnList]="dmnData" [domains]="true"></app-dmn-list-partial>
         </div>
     </div>
-
 </div>

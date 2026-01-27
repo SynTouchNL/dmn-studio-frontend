@@ -24,8 +24,7 @@ export class TypeaheadUsersPartial {
 
     selectedUser?: UserInterface
 
-    constructor() {
-    }
+    constructor() {}
 
     formatter = (user: any) => user ? `${user.firstName} ${user.lastName}` : '';
 

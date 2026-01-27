@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row gx-0 gy-0">
-                <div class="col col-xxl-12">
+                <div class="col col-12">
                     <h3>Deployment - Overzicht</h3>
                 </div>
             </div>
@@ -10,10 +10,10 @@
     </div>
 
     <div class="row mb-2 align-items-center">
-        <div class="col-xxl-1 btn-group" role="group">
+        <div class="col-1 btn-group" role="group">
             <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button">Nieuw</button>
         </div>
-        <div class="col-xxl-2">
+        <div class="col-2">
             <form [formGroup]="myForm">
                 <select formControlName="environments" class="form-select">
                     <option [ngValue]="null" selected>Alle omgevingen</option>
@@ -23,7 +23,7 @@
                 </select>
             </form>
         </div>
-        <div class="offset-6 col-xxl-3">
+        <div class="offset-6 col-3">
             <div class="input-group">
                 <form [formGroup]="myForm">
                     <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
@@ -48,8 +48,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @for(dep of deployment_list; track dep.id) {
-                        <tr [routerLink]="['/deployments/', dep.id]" style="cursor: pointer;">
+                    @for(dep of deployment_list; track dep.deploymentId) {
+                        <tr [routerLink]="['/deployments/', dep.deploymentId]" style="cursor: pointer;">
                             <td>
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span>
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span>
