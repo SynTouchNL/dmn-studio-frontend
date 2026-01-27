@@ -28,7 +28,7 @@ export class DmnReviewView implements OnInit {
     dmnData: any = {};
     changeData: any = {};
     myForm: any;
-    approved: boolean = false;
+    approved: boolean = true;
     can_review: boolean = false;
     currentUser?: KeycloakProfile;
 
