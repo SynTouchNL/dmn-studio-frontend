@@ -36,7 +36,6 @@ export class DeploymentDetailsView implements OnInit {
         this.deploymentId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.http.getDeploymentDetails(this.deploymentId).subscribe(
             data => {
-                console.log(data);
                 this.deploymentData = Array.isArray(data) ? data : [data];
             }
         )
@@ -48,7 +47,7 @@ export class DeploymentDetailsView implements OnInit {
     }
 
     clickDelete(){
-        this.http.deleteDeployment(this.deploymentData[0].id).subscribe({
+        this.http.deleteDeployment(this.deploymentData[0].deploymentId, this.deploymentData[0].environmentId).subscribe({
             next: (data) => {
                 this.alertService.success('Deployment succesvol verwijderd', this.deploymentData[0].dmn.name + " deployment verwijderd.");
                 this.router.navigate(['/deployments']);

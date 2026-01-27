@@ -48,8 +48,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @for(dep of deployment_list; track dep.id) {
-                        <tr [routerLink]="['/deployments/', dep.id]" style="cursor: pointer;">
+                    @for(dep of deployment_list; track dep.deploymentId) {
+                        <tr [routerLink]="['/deployments/', dep.deploymentId]" style="cursor: pointer;">
                             <td>
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span>
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span>

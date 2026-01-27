@@ -1,10 +1,11 @@
 import { DMNInterface, DMNVersionInterface } from './dmn-interface';
 
 export interface DeploymentsInterface {
-    id: number;
+    deploymentId: number;
     dmnId: number;
     deployedBy: string;
     deployedTime: string;
+    environmentId: number;
     environmentName: string;
     deploymentRef: string;
     dmnVersion: {

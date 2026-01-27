@@ -380,8 +380,8 @@ export class HttpService {
      * @returns Observable<void> indicating completion.
      * @internal
      */
-    deleteDeployment(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.baseUrl}/deployments/${id}`, {
+    deleteDeployment(id: number, envId: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/deploy/${envId}/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`,
             }
