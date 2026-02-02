@@ -48,7 +48,7 @@
     "devDependencies": {
         "@angular/build": "^20.1.4",
         "@angular/cli": "^20.1.4",
-        "@angular/compiler-cli": "^20.1.0",
+        "@angular/compiler-cli": "^21.0.3",
         "@angular/localize": "^20.1.0",
         "@bpmn-io/dmn-variable-resolver": "^0.7.0",
         "@types/jasmine": "~5.1.0",
