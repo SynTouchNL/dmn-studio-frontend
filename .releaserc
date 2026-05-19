@@ -2,8 +2,98 @@
   "branches": [
     "main",
     {
-      "name": "cicd",
-      "prerelease": "cicd"
-    }
+       "name": "cicd",
+       "prerelease": "cicd"
+     }
+  ],
+  "debug": "true",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          {"breaking": true, "release": "major"},
+          {"type": "feat", "release": "minor"},
+          {"type": "fix", "release": "patch"},
+          {"type": "perf", "release": "patch"},
+          {"type": "revert", "release": "patch"},
+          {"type": "docs", "release": "patch"},
+          {"type": "style", "release": "patch"},
+          {"type": "refactor", "release": "patch"},
+          {"type": "test", "release": "patch"},
+          {"type": "build", "release": "patch"},
+          {"type": "ci", "release": "patch"},
+          {"type": "chore", "release": false}
+        ],
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        },
+        "presetConfig": {
+          "types": [
+            {"type": "feat", "section": "🍕 Features"},
+            {"type": "feature", "section": "🍕 Features"},
+            {"type": "fix", "section": "🐛 Bug Fixes"},
+            {"type": "perf", "section": "🔥 Performance Improvements"},
+            {"type": "revert", "section": "⏩ Reverts"},
+            {"type": "docs", "section": "📝 Documentation"},
+            {"type": "style", "section": "🎨 Styles"},
+            {"type": "refactor", "section": "🧑‍💻 Code Refactoring"},
+            {"type": "test", "section": "✅ Tests"},
+            {"type": "build", "section": "🤖 Build System"},
+            {"type": "ci", "section": "🔁 Continuous Integration"}
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/exec", {
+        "verifyReleaseCmd": "echo \"release-tag=v${nextRelease.version}\" >> $GITHUB_OUTPUT; echo \"release-version=${nextRelease.version}\" >> $GITHUB_OUTPUT; echo \"release-type=${nextRelease.type}\" >> $GITHUB_OUTPUT"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "[![conventional commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org) [![semantic versioning](https://img.shields.io/badge/semantic%20versioning-2.0.0-green.svg)](https://semver.org)"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md"
+        ],
+        "message": "chore(<%= nextRelease.type %>): release <%= nextRelease.version %> <%= nextRelease.channel !== null ? `on ${nextRelease.channel} channel ` : '' %>[skip ci]\n\n<%= nextRelease.notes %>"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "successComment": false,
+        "labels": false
+      }
+    ],
+    "@semantic-release/github"
   ]
 }
