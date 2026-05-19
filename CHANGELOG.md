@@ -1,5 +1,11 @@
 [![conventional commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org) [![semantic versioning](https://img.shields.io/badge/semantic%20versioning-2.0.0-green.svg)](https://semver.org)
 
+## [1.0.0-cicd.3](https://github.com/SynTouchNL/dmn-studio-frontend/compare/v1.0.0-cicd.2...v1.0.0-cicd.3) (2026-05-19)
+
+### 🔁 Continuous Integration
+
+* remove extra plugin ([265f034](https://github.com/SynTouchNL/dmn-studio-frontend/commit/265f034c67a20d7fce114677683b167298c820ae))
+
 ## [1.0.0-cicd.2](https://github.com/SynTouchNL/dmn-studio-frontend/compare/v1.0.0-cicd.1...v1.0.0-cicd.2) (2026-05-19)
 
 ### 🐛 Bug Fixes
