@@ -1,0 +1,19 @@
+on:
+    workflow_dispatch:
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Setup Node.js environment
+                uses: actions/setup-node@v6.4.0
+                with:
+                    node-version: "lts/*"
+            -   name: Install dependencies
+                run: yarn global add semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec @semantic-release/release-notes-generator @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
+
+            -   name: Semantic Release
+                run: semantic-release
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
