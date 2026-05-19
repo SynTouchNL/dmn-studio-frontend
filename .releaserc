@@ -93,7 +93,6 @@
         "successComment": false,
         "labels": false
       }
-    ],
-    "@semantic-release/github"
+    ]
   ]
 }
