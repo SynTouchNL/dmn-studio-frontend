@@ -1,0 +1,8 @@
+{
+  "branches": [
+    {
+      "name": "cicd",
+      "prerelease": "cicd"
+    }
+  ]
+}
