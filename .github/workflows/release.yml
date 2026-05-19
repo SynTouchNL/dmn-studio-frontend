@@ -25,9 +25,12 @@ jobs:
                 uses: actions/setup-node@v6.4.0
                 with:
                     node-version: "lts/*"
-            -   name: Install dependencies
+            -   name: npm clean install
                 run: npm clean-install
-                
+
+            -   name: Install dependencies
+                run: yarn global add @semantic-release/changelog @semantic-release/git  @semantic-release/exec conventional-changelog-conventionalcommits
+
             -   name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
                 run: npm audit signatures
 
