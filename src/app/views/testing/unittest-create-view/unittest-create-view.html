@@ -28,7 +28,7 @@
                         <span>Test is {{ resultStatus ? '' : 'niet'}} succesvol afgerond.</span>
                     </div>
                     <div class="card border-0 col-6 p-0 rounded-0">
-                        <div class="card-header bg-light text-dark fw-semibold text-center">Verwachtte uitkomst</div>
+                        <div class="card-header fw-semibold text-center">Verwachtte uitkomst</div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 @for (expected of expectedResult; track $index) {
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="card border-0 col-6 p-0 rounded-0">
-                        <div class="card-header bg-light text-dark fw-semibold text-center">Daadwerkelijke uitkomst</div>
+                        <div class="card-header fw-semibold text-center">Daadwerkelijke uitkomst</div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 @for (actual of actualResult; track $index) {

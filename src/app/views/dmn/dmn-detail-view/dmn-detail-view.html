@@ -24,7 +24,7 @@
                 <div class="btn-group" role="group">
                     <button (click)="clickTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
                     @if(selectedVersion(dmnData.versions).status == 3){
-                        <button (click)="clickReview()" class="btn btn-primary" type="button">Review Bekijken</button>
+                        <button (click)="clickReview()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Review Bekijken</a></button>
                     } @else {
                         <button [routerLink]="['/dmns/' + dmnId + '/new']" [state]="{ dmn: dmnData, version: dmnVersion, status: dmnData.status }" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
                     }

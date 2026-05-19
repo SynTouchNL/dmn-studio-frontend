@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import Keycloak, {KeycloakProfile} from 'keycloak-js';
 import {KeycloakService} from '../../services/keycloak-service/keycloak-service';
 import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
+import { ThemeService } from './theme.service';
 
 @Component({
   selector: 'app-navbar-partial',
@@ -23,6 +24,7 @@ export class NavbarPartial implements OnInit {
 
     constructor(
         private keycloakService: KeycloakService,
+        public themeService: ThemeService,
         private router: Router
     ) {
     }
@@ -31,6 +33,10 @@ export class NavbarPartial implements OnInit {
 
     async ngOnInit() {
         await this.loadUserProfile()
+    }
+
+    toggleTheme(): void {
+        this.themeService.toggleTheme();
     }
 
     onClickLogout() {

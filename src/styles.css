@@ -10,3 +10,178 @@ html, body {
     overflow: hidden;
 }
 
+/* =========================================
+   CAMUNDA DMN DARK MODE
+   Bootstrap 5.3 compatible
+   ========================================= */
+
+
+/* =========================================
+   ROOT CONTAINER
+   ========================================= */
+
+[data-bs-theme='dark'] .dmn-js-container,
+[data-bs-theme='dark'] .tjs-container,
+[data-bs-theme='dark'] .dmn-definitions,
+[data-bs-theme='dark'] .tjs-sheet-container {
+    background-color: #212529 !important;
+    color: #f5f5f5 !important;
+}
+
+
+/* =========================================
+   DMN TABLE DARK MODE
+   FIXED FOR YOUR DOM STRUCTURE
+   ========================================= */
+
+/* Entire table */
+[data-bs-theme='dark'] .tjs-table {
+    background-color: #212529 !important;
+    color: #f5f5f5 !important;
+}
+
+[data-bs-theme='dark'] .decision-table-properties {
+    background-color: #1e1e1e !important;
+    color: #f5f5f5 !important;
+}
+
+/* ALL table cells */
+[data-bs-theme='dark'] .tjs-table th,
+[data-bs-theme='dark'] .tjs-table td {
+    background-color: #2a2a2a !important;
+    color: #f5f5f5 !important;
+    border-color: #444 !important;
+}
+
+
+/* Input columns */
+[data-bs-theme='dark'] .tjs-table .input-cell {
+    background-color: #212529 !important;
+    color: #ffffff !important;
+}
+
+
+/* Output columns */
+[data-bs-theme='dark'] .tjs-table .output-cell {
+    background-color: #303030 !important;
+    color: #ffffff !important;
+}
+
+
+/* Annotation column */
+[data-bs-theme='dark'] .tjs-table .annotation {
+    background-color: #202020 !important;
+    color: #cccccc !important;
+}
+
+
+/* Header row */
+[data-bs-theme='dark'] .tjs-table thead th {
+    background-color: #212529 !important;
+    color: #ffffff !important;
+    border-color: #555 !important;
+}
+
+
+/* Body rows */
+[data-bs-theme='dark'] .tjs-table tbody td {
+    background-color: #2a2a2a !important;
+}
+
+
+/* Alternate rows */
+[data-bs-theme='dark'] .tjs-table tbody tr:nth-child(even) td {
+    background-color: #313131 !important;
+}
+
+
+/* Hover effect */
+[data-bs-theme='dark'] .tjs-table tbody tr:hover td {
+    background-color: #3a3a3a !important;
+}
+
+
+/* Boolean labels / small labels */
+[data-bs-theme='dark'] .tjs-table .type-ref,
+[data-bs-theme='dark'] .tjs-table .literal-expression {
+    color: #bbbbbb !important;
+}
+
+
+/* Inputs inside cells */
+[data-bs-theme='dark'] .tjs-table input,
+[data-bs-theme='dark'] .tjs-table textarea,
+[data-bs-theme='dark'] .tjs-table select {
+    background-color: #212529 !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+}
+/* =========================================
+   VIEW DRD BUTTON
+   ========================================= */
+
+[data-bs-theme='dark'] .view-drd-button {
+    background-color: #212529 !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+}
+
+[data-bs-theme='dark'] .view-drd-button:hover {
+    background-color: #3a3a3a !important;
+    border-color: #777 !important;
+}
+
+
+/* =========================================
+   DRD CANVAS
+   ========================================= */
+
+[data-bs-theme='dark'] .djs-container,
+[data-bs-theme='dark'] .diagram-container {
+    background-color: #212529 !important;
+}
+
+
+/* =========================================
+   DRD SHAPES
+   ========================================= */
+
+[data-bs-theme='dark'] .djs-element .djs-visual rect,
+[data-bs-theme='dark'] .djs-element .djs-visual path,
+[data-bs-theme='dark'] .djs-element .djs-visual polygon {
+    fill: transparent !important;
+    stroke: #777 !important;
+}
+
+
+/* =========================================
+   DRD TEXT
+   ========================================= */
+
+[data-bs-theme='dark'] .djs-label,
+[data-bs-theme='dark'] .djs-label text,
+[data-bs-theme='dark'] .djs-element text,
+[data-bs-theme='dark'] svg text,
+[data-bs-theme='dark'] svg tspan {
+    fill: #f5f5f5 !important;
+    color: #f5f5f5 !important;
+    stroke: none !important;
+}
+
+
+/* =========================================
+   CONNECTIONS
+   ========================================= */
+
+[data-bs-theme='dark'] .djs-connection path {
+    stroke: #888 !important;
+}
+
+
+/* =========================================
+   SVG BACKGROUND FIX
+   ========================================= */
+
+[data-bs-theme='dark'] .djs-container svg {
+    background-color: #212529 !important;
+}

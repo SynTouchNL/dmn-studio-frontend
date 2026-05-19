@@ -82,7 +82,7 @@
                                 <tbody>
                                     @for(dVar of this.dmnVars; track dVar.id) {
                                         <tr>
-                                            <td><a class="text-decoration-none link-dark" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
+                                            <td><a class="text-decoration-none" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
                                         </tr>
                                     } @empty {
                                         <tr>
