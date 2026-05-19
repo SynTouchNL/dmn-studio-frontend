@@ -26,10 +26,13 @@ jobs:
                 with:
                     node-version: "lts/*"
             -   name: Install dependencies
-                run: yarn global add semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec @semantic-release/release-notes-generator @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
+                run: npm clean-install
+                
+            -   name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+                run: npm audit signatures
 
             -   name: Semantic Release
-                run: semantic-release
+                run: npx semantic-release
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
