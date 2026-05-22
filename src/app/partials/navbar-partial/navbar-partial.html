@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-md bg-body py-3">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" [routerLink]="['/']">
-            <img src="DMNStudio-logo-icon.png" alt="DMN Tool Logo" width="50" height="50" class="d-inline-block align-text-top"/>
+            <img src="DMNStudio-logo-icon.png" alt="DMN Tool Logo" width="50" height="50"
+                class="d-inline-block align-text-top" />
         </a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
             <span class="visually-hidden">Toggle navigation</span>
@@ -13,20 +14,39 @@
                     <div class="col-10 align-self-center">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+                                <a class="nav-link" [routerLink]="['']" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}">Home</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']" routerLinkActive="active">DMNs</a></li>
-                            <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']" routerLinkActive="active">Deployments</a></li>
+                            <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']"
+                                    routerLinkActive="active">DMNs</a></li>
+                            <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']"
+                                    routerLinkActive="active">Deployments</a></li>
                         </ul>
                     </div>
-                    <div ngbDropdown class="col col-2 text-end align-self-center">
-                        <img ngbDropdownToggle class="rounded-circle img-fluid object-fit-scale" alt="a man smoking a cigarette" src="default_profile_image.png" width="40px" height="40px"/>
-                        @if(this.userProfile){
+                    <div class="col col-2 text-end align-self-center d-flex justify-content-end align-items-center gap-3">
+
+                        <!-- Dark mode toggle -->
+                        
+
+                        <!-- Profile dropdown -->
+                        <div ngbDropdown>
+                            <img ngbDropdownToggle class="rounded-circle img-fluid object-fit-scale" alt="profile image"
+                                src="default_profile_image.png" width="40" height="40" />
+
+                            @if(this.userProfile){
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                <button disabled ngbDropdownItem>{{ this.userProfile.firstName }} {{ this.userProfile.lastName}}</button>
-                                <button (click)="onClickLogout()" ngbDropdownItem>Log uit</button>
+                                <button disabled ngbDropdownItem>
+                                    {{ this.userProfile.firstName }} {{ this.userProfile.lastName}}
+                                </button>
+                                <button (click)="toggleTheme()" ngbDropdownItem>
+                                    {{ themeService.isDarkMode() ? 'Licht thema ☀️' : 'Donker thema 🌙' }}
+                                </button>
+                                <button (click)="onClickLogout()" ngbDropdownItem>
+                                    Log uit
+                                </button>
                             </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
