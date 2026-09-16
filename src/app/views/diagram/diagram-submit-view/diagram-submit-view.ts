@@ -41,7 +41,7 @@ export class DiagramSubmitView implements OnInit {
             reviewer: new FormControl(null)
         });
 
-        this.http.getUsersByRole("approver").subscribe(
+      this.http.getUsersByRole("dmnstudio_approver").subscribe(
             (data: KeycloakProfile[]) => {
                 this.possibleReviewers = data;
             }
