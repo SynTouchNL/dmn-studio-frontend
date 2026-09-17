@@ -19,7 +19,7 @@ import { UnittestListView } from './views/testing/unittest-list-view/unittest-li
 import {UnittestDetailView} from './views/testing/unittest-detail-view/unittest-detail-view';
 import {UnittestCreateView} from './views/testing/unittest-create-view/unittest-create-view';
 import {DmnReviewView} from './views/dmn/dmn-review-view/dmn-review-view';
-import { ROLES } from '../roles';
+import { ROUTE_ROLES } from '../auth';
 
 export const routes: Routes = [
     // Deployment routes
@@ -28,7 +28,7 @@ export const routes: Routes = [
         component: DeploymentsListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEPLOYER, ROLES.DEVELOPER]
+            role: ROUTE_ROLES.DEPLOYMENT_LIST
         }
     },
     {
@@ -36,7 +36,7 @@ export const routes: Routes = [
         component: DeploymentCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DEPLOYMENT_CREATE
         }
     },
     {
@@ -44,7 +44,7 @@ export const routes: Routes = [
         component: DeploymentDetailsView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DEPLOYMENT_DETAIL
         }
     },
 
@@ -54,7 +54,7 @@ export const routes: Routes = [
         component: UnittestListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.TEST_LIST
         }
     },
     {
@@ -62,7 +62,7 @@ export const routes: Routes = [
         component: UnittestDetailView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.TEST_DETAIL
         }
     },
     {
@@ -70,7 +70,7 @@ export const routes: Routes = [
         component: UnittestCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.TEST_CREATE
         }
     },
     {
@@ -78,7 +78,7 @@ export const routes: Routes = [
         component: DiagramSubmitView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_SUBMIT
         }
     },
     {
@@ -86,7 +86,7 @@ export const routes: Routes = [
         component: DiagramEditorView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_EDIT
         }
     },
     {
@@ -94,7 +94,7 @@ export const routes: Routes = [
         component: DiagramReadonlyView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_VIEW
         }
     },
     {
@@ -102,7 +102,7 @@ export const routes: Routes = [
         component: DmnReviewView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_REVIEW
         }
     },
     {
@@ -110,7 +110,7 @@ export const routes: Routes = [
         component: DiagramCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_VERSION_CREATE
         }
     },
     {
@@ -118,7 +118,7 @@ export const routes: Routes = [
         component: DmnDetailView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_DETAIL
         }
     },
     {
@@ -126,7 +126,7 @@ export const routes: Routes = [
         component: DmnCreateView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_CREATE
         }
     },
     {
@@ -134,7 +134,7 @@ export const routes: Routes = [
         component: DmnListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.DMN_LIST
         }
     },
 
@@ -144,7 +144,7 @@ export const routes: Routes = [
         component: IndexView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: ROUTE_ROLES.HOME
         }
     },
     {
