@@ -3,10 +3,12 @@ import NavigatedViewer from "dmn-js/lib/NavigatedViewer";
 import { from, Observable } from 'rxjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ROUTE_ROLES } from '../../../../auth';
 
 // Services
 import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 // Interfaces
 import { ViewList } from '../../../interfaces/view-interface';
@@ -37,6 +39,7 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
     idx: number = 0;
 
     private activatedRoute = inject(ActivatedRoute);
+    private keycloakService = inject(KeycloakService);
 
     constructor(
         private router: Router,
@@ -145,6 +148,12 @@ export class DiagramReadonlyView implements AfterViewInit, OnDestroy {
         document.body.removeChild(element);
     }
 
-    canBeEdited(): boolean { return this.dmnStatus <= 3; }
+    canBeEdited(): boolean {
+        return this.dmnStatus <= 3 && this.keycloakService.hasAnyRole(ROUTE_ROLES.DMN_EDIT);
+    }
+
+    canBeSubmitted(): boolean {
+        return this.dmnStatus === 1 && this.keycloakService.hasAnyRole(ROUTE_ROLES.DMN_SUBMIT);
+    }
 
 }

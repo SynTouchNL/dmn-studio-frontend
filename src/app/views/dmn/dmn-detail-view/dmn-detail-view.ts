@@ -3,9 +3,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DmnStatusPartial } from '../../../partials/dmn-status-partial/dmn-status-partial';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { DMNVersionInterface } from '../../../interfaces/dmn-interface';
+import { ROUTE_ROLES } from '../../../../auth';
 
 // Services
 import { HttpService } from '../../../services/http-service/http-service';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 import { Title } from '@angular/platform-browser';
 
 // Pipes
@@ -35,6 +37,7 @@ export class DmnDetailView implements OnInit {
     versionInProduction: number = 0;
 
     private activatedRoute = inject(ActivatedRoute);
+    private keycloakService = inject(KeycloakService);
 
     constructor(
         private http: HttpService,
@@ -81,6 +84,10 @@ export class DmnDetailView implements OnInit {
 
     clickReview() {
         this.router.navigate(['/dmns/' + this.dmnId + '/' + this.dmnVersion + '/review'], {state: {data: this.dmnData}});
+    }
+
+    canViewTests(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.TEST_LIST);
     }
 
     clickTests() {

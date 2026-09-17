@@ -22,7 +22,7 @@
             </div>
             <div class="col text-end align-self-center">
                 <div class="btn-group" role="group">
-                    <button (click)="clickTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
+                    <button (click)="clickTests()" [disabled]="!canViewTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
                     @if(selectedVersion(dmnData.versions).status == 3){
                         <button (click)="clickReview()" class="btn btn-primary" type="button">Review Bekijken</button>
                     } @else {
