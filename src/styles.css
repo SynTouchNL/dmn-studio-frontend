@@ -10,3 +10,9 @@ html, body {
     overflow: hidden;
 }
 
+/* Prevent Bootstrap's skeleton styles from affecting dmn-js placeholder text. */
+.dmn-js-parent .placeholder {
+    background-color: transparent;
+    opacity: 1;
+    cursor: inherit;
+}
