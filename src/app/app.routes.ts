@@ -94,7 +94,7 @@ export const routes: Routes = [
         component: DiagramReadonlyView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER, ROLES.READ]
         }
     },
     {
@@ -118,7 +118,7 @@ export const routes: Routes = [
         component: DmnDetailView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER, ROLES.READ]
         }
     },
     {
@@ -134,7 +134,7 @@ export const routes: Routes = [
         component: DmnListView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER, ROLES.READ]
         }
     },
 
@@ -144,7 +144,7 @@ export const routes: Routes = [
         component: IndexView,
         canActivate: [canActivateAuthRole],
         data: {
-            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER]
+            role: [ROLES.DEVELOPER, ROLES.APPROVER, ROLES.DEPLOYER, ROLES.READ]
         }
     },
     {
