@@ -5,6 +5,7 @@ import { AlertService } from '../../../services/alert-service/alert-service';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KeycloakProfile } from 'keycloak-js';
+import { ROLES } from '../../../../roles';
 
 @Component({
     selector: 'app-diagram-submit-view',
@@ -41,7 +42,7 @@ export class DiagramSubmitView implements OnInit {
             reviewer: new FormControl(null)
         });
 
-      this.http.getUsersByRole("dmnstudio_approver").subscribe(
+      this.http.getUsersByRole(ROLES.APPROVER).subscribe(
             (data: KeycloakProfile[]) => {
                 this.possibleReviewers = data;
             }
