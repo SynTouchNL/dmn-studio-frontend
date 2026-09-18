@@ -6,24 +6,19 @@
     </div>
     <div class="row">
         <div class="col">
-            <h3>DMN Unit-tests - {{ dmnData?.name }}</h3>
+            <h1 class="mb-4">Tests · {{ dmnData?.name }}</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <form>
-                <div class="input-group"></div>
-            </form>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col">
             <ul ngbNav #nav="ngbNav" class="nav-tabs">
                 <li [ngbNavItem]="1">
                     <button ngbNavLink>Uitgevoerde tests</button>
                     <ng-template ngbNavContent>
-                        <div class="table-responsive">
-                            <table class="table">
+                        @if(testData.length) {
+                        <div class="table-responsive bg-white border rounded" tabindex="0" role="region" aria-label="Uitgevoerde tests">
+                            <table class="table align-middle data-table data-table-wide mb-0 small">
                                 <thead>
                                     <tr>
                                         <th scope="col">Beslissingsnaam</th>
@@ -35,58 +30,53 @@
                                 <tbody>
                                     @for(td of this.testData; track td.id) {
                                         <tr>
-                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
-                                                <span>{{ td.decisionName }}</span>
-                                            </td>
-                                            <td [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }" style="cursor: pointer;">
-                                                <span>{{ td.title }}</span>
-                                            </td>
+                                            <td><a [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }">{{ td.decisionName }}</a></td>
+                                            <td><a [routerLink]="['view']" [state]="{ data: td, dmnData: dmnData, dmnVars: dmnVars }">{{ td.title }}</a></td>
                                             <td>
                                                 <div class="align-self-center">
                                                     <span class="badge {{ td.passed ? 'bg-success' : 'bg-danger' }}">
                                                         @if(td.passed){
-                                                            <i class="fa-solid fa-check"></i>
+                                                            Geslaagd
                                                         } @else {
-                                                            <i class="fa-solid fa-x"></i>
+                                                            Niet geslaagd
                                                         }
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm" (click)="deleteTest(td.id)"><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-outline-danger btn-sm" [attr.aria-label]="'Test verwijderen: ' + td.title" (click)="deleteTest(td.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             </td>
-                                        </tr>
-                                    } @empty {
-                                        <tr>
-                                            <td>Geen tests gevonden...</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
+                        } @else {
+                            <div class="bg-white border rounded py-5 px-3 text-center text-body-secondary" role="status">
+                                <p class="fw-semibold mb-1">Nog geen tests uitgevoerd</p>
+                                <p class="small mb-0">Kies Aanmaken om een test voor een beslissing samen te stellen.</p>
+                            </div>
+                        }
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="2">
                     <button class="text-decoration-none" ngbNavLink>Aanmaken</button>
                     <ng-template ngbNavContent>
-                        <div class="table-responsive">
-                            <table class="table">
+                        <div class="table-responsive bg-white border rounded" tabindex="0" role="region" aria-label="Beslissingen">
+                            <table class="table align-middle data-table mb-0 small">
                                 <thead>
                                 <tr>
-                                    <th>Beslissingsnaam</th>
+                                    <th scope="col">Beslissingsnaam</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @for(dVar of this.dmnVars; track dVar.id) {
                                         <tr>
-                                            <td><a class="text-decoration-none link-dark" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
+                                            <td><a class="text-decoration-none" [routerLink]="['create']"  [state]="{data: dVar, fresh: true}">{{ dVar.name }}</a></td>
                                         </tr>
                                     } @empty {
                                         <tr>
-                                            <td>Geen beslissingen gevonden</td>
+                                            <td class="py-5 px-3 text-center text-body-secondary">Geen beslissingen gevonden.</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -95,7 +85,7 @@
                     </ng-template>
                 </li>
             </ul>
-            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+            <div class="pt-4" [ngbNavOutlet]="nav"></div>
         </div>
     </div>
 </div>

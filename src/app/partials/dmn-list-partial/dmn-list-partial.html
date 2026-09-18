@@ -1,53 +1,42 @@
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Versie</th>
-        @if(this.domains){
-            <th scope="col">Domein</th>
-        }
-        <th scope="col">DMN</th>
-        <th scope="col">Eigenaar</th>
-        <th scope="col">Laatste wijziging</th>
-        <th scope="col">Status</th>
-    </tr>
-    </thead>
-    <tbody>
-        @for(dmn of dmnList; track dmn.id + '-' + findLatest(dmn.versions).version) {
-            <tr [routerLink]="['/dmns', dmn.id, findLatest(dmn.versions).version]" style="cursor: pointer;">
-                <td><span class="badge {{ findLatest(dmn.versions).status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ "v" + findLatest(dmn.versions).version }}</span></td>
-                @if(this.domains){
-                    <td>{{ dmn.domain.name }}</td>
+<section class="bg-white border rounded" aria-label="DMNs">
+    @if(dmnList.length) {
+    <div class="table-responsive rounded" tabindex="0" role="region" aria-label="DMN-overzicht">
+        <table class="table table-hover align-middle data-table data-table-wide mb-0 small">
+            <thead><tr>
+                <th scope="col">DMN</th>
+                <th scope="col">Versie</th>
+                @if(this.domains){ <th scope="col">Domein</th> }
+                <th scope="col">Eigenaar</th>
+                <th scope="col">Laatste wijziging</th>
+                <th scope="col">Status</th>
+            </tr></thead>
+            <tbody>
+                @for(dmn of dmnList; track dmn.id + '-' + findLatest(dmn.versions).version) {
+                    <tr [routerLink]="['/dmns', dmn.id, findLatest(dmn.versions).version]" class="table-row-link" tabindex="-1">
+                        <td class="table-name"><a [routerLink]="['/dmns', dmn.id, findLatest(dmn.versions).version]" (click)="$event.stopPropagation()">{{ dmn.name }}</a></td>
+                        <td><span class="badge text-bg-light border">v{{ findLatest(dmn.versions).version }}</span></td>
+                        @if(this.domains){ <td>{{ dmn.domain.name }}</td> }
+                        <td>{{ dmn.owner }}</td>
+                        @if(findLatest(dmn.versions).modifiedDate != null){
+                            <td class="text-nowrap">{{ findLatest(dmn.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
+                        } @else { <td class="text-body-secondary">Geen wijziging</td> }
+                        <td><span class="badge {{ findLatest(dmn.versions).status | classPipe }}">{{ findLatest(dmn.versions).status | statusPipe }}</span></td>
+                    </tr>
                 }
-                <td>{{ dmn.name }}</td>
-                <td>{{ dmn.owner }}</td>
-                @if(findLatest(dmn.versions).modifiedDate != null){
-                    <td>{{ findLatest(dmn.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
-                } @else {
-                    <td>Geen wijziging</td>
-                }
-                <td><span class="badge {{ findLatest(dmn.versions).status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ findLatest(dmn.versions).status | statusPipe }}</span></td>
-            </tr>
-        } @empty {
-            <tr>
-                <td colspan="6" class="text-center">Geen DMNs gevonden.</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@if(showDropdown){
-    <div class="d-flex justify-content-between p-2">
-        <ngb-pagination
-            [collectionSize]="collectionSize"
-            [(page)]="page"
-            [pageSize]="pageSize"
-            (pageChange)="refreshDMNs()">
-        </ngb-pagination>
-
-        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDMNs()">
-            <option [ngValue]="10">10 DMNs per pagina</option>
-            <option [ngValue]="25">25 DMNs per pagina</option>
-            <option [ngValue]="50">50 DMNs per pagina</option>
-        </select>
+            </tbody>
+        </table>
     </div>
-}
+    } @else {
+        <div class="py-5 px-3 text-center text-body-secondary" role="status"><p class="fw-semibold mb-1">Geen DMNs gevonden</p><p class="small mb-0">Er zijn geen DMNs om weer te geven. Controleer eventueel uw zoekterm of domeinfilter.</p></div>
+    }
+    @if(showDropdown){
+        <div class="p-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <ngb-pagination class="mw-100 overflow-x-auto p-1" [class.d-none]="collectionSize === 0" [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshDMNs()"></ngb-pagination>
+            <select class="form-select w-auto mw-100" aria-label="Aantal DMNs per pagina" [(ngModel)]="pageSize" (ngModelChange)="refreshDMNs()">
+                <option [ngValue]="10">10 DMNs per pagina</option>
+                <option [ngValue]="25">25 DMNs per pagina</option>
+                <option [ngValue]="50">50 DMNs per pagina</option>
+            </select>
+        </div>
+    }
+</section>

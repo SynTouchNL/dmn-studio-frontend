@@ -1,88 +1,76 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row gx-0 gy-0">
-                <div class="col col-12">
-                    <h3>Deployment - Overzicht</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-2 align-items-center">
-        <div class="col-1 btn-group" role="group">
-            <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button">Nieuw</button>
-        </div>
-        <div class="col-2">
+    <header class="mb-4 d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div><h1>Deployments</h1><p class="text-body-secondary mt-2 mb-0">Bekijk uitgerolde DMNs en hun omgeving.</p></div>
+        <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button"><i class="fa-solid fa-plus me-2" aria-hidden="true"></i>Nieuwe deployment</button>
+    </header>
+    <div class="row g-3 mb-4 align-items-end">
+        <div class="col-12 col-md-4 col-lg-3">
             <form [formGroup]="myForm">
-                <select formControlName="environments" class="form-select">
+                <label for="environment-filter" class="form-label small fw-semibold">Omgeving</label>
+                <select id="environment-filter" formControlName="environments" class="form-select">
                     <option [ngValue]="null" selected>Alle omgevingen</option>
-                    @for(env of environments; track env.id + " - " + env.name) {
-                        <option [ngValue]="env">{{ env.name }}</option>
-                    }
+                    @for(env of environments; track env.id + " - " + env.name) { <option [ngValue]="env">{{ env.name }}</option> }
                 </select>
             </form>
         </div>
-        <div class="offset-6 col-3">
-            <div class="input-group">
-                <form [formGroup]="myForm">
-                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
-                </form>
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+        <div class="col-12 col-md-5 col-lg-4 ms-md-auto">
+            <form [formGroup]="myForm">
+                <label for="deployment-search" class="form-label small fw-semibold">Zoeken</label>
+                <div class="input-group">
+                    <input id="deployment-search" formControlName="search" class="form-control" type="text" placeholder="Zoek een deployment..." />
+                    <button class="btn btn-outline-secondary" type="button" aria-label="Deployments zoeken"><i class="fas fa-search" aria-hidden="true"></i></button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col">
-            <table class="table">
+    <section class="bg-white border rounded" aria-label="Deployments">
+        @if(deployment_list.length) {
+        <div class="table-responsive rounded" tabindex="0" role="region" aria-label="Deployment-overzicht">
+            <table class="table table-hover align-middle data-table data-table-wide mb-0 small">
                 <thead>
                 <tr>
+                    <th scope="col">DMN</th>
                     <th scope="col">Versie</th>
                     <th scope="col">Omgeving</th>
-                    <th scope="col">DMN</th>
                     <th scope="col">Door</th>
                     <th scope="col">Tijdstip</th>
                 </tr>
                 </thead>
                 <tbody>
                     @for(dep of deployment_list; track dep.deploymentId) {
-                        <tr [routerLink]="['/deployments/', dep.deploymentId]" style="cursor: pointer;">
+                        <tr [routerLink]="['/deployments/', dep.deploymentId]" class="table-row-link" tabindex="-1">
+                            <td class="table-name"><a [routerLink]="['/deployments/', dep.deploymentId]" (click)="$event.stopPropagation()">{{ dep.dmn.name }}</a></td>
                             <td>
-                                <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span>
-                                <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span>
+                                <span class="badge {{ dep.dmnVersion.status | classPipe }}">v{{ dep.dmnVersion.version }}</span>
+                                <span class="badge {{ dep.dmnVersion.status | classPipe }}">{{ dep.dmnVersion.status | statusPipe }}</span>
                             </td>
                             <td>{{ dep.environmentName }}</td>
-                            <td>{{ dep.dmn.name }}</td>
                             <td>{{ dep.deployedBy }}</td>
                             <td>{{ dep.deployedTime | date:'dd-MM-yyyy HH:mm' }}</td>
-                        </tr>
-                    } @empty {
-                        <tr>
-                            <td colspan="6" class="text-center">Geen Deployments gevonden.</td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
 
-            <div class="d-flex justify-content-between p-2">
-                <ngb-pagination
+        } @else {
+            <div class="py-5 px-3 text-center text-body-secondary" role="status"><p class="fw-semibold mb-1">Geen deployments gevonden</p><p class="small mb-0">Er zijn geen deployments om weer te geven. Controleer eventueel uw zoekterm of omgevingsfilter.</p></div>
+        }
+        <div class="p-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <ngb-pagination class="mw-100 overflow-x-auto p-1"
+                    [class.d-none]="collectionSize === 0"
                     [collectionSize]="collectionSize"
                     [(page)]="page"
                     [pageSize]="pageSize"
                     (pageChange)="refreshDeployments()">
                 </ngb-pagination>
 
-                <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshDeployments()">
-                    <option [ngValue]="10">10 DMNs per pagina</option>
-                    <option [ngValue]="25">25 DMNs per pagina</option>
-                    <option [ngValue]="50">50 DMNs per pagina</option>
+                <select class="form-select w-auto mw-100" aria-label="Aantal deployments per pagina" [(ngModel)]="pageSize" (ngModelChange)="refreshDeployments()">
+                    <option [ngValue]="10">10 deployments per pagina</option>
+                    <option [ngValue]="25">25 deployments per pagina</option>
+                    <option [ngValue]="50">50 deployments per pagina</option>
                 </select>
             </div>
 
-        </div>
-    </div>
-
+    </section>
 </div>

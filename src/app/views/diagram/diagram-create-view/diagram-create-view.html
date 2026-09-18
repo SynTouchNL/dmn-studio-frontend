@@ -1,32 +1,26 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row gx-0 gy-0">
-                <div class="col col-12">
-                    <h3>Nieuwe DMN Versie aanmaken</h3>
-                </div>
+    <header class="mb-4">
+        <h1>Nieuwe DMN versie aanmaken</h1>
+        <p class="text-body-secondary mt-2 mb-0">Kies hoe u de nieuwe versie wilt starten.</p>
+    </header>
+    <div class="card form-panel">
+        <div class="card-body p-3 p-md-4">
+            <div class="mb-4">
+                <label for="reuseDmn" class="form-label small fw-semibold">Wilt u de huidige versie van de DMN hergebruiken?</label>
+                <select id="reuseDmn" class="form-select" [(ngModel)]="reuseDmn" name="reuseDmn" required>
+                    <option [ngValue]="0" disabled>Selecteer een optie</option>
+                    <option [ngValue]="1">Ja</option>
+                    <option [ngValue]="2">Nee, nieuwe DMN</option>
+                    <option [ngValue]="3">Nee, importeer een DMN</option>
+                </select>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <label for="reuseDmn" class="form-label">Wilt u de huidige versie van de DMN hergebruiken?</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="reuseDmn" name="reuseDmn" required>
-                <option [ngValue]="0" disabled>Selecteer een optie</option>
-                <option [ngValue]="1">Ja</option>
-                <option [ngValue]="2">Nee, nieuwe DMN</option>
-                <option [ngValue]="3">Nee, importeer een DMN</option>
-            </select>
             @if(reuseDmn === 3) {
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Importeer DMN bestand</label>
+                <div class="mb-4">
+                    <label for="formFile" class="form-label small fw-semibold">Importeer DMN bestand</label>
                     <input class="form-control" type="file" id="formFile" (change)="onFileChange($event)" required>
                 </div>
             }
-            <button (click)="createNewVersion()" class="btn btn-primary">Aanmaken</button>
-        </div>
-        <div class="col-4">
-
+            <div class="border-top pt-4"><button (click)="createNewVersion()" class="btn btn-primary">Aanmaken</button></div>
         </div>
     </div>
 </div>

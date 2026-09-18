@@ -1,16 +1,14 @@
-<div class="row">
-    <div class="col mb-0 pb-0">
-        <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item"><a [routerLink]="['/']" class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover"><span>Home</span></a></li>
-                @for(breadcrumb of breadcrumbs; track breadcrumb.label){
-                    <li class="breadcrumb-item">
-                        @if(breadcrumb.current){
-                            <span class="text-dark">{{ breadcrumb.label }}</span>
-                        } @else {
-                            <a [routerLink]="breadcrumb.url" class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover">{{ breadcrumb.label }}</a>
-                        }
-                    </li>
+<nav aria-label="Kruimelpad">
+    <ol class="breadcrumb small mb-4">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+        @for(breadcrumb of breadcrumbs; track breadcrumb.label){
+            <li class="breadcrumb-item" [class.active]="breadcrumb.current" [attr.aria-current]="breadcrumb.current ? 'page' : null">
+                @if(breadcrumb.current){
+                    <span>{{ breadcrumb.label }}</span>
+                } @else {
+                    <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a>
                 }
-        </ol>
-    </div>
-</div>
+            </li>
+        }
+    </ol>
+</nav>

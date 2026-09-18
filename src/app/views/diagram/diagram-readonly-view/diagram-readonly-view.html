@@ -1,30 +1,19 @@
-<div class="contained-fluid">
-    <div class="row">
-        <div class="col-11">
-            <div class="dmn-container">
-                <div #dmnViewerRef id="dmn-canvas">
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="editor-tabs">
-                                @for(view of views; track view; let idx = $index) {
-                                    <div class="tab" [class.active]="idx === activeViewIdx" (click)="openView(idx)">
-                                        <span class="{{ checkClass(view.type) }}"></span>
-                                        {{ view.element.name || view.element.id }}
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="col-1">
-                            <div class="btn-group" role="group" aria-label="Button group">
-                                <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/edit']" [state]="{id: this.dmnId, version: this.dmnVersion, file: this.dmnFile}" type="button" class="btn btn-primary" [disabled]="!canBeEdited()">Bewerken</button>
-                                <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/indienen']" class="btn btn-primary" [disabled]="!canBeSubmitted()">Indienen</button>
-
-                                <button class="btn btn-primary" (click)="exportDMN()">Exporteren</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid px-3 px-md-4">
+    <header class="mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div><h1 class="mb-1">DMN bekijken</h1><span class="text-body-secondary small">Versie {{ dmnVersion }}</span></div>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/edit']" [state]="{id: this.dmnId, version: this.dmnVersion, file: this.dmnFile}" type="button" class="btn btn-primary" [disabled]="!canBeEdited()">Bewerken</button>
+            <button [routerLink]="['/dmns/' + this.dmnId + '/' + this.dmnVersion +'/indienen']" class="btn btn-outline-secondary" [disabled]="!canBeSubmitted()">Indienen</button>
+            <button class="btn btn-outline-secondary" (click)="exportDMN()">Exporteren</button>
         </div>
-    </div>
+    </header>
+    <nav class="editor-tabs nav nav-pills flex-nowrap gap-1 overflow-x-auto p-1 mb-3" aria-label="Diagramweergaven">
+        @for(view of views; track view; let idx = $index) {
+            <button type="button" class="nav-link flex-shrink-0" [class.active]="idx === activeViewIdx" [attr.aria-pressed]="idx === activeViewIdx" (click)="openView(idx)">
+                <span class="{{ checkClass(view.type) }}" aria-hidden="true"></span>
+                {{ view.element.name || view.element.id }}
+            </button>
+        }
+    </nav>
+    <div class="dmn-container"><div #dmnViewerRef id="dmn-canvas"></div></div>
 </div>

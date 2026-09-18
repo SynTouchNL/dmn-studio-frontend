@@ -1,45 +1,31 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row gx-0 gy-0">
-                <div class="col col-12">
-                    @if(this.domain_selected == '') {
-                        <h3>DMN Overzicht</h3>
-                    } @else {
-                        <h3>DMNs - {{ this.domain_selected.name}}</h3>
-                    }
-                </div>
-            </div>
+    <header class="mb-4 d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+            @if(this.domain_selected == '') { <h1>DMNs</h1> }
+            @else { <h1>DMNs · {{ this.domain_selected.name }}</h1> }
+            <p class="text-body-secondary mt-2 mb-0">Beheer uw beslismodellen, versies en beoordelingen.</p>
         </div>
-    </div>
-    <div class="row mb-2 align-items-center">
-        <div class="col-1 btn-group" role="group">
-            <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button">Nieuw</button>
-        </div>
-        <div class="col-2">
+        <button [routerLink]="['/dmns/new']" class="btn btn-primary" type="button"><i class="fa-solid fa-plus me-2" aria-hidden="true"></i>Nieuwe DMN</button>
+    </header>
+    <div class="row g-3 mb-4 align-items-end">
+        <div class="col-12 col-md-4 col-lg-3">
             <form [formGroup]="myForm">
-                <select [formControlName]='"domain"' class="form-select">
+                <label class="form-label small fw-semibold" for="domain-filter">Domein</label>
+                <select id="domain-filter" [formControlName]='"domain"' class="form-select">
                     <option [ngValue]="null" selected>Alle domeinen</option>
-                    @for(domain of domains; track domain.id + " - " + domain.name) {
-                        <option [ngValue]="domain">{{ domain.name }}</option>
-                    }
+                    @for(domain of domains; track domain.id + " - " + domain.name) { <option [ngValue]="domain">{{ domain.name }}</option> }
                 </select>
             </form>
         </div>
-        <div class="offset-6 col-3">
-            <div class="input-group">
-                <form [formGroup]="myForm">
-                    <input formControlName="search" class="form-control" type="text" placeholder="Zoeken..." />
-                </form>
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+        <div class="col-12 col-md-5 col-lg-4 ms-md-auto">
+            <form [formGroup]="myForm">
+                <label class="form-label small fw-semibold" for="dmn-search">Zoeken</label>
+                <div class="input-group">
+                    <input id="dmn-search" formControlName="search" class="form-control" type="text" placeholder="Zoek een DMN..." />
+                    <button class="btn btn-outline-secondary" type="button" aria-label="DMNs zoeken"><i class="fas fa-search" aria-hidden="true"></i></button>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <app-dmn-list-partial [showDropdown]="true" [dmnList]="dmnData" [domains]="true"></app-dmn-list-partial>
-        </div>
-    </div>
+    <app-dmn-list-partial [showDropdown]="true" [dmnList]="dmnData" [domains]="true"></app-dmn-list-partial>
 </div>

@@ -1,0 +1,14 @@
+.result-values {
+    font-size: .875rem;
+    overflow-wrap: anywhere;
+}
+.result-values > div + div {
+    border-top: 1px solid var(--bs-border-color);
+}
+.result-values dt {
+    font-weight: 600;
+}
+.result-values dd {
+    margin: .25rem 0 0;
+    white-space: pre-wrap;
+}

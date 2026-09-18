@@ -1,0 +1,8 @@
+.navbar-brand { color: #243247; font-size: 1.125rem; font-weight: 700; letter-spacing: -.025em; }
+.navbar-nav .nav-link { padding: .65rem 1rem; border-radius: .375rem; color: #536379; font-size: .875rem; font-weight: 600; }
+.navbar-nav .nav-link:hover { background: #f5f7fa; color: #243247; }
+.navbar-nav .nav-link.active { color: #2459a6; background: #eaf1fb; }
+.account-toggle { color: #45566d; }
+.account-toggle:hover { background: #f5f7fa; }
+
+.account-name { max-width: 10rem; }
