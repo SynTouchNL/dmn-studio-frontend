@@ -1,18 +1,102 @@
-/* You can add global styles to this file, and also import other style files */
-/*@import "../node_modules/bootstrap/dist/css/bootstrap.css";*/
+@import "./styles/diagram.css";
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    width: 100%;
-    overflow: hidden;
+:root {
+    --bs-body-font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --bs-body-color: #243247;
+    --bs-secondary-color: #607086;
+    --bs-border-color: #dce3eb;
+    --bs-border-radius: .5rem;
 }
 
-/* Prevent Bootstrap's skeleton styles from affecting dmn-js placeholder text. */
-.dmn-js-parent .placeholder {
-    background-color: transparent;
-    opacity: 1;
-    cursor: inherit;
+body {
+    background: #f5f7fa;
+}
+app-root {
+    display: block;
+    min-height: 100vh;
+}
+h1 {
+    font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -.025em;
+}
+h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+h1, h2, h3 {
+    color: #1c2b40;
+    overflow-wrap: anywhere;
+}
+.form-panel {
+    max-width: 760px;
+}
+:is(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid var(--bs-primary);
+    outline-offset: 3px;
+}
+
+/* Shared data tables: comfortable cells, readable names, local scrolling. */
+.data-table {
+    --bs-table-hover-bg: #f3f7fc;
+}
+.data-table > :not(caption) > * > * {
+    padding: 1rem;
+}
+.data-table thead th {
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    font-weight: 600;
+    white-space: nowrap;
+}
+.data-table tbody tr:last-child > * {
+    border-bottom: 0;
+}
+.data-table a {
+    font-weight: 600;
+    text-decoration: none;
+}
+.data-table a:hover {
+    text-decoration: underline;
+}
+.data-table td, .detail-list dd, .alert {
+    overflow-wrap: anywhere;
+}
+.table-name {
+    min-width: 11rem;
+}
+.data-table-wide {
+    min-width: 48rem;
+}
+.table-row-link {
+    cursor: pointer;
+}
+.data-table .text-nowrap {
+    font-variant-numeric: tabular-nums;
+}
+.pagination {
+    margin-bottom: 0;
+}
+
+/* Shared definition lists used by DMN, deployment, and review details. */
+.detail-list {
+    margin: 0;
+    font-size: .875rem;
+}
+.detail-list > div {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+.detail-list > div:last-child {
+    border-bottom: 0;
+}
+.detail-list dt {
+    font-weight: 500;
+    color: var(--bs-secondary-color);
+}
+.detail-list dd {
+    margin: 0;
+}
+.min-width-0 {
+    min-width: 0;
 }

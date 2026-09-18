@@ -1,5 +1,7 @@
 <app-navbar-partial></app-navbar-partial>
-<div class="container">
-    <app-alert-partial></app-alert-partial>
-</div>
-<router-outlet></router-outlet>
+<main #mainContent id="main-content" class="py-4 py-md-5" tabindex="-1">
+    <div class="container" aria-live="polite">
+        <app-alert-partial></app-alert-partial>
+    </div>
+    <router-outlet></router-outlet>
+</main>

@@ -1,18 +1,18 @@
-<div class="row mb-3">
-    <div class="col text-start">
-        <h4>{{ title }}</h4>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+    <div class="min-width-0">
+        <h2 class="mb-0">{{ title }}</h2>
     </div>
-    <div class="col text-end">
-        <button class="btn btn-primary" type="button" [disabled]="maxRows && formArray.length >= maxRows && isInput" (click)="addPair()">Toevoegen</button>
+    <div>
+        <button class="btn btn-outline-secondary" type="button" [disabled]="maxRows && formArray.length >= maxRows && isInput" (click)="addPair()">Toevoegen</button>
     </div>
 </div>
 
 @for(pair of rows; track $index){
-    <div [formGroup]="pair" class="mb-2">
-        <div class="row">
-            <div class="col col-6">
-                <label class="form-label">Key</label>
-                <select formControlName="key" class="form-select form-control">
+    <div [formGroup]="pair" class="py-3 border-bottom">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-sm">
+                <label class="form-label small fw-semibold" [for]="(isInput ? 'input-key-' : 'output-key-') + $index">Variabele</label>
+                <select [id]="(isInput ? 'input-key-' : 'output-key-') + $index" formControlName="key" class="form-select">
                     <option [ngValue]="null" disabled selected>Kies een variabele</option>
                     @for(v of variables; track v.name){
                         <option [ngValue]="v.name">{{ v.name }}</option>
@@ -20,15 +20,15 @@
                 </select>
             </div>
 
-            <div class="col col-5">
-                <label class="form-label">Value</label>
+            <div class="col-12 col-sm">
+                <label class="form-label small fw-semibold" [for]="(isInput ? 'input-value-' : 'output-value-') + $index">Waarde</label>
                 @let selected = getSelectedKey($index);
                 @switch(selected?.typeRef) {
                     @case('string') {
                         @if(!selected?.values?.length) {
-                            <input formControlName="value" class="form-control" type="text" />
+                            <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="text" />
                         } @else {
-                            <select formControlName="value" class="form-select">
+                            <select [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-select">
                                 <option [ngValue]="null" disabled selected>Kies een waarde</option>
                                 @for(v of selected.values; track v){
                                     <option [ngValue]="v">{{ v }}</option>
@@ -38,11 +38,11 @@
                     }
 
                     @case('integer') {
-                        <input formControlName="value" class="form-control" type="number" placeholder="Vul een getal in" />
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="number" placeholder="Vul een getal in" />
                     }
 
                     @case('boolean') {
-                        <select formControlName="value" class="form-select">
+                        <select [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-select">
                             <option [ngValue]="null" disabled selected>Kies een waarde</option>
                             <option [ngValue]="true">True</option>
                             <option [ngValue]="false">False</option>
@@ -50,38 +50,38 @@
                     }
 
                     @case('date') {
-                        <input formControlName="value" class="form-control" type="date" />
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="date" />
                     }
 
                     @case('time'){
-                        <input formControlName="value" class="form-control" type="time" />
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="time" />
                     }
 
                     @case('dateTime'){
-                        <input formControlName="value" class="form-control" type="datetime-local" />
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="datetime-local" />
                     }
 
                     @case('dayTimeDuration') {
-                        <input formControlName="value" class="form-control" type="text"
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="text"
                                pattern="^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$"
                                placeholder="Voorbeeld: P1D, PT2H30M, P1DT2H30M5S">
                     }
 
                     @case('yearMonthDuration') {
-                        <input formControlName="value" class="form-control" type="text"
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="text"
                                pattern="^P(?:(\d+)Y)?(?:(\d+)M)?$"
                                placeholder="Voorbeeld: P2Y, P6M, P1Y3M">
                     }
 
                     @default {
-                        <input formControlName="value" class="form-control" type="text">
+                        <input [id]="(isInput ? 'input-value-' : 'output-value-') + $index" formControlName="value" class="form-control" type="text">
                     }
                 }
             </div>
 
-            <div class="col text-center align-self-end">
-                <button class="btn btn-danger" type="button" (click)="removePair($index)">
-                    <i class="far fa-trash-alt"></i>
+            <div class="col-12 col-sm-auto">
+                <button class="btn btn-outline-danger" aria-label="Variabele verwijderen" type="button" (click)="removePair($index)">
+                    <i class="far fa-trash-alt" aria-hidden="true"></i><span class="d-sm-none ms-2">Verwijderen</span>
                 </button>
             </div>
         </div>

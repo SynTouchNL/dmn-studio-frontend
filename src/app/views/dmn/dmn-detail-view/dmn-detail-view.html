@@ -2,82 +2,45 @@
     @if(Object.keys(dmnData).length === 0) {
         <div class="row">
             <div class="col">
-                <h3>Onbekende versie gevonden</h3>
+                <h1>Onbekende versie gevonden</h1>
                 <span>Ga terug - <a [routerLink]="['/dmns']">Klik hier.</a> </span>
             </div>
         </div>
     } @else {
-        <div class="row">
-            <div class="col col-6">
-                <h3>{{ dmnData.name }}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col align-self-center">
-                <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{ selectedVersion(dmnData.versions).version }}</span>
-                <span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe}}</span>
-            </div>
-            <div class="col text-center align-self-center">
-                <app-dmn-status-partial [data]="selectedVersion(dmnData.versions)"></app-dmn-status-partial>
-            </div>
-            <div class="col text-end align-self-center">
-                <div class="btn-group" role="group">
-                    <button (click)="clickTests()" [disabled]="!canViewTests()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Tests</a></button>
+        <header class="mb-3"><h1 class="mb-0">{{ dmnData.name }}</h1></header>
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-auto ms-md-auto align-self-center">
+                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-sm-end">
+                    <button (click)="clickTests()" [disabled]="!canViewTests()" class="btn btn-outline-secondary" type="button">Tests</button>
                     @if(selectedVersion(dmnData.versions).status == 3){
-                        <button (click)="clickReview()" class="btn btn-primary" type="button">Review Bekijken</button>
+                        <button (click)="clickReview()" class="btn btn-outline-secondary" type="button">Review bekijken</button>
                     } @else {
-                        <button [routerLink]="['/dmns/' + dmnId + '/new']" [state]="{ dmn: dmnData, version: dmnVersion, status: dmnData.status }" class="btn btn-primary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button"><a class="text-decoration-none text-light">Nieuwe versie</a></button>
+                        <button [routerLink]="['/dmns/' + dmnId + '/new']" [state]="{ dmn: dmnData, version: dmnVersion, status: dmnData.status }" class="btn btn-outline-secondary {{ canStartNewVersion(dmnData.versions, selectedVersion(dmnData.versions).status) ? '' : 'disabled' }}" type="button">Nieuwe versie</button>
                     }
-                    <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Openen</a></button>
+                    <button (click)="clickOpen()" class="btn btn-primary" type="button">Openen</button>
                 </div>
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-9">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Eigenaar</span></div>
-                            <div class="col col-xxl-6"><span>{{ dmnData.owner }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Domein</span></div>
-                            <div class="col col-xxl-6"><span>{{ dmnData.domain.name }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Versie in productie</span></div>
-                            <div class="col col-xxl-6"><span> {{ versionInProduction != 0 ? "Versie " + versionInProduction : "Geen versie in productie" }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Huidige status</span></div>
-                            <div class="col col-xxl-6"><span></span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{  selectedVersion(dmnData.versions).version }}</span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Laatste wijziging</span></div>
-                            <div class="col col-xxl-6"><span>{{ selectedVersion(dmnData.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy || "Onbekend" }}</span></div>
-                        </div>
-                    </li>
-                </ul>
+        <div class="my-4"><app-dmn-status-partial [data]="selectedVersion(dmnData.versions)"></app-dmn-status-partial></div>
+        <div class="row g-4">
+            <div class="col-12 col-lg-9">
+                <h2 class="mb-3">DMN details</h2>
+                <dl class="card detail-list">
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Eigenaar</dt><dd class="col-12 col-sm-8"><span>{{ dmnData.owner }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Domein</dt><dd class="col-12 col-sm-8"><span>{{ dmnData.domain.name }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Versie in productie</dt><dd class="col-12 col-sm-8"><span> {{ versionInProduction != 0 ? "Versie " + versionInProduction : "Geen versie in productie" }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Huidige status</dt><dd class="col-12 col-sm-8"><span></span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">v{{  selectedVersion(dmnData.versions).version }}</span><span class="badge {{ selectedVersion(dmnData.versions).status | classPipe }} me-1">{{ selectedVersion(dmnData.versions).status | statusPipe }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Laatste wijziging</dt><dd class="col-12 col-sm-8"><span>{{ selectedVersion(dmnData.versions).modifiedDate | date:'dd-MM-yyyy HH:mm' }} door {{ selectedVersion(dmnData.versions).modifiedBy || "Onbekend" }}</span></dd></div>
+                </dl>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-lg-3">
+                <h2 class="mb-3">Versies</h2>
                 <ul class="list-group">
                     @for(version of dmnData.versions; track version.version + '-' + version.status) {
                         @if(this.dmnVersion == version.version) {
-                            <a class="dropdown-item text-secondary" disabled>
-                                <li class="bg-secondary border-secondary list-group-item active"><span>v{{ version.version }} - {{ version.status | statusPipe }}</span></li>
-                            </a>
+                            <li class="list-group-item active" aria-current="page">v{{ version.version }} - {{ version.status | statusPipe }}</li>
                         } @else {
-                            <a class="dropdown-item" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">
-                                <li class="list-group-item">v{{ version.version }} - {{ version.status | statusPipe }}</li>
-                            </a>
+                            <li class="list-group-item p-0"><a class="d-block px-3 py-2 text-decoration-none" (click)="fetchData()" [routerLink]="['/dmns',dmnData.id, version.version]">v{{ version.version }} - {{ version.status | statusPipe }}</a></li>
                         }
                     } @empty {
                         <li class="list-group-item">

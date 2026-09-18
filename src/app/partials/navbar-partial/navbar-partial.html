@@ -1,34 +1,30 @@
-<nav class="navbar navbar-expand-md bg-body py-3">
+<nav class="navbar navbar-expand-md bg-white border-bottom py-2" aria-label="Hoofdnavigatie">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" [routerLink]="['/']">
-            <img src="DMNStudio-logo-icon.png" alt="DMN Tool Logo" width="50" height="50" class="d-inline-block align-text-top"/>
+        <a class="navbar-brand d-flex align-items-center gap-2 me-md-5" [routerLink]="['/']">
+            <img src="DMNStudio-logo-icon.png" alt="" width="36" height="36" />
+            <span>DMN<span class="fw-normal">Studio</span></span>
         </a>
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
-            <span class="visually-hidden">Toggle navigation</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-1" aria-controls="navcol-1" aria-expanded="false" aria-label="Navigatie openen of sluiten">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navcol-1" class="collapse navbar-collapse">
-            <div class="container">
-                <div class="row">
-                    <div class="col-10 align-self-center">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']" routerLinkActive="active">DMNs</a></li>
-                            <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']" routerLinkActive="active">Deployments</a></li>
-                        </ul>
+            <ul class="navbar-nav me-auto gap-1 py-2 py-md-0">
+                <li class="nav-item"><a class="nav-link" [routerLink]="['']" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']" routerLinkActive="active" ariaCurrentWhenActive="page">DMNs</a></li>
+                <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']" routerLinkActive="active" ariaCurrentWhenActive="page">Deployments</a></li>
+            </ul>
+            <div ngbDropdown class="account-menu py-2 py-md-0">
+                <button ngbDropdownToggle id="account-menu-toggle" class="btn account-toggle d-flex align-items-center gap-2" type="button" aria-label="Gebruikersmenu">
+                    <i class="fa-regular fa-circle-user fs-4" aria-hidden="true"></i>
+                    <span class="text-truncate account-name">{{ userProfile.firstName || 'Account' }}</span>
+                </button>
+                @if(this.userProfile){
+                    <div ngbDropdownMenu aria-labelledby="account-menu-toggle" class="dropdown-menu-md-end">
+                        <button disabled ngbDropdownItem>{{ this.userProfile.firstName }} {{ this.userProfile.lastName }}</button>
+                        <div class="dropdown-divider"></div>
+                        <button (click)="onClickLogout()" ngbDropdownItem>Log uit</button>
                     </div>
-                    <div ngbDropdown class="col col-2 text-end align-self-center">
-                        <img ngbDropdownToggle class="rounded-circle img-fluid object-fit-scale" alt="a man smoking a cigarette" src="default_profile_image.png" width="40px" height="40px"/>
-                        @if(this.userProfile){
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                <button disabled ngbDropdownItem>{{ this.userProfile.firstName }} {{ this.userProfile.lastName}}</button>
-                                <button (click)="onClickLogout()" ngbDropdownItem>Log uit</button>
-                            </div>
-                        }
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>

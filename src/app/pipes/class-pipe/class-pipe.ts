@@ -8,19 +8,19 @@ export class ClassPipe implements PipeTransform {
     transform(value: number): string {
         switch (value) {
             case 0: // Nieuw
-                return 'bg-success';
+                return 'bg-success-subtle text-success-emphasis';
             case 1: // Concept
-                return 'bg-danger';
+                return 'bg-secondary-subtle text-secondary-emphasis';
             case 2: // Testen
-                return 'bg-warning';
+                return 'bg-warning-subtle text-warning-emphasis';
             case 3: // Goedkeuring
-                return 'bg-dark';
+                return 'bg-primary-subtle text-primary-emphasis';
             case 4: // Productie
-                return 'bg-success';
+                return 'bg-success-subtle text-success-emphasis';
             case 5: // Gearchiveerd
-                return 'bg-secondary';
+                return 'bg-secondary-subtle text-secondary-emphasis';
             default: // Onbekend
-                return 'bg-secondary';
+                return 'bg-secondary-subtle text-secondary-emphasis';
         }
     }
 }

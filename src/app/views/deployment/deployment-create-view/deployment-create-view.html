@@ -1,60 +1,51 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row gx-0 gy-0">
-                <div class="col col-12">
-                    <h3>Deployment aanmaken</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+    <header class="mb-4"><h1>Deployment aanmaken</h1><p class="text-body-secondary mt-2 mb-0">Selecteer het beslismodel en de omgeving voor deze deployment.</p></header>
+    <div class="card form-panel"><div class="card-body p-3 p-md-4">
         <form [formGroup]="myForm" (submit)="onSubmit($event)">
-            <label for="domainSelector">Domein</label>
-            <select id="domainSelector" formControlName="domains" class="form-control" required>
+            <label class="form-label small fw-semibold" for="domainSelector">Domein</label>
+            <select id="domainSelector" formControlName="domains" class="form-select mb-4" required>
                 <option value="" disabled selected>Kies een Domein</option>
                 @for(dom of domains; track dom.id) {
                     <option [ngValue]="dom" value="{{ dom.id }}">{{ dom.name }}</option>
                 }
             </select>
 
-            <label for="dmnSelector">DMN</label>
-            <select id="dmnSelector" formControlName="dmns" class="form-control" required>
+            <label class="form-label small fw-semibold" for="dmnSelector">DMN</label>
+            <select id="dmnSelector" formControlName="dmns" class="form-select mb-4" required>
                 <option value="" disabled selected>Kies een DMN</option>
                 @for(dmn of dmns; track dmn.id) {
                     <option [ngValue]="dmn" value="{{ dmn.id }}">{{ dmn.name }}</option>
                 }
             </select>
 
-            <label for="versionSelector">Versie</label>
-            <select id="versionSelector" formControlName="versions" class="form-control" required>
+            <label class="form-label small fw-semibold" for="versionSelector">Versie</label>
+            <select id="versionSelector" formControlName="versions" class="form-select mb-4" required>
                 <option value="" disabled selected>Kies een versie</option>
                 @for(ver of dmn_versions; track ver.id + ver.version) {
                     <option [ngValue]="ver" value="{{ ver.id }}">v{{ ver.version }} - {{ ver.status | statusPipe }}</option>
                 }
             </select>
 
-            <label for="environmentSelector" class="form-label">Omgeving</label>
-            <select id="environmentSelector" formControlName="environments" class="form-control" required>
+            <label class="form-label small fw-semibold" for="environmentSelector">Omgeving</label>
+            <select id="environmentSelector" formControlName="environments" class="form-select mb-4" required>
                 <option value="" disabled selected>Kies een omgeving</option>
                 @for(env of environments; track env.id) {
                     <option [ngValue]="env" value="{{ env.id }}">{{ env.name }}</option>
                 }
             </select>
-            <br>
-            <div class="alert alert-danger" role="alert">
-                LET OP! Controlleer goed of u de juiste DMN versie en omgeving heeft geselecteerd voordat u op "Uitrollen" klikt.
+            <div class="alert alert-warning" role="alert">
+                Controleer de DMN versie en omgeving voordat u op <strong>Uitrollen</strong> klikt.
             </div>
-            <div class="col-xxl-1 btn-group" role="group">
+            <div class="border-top pt-4">
                 <button class="btn btn-primary" type="submit" [disabled]="button_disabled || clicked">
                     @if(!clicked){
                         Uitrollen
                     } @else {
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span class="sr-only">  Uitrollen</span> <!-- Opzettelijke spaties hiervoor ivm spinner uitlijning -->
+                        <span class="ms-2">  Uitrollen</span>
                     }
                 </button>
             </div>
         </form>
-    </div>
+    </div></div>
 </div>

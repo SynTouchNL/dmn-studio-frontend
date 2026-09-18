@@ -1,0 +1,33 @@
+/* dmn-js creates its DOM outside Angular's component style scope. */
+.editor-tabs .nav-link:focus-visible {
+    outline-offset: -3px;
+}
+.dmn-container, #dmn-properties-panel {
+    height: max(400px, calc(100dvh - 310px));
+    background: #fff;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+}
+.dmn-container {
+    position: relative;
+    overflow: hidden;
+}
+#dmn-canvas {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+#dmn-properties-panel {
+    overflow: auto;
+}
+/* Bootstrap's loading placeholder class conflicts with diagram placeholders. */
+.dmn-js-parent .placeholder {
+    background-color: transparent;
+    opacity: 1;
+    cursor: inherit;
+}
+@media (max-width: 991.98px) {
+    #dmn-properties-panel {
+        height: 360px;
+    }
+}

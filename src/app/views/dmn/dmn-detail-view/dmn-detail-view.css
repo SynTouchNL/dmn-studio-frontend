@@ -1,3 +1,8 @@
-#dropdownBasic1{
-    border-radius: 6px 0 0 6px;
+.list-group-item.active {
+    color: #2459a6;
+    background-color: #eaf1fb;
+    border-color: #c8d9f1;
+    font-weight: 600;
 }
+
+.list-group a:hover { background-color: #f3f7fc; }

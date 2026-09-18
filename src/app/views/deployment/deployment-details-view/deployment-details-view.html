@@ -1,69 +1,40 @@
 <div class="container">
-    @if(!deploymentData) {
+    @if(!deploymentData[0]) {
         <div class="row">
             <div class="col">
-                <h3>Onbekende versie gevonden</h3>
-                <span>Ga terug - <a [routerLink]="['/deployments']">Klik hier.</a> </span>
+                <h1>Deployment niet beschikbaar</h1>
+                <p class="text-body-secondary">De gegevens van deze deployment zijn nog niet beschikbaar.</p>
+                <a [routerLink]="['/deployments']" class="btn btn-outline-secondary">Terug naar deployments</a>
             </div>
         </div>
     } @else {
         <div class="row">
-            <div class="col col-lg-6">
-                <h3>{{ deploymentData[0].dmn.name }}</h3>
+            <div class="col-12">
+                <h1>{{ deploymentData[0].dmn.name }}</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col align-self-center">
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-auto align-self-center">
                 <span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{ deploymentData[0].dmnVersion.version }}</span>
                 <span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe}}</span>
             </div>
-            <div class="col text-end align-self-center">
-                <div class="btn-group" role="group">
-                    <button (click)="clickOpen()" class="btn btn-primary" type="button"><a class="text-decoration-none text-light">Bekijken</a></button>
-                    <button (click)="clickDelete()" class="btn btn-danger" type="button"><a class="text-decoration-none text-light">Verwijderen</a></button>
+            <div class="col-12 col-md-auto ms-md-auto align-self-center">
+                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-sm-end">
+                    <button (click)="clickOpen()" class="btn btn-primary" type="button">Bekijken</button>
+                    <button (click)="clickDelete()" class="btn btn-outline-danger" type="button">Verwijderen</button>
                 </div>
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row g-4">
             <div class="col-xxl-12">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-6"><span>Eigenaar</span></div>
-                            <div class="col col-6"><span>{{ deploymentData[0].dmn.owner }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-6"><span>Domein</span></div>
-                            <div class="col col-6"><span>{{ deploymentData[0].dmn.domain.name }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-6"><span>Omgeving</span></div>
-                            <div class="col col-6"><span>{{ deploymentData[0].environmentName }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-6"><span>Operaton referentie</span></div>
-                            <div class="col col-6"><span>{{ deploymentData[0].deploymentRef }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-xxl-6"><span>Huidige status</span></div>
-                            <div class="col col-xxl-6"><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{  deploymentData[0].dmnVersion.version }}</span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe }}</span></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-6"><span>Laatste wijziging</span></div>
-                            <div class="col col-6"><span>{{ deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></div>
-                        </div>
-                    </li>
-                </ul>
+                <dl class="card detail-list">
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Eigenaar</dt><dd class="col-12 col-sm-8"><span>{{ deploymentData[0].dmn.owner }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Domein</dt><dd class="col-12 col-sm-8"><span>{{ deploymentData[0].dmn.domain.name }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Omgeving</dt><dd class="col-12 col-sm-8"><span>{{ deploymentData[0].environmentName }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Operaton referentie</dt><dd class="col-12 col-sm-8"><span>{{ deploymentData[0].deploymentRef }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Huidige status</dt><dd class="col-12 col-sm-8"><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">v{{  deploymentData[0].dmnVersion.version }}</span><span class="badge {{ deploymentData[0].dmnVersion.status | classPipe }} me-1">{{ deploymentData[0].dmnVersion.status | statusPipe }}</span></dd></div>
+                    <div class="row g-2 mx-0"><dt class="col-12 col-sm-4">Laatste wijziging</dt><dd class="col-12 col-sm-8"><span>{{ deploymentData[0].dmnVersion.modifiedDate |  date:'dd-MM-yyyy HH:mm' }} door {{ deploymentData[0].dmnVersion.modifiedBy || "Onbekend" }}</span></dd></div>
+                </dl>
             </div>
         </div>
     }

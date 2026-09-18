@@ -1,3 +1,4 @@
 input:not(:placeholder-shown):invalid {
-    background-color: lightpink;
+    border-color: var(--bs-danger);
+    background-color: var(--bs-danger-bg-subtle);
 }

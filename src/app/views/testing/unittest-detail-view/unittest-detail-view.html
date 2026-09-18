@@ -1,27 +1,24 @@
 <div class="container">
-    <div class="row">
+    <app-breadcrumbs-partial [breadcrumbs]="breadcrumb"></app-breadcrumbs-partial>
+    <div class="row g-3 mb-4">
         <div class="col">
-            <app-breadcrumbs-partial [breadcrumbs]="breadcrumb"></app-breadcrumbs-partial>
+            <h1>{{ this.data.title }}</h1>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h3>Unittest - {{ this.data.title }}</h3>
-        </div>
-        <div class="col text-end">
-            <div class="btn-group" role="group">
-                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Invoegen</button>
+        <div class="col-12 col-sm-auto text-sm-end">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Opnieuw gebruiken</button>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <div class="table-responsive">
-                <table class="table">
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-6">
+            <h2 class="mb-3">Invoer</h2>
+            <div class="table-responsive bg-white border rounded" tabindex="0" role="region" aria-label="Invoer">
+                <table class="table align-middle data-table mb-0 small">
                     <thead>
                         <tr>
-                            <th scope="col">Key</th>
-                            <th scope="col">Value</th>
+                            <th scope="col">Variabele</th>
+                            <th scope="col">Waarde</th>
                             <th scope="col">Type</th>
                         </tr>
                     </thead>
@@ -39,13 +36,14 @@
                 </table>
             </div>
         </div>
-        <div class="col-6">
-            <div class="table-responsive">
-                <table class="table">
+        <div class="col-12 col-lg-6">
+            <h2 class="mb-3">Verwachte uitkomst</h2>
+            <div class="table-responsive bg-white border rounded" tabindex="0" role="region" aria-label="Verwachte uitkomst">
+                <table class="table align-middle data-table mb-0 small">
                     <thead>
                     <tr>
-                        <th scope="col">Key</th>
-                        <th scope="col">Value</th>
+                        <th scope="col">Variabele</th>
+                        <th scope="col">Waarde</th>
                         <th scope="col">Type</th>
                     </tr>
                     </thead>
