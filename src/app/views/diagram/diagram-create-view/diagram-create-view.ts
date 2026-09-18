@@ -57,30 +57,37 @@ export class DiagramCreateView implements OnInit{
             return;
         }
 
-        if (this.reuseDmn === 3 && this.importDMN === '') {
+        if (this.reuseDmn === 3 && this.importDMN.trim() === '') {
             this.alertService.error('Geen bestand geselecteerd', 'Selecteer een geldig DMN bestand.');
             return;
         }
 
-        if (this.reuseDmn == 2) { // new XML
+        if (this.reuseDmn === 2) { // new XML
             const xmlBytes = encoder.encode(this.documentService.generateNewDiagram(this.dmnData.name));
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
-            this.prepareVersion(xmlBase64);
-        } else if (this.reuseDmn == 3) { // import XML
+        } else if (this.reuseDmn === 3) { // import XML
             const xmlBytes = encoder.encode(this.importDMN);
             xmlBase64 = btoa(String.fromCharCode(...xmlBytes));
         } else { // reuse existing
-            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe(
-                data => {
-                    xmlBase64 = data.fileBlob;
+            this.dmnService.getDMNFile(this.dmnId, this.dmnVersion).subscribe({
+                next: data => {
+                    this.prepareVersion(data.fileBlob);
+                },
+                error: () => {
+                    this.alertService.error('Geen nieuwe versie mogelijk', 'Het huidige diagram kon niet worden opgehaald.');
                 }
-            );
-
+            });
+            return;
         }
         this.prepareVersion(xmlBase64);
     }
 
     prepareVersion(xmlBase64: string){
+        if (!xmlBase64) {
+            this.alertService.error('Geen nieuwe versie mogelijk', 'Het diagram is leeg.');
+            return;
+        }
+
         const newVersion = {
             dmnId: this.dmnId,
             fileBlob: xmlBase64,

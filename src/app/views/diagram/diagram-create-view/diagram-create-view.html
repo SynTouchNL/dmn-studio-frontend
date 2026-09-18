@@ -12,11 +12,12 @@
         <div class="col-6">
             <label for="reuseDmn" class="form-label">Wilt u de huidige versie van de DMN hergebruiken?</label>
             <select class="form-select" aria-label="Default select example" [(ngModel)]="reuseDmn" name="reuseDmn" required>
-                <option value=1>Ja</option>
-                <option value=2>Nee, nieuwe DMN</option>
-                <option value=3>Nee, importeer een DMN</option>
+                <option [ngValue]="0" disabled>Selecteer een optie</option>
+                <option [ngValue]="1">Ja</option>
+                <option [ngValue]="2">Nee, nieuwe DMN</option>
+                <option [ngValue]="3">Nee, importeer een DMN</option>
             </select>
-            @if(reuseDmn == 3) {
+            @if(reuseDmn === 3) {
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Importeer DMN bestand</label>
                     <input class="form-control" type="file" id="formFile" (change)="onFileChange($event)" required>
