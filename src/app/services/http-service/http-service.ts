@@ -76,7 +76,7 @@ export class HttpService {
      * @internal
      */
     getDMN(id: number): Observable<DMNInterface> {
-        return this.http.get<DMNInterface>(`${this.baseUrl}/dmn/${id}`, {
+        return this.http.get<DMNInterface>(`${this.baseUrl}/dmns/${id}`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }
