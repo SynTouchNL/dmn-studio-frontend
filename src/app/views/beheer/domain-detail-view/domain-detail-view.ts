@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROLES } from '../../../../auth';
 import { ApiErrorResponse } from '../../../interfaces/api-error-response-interface';
-import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { HttpService } from '../../../services/http-service/http-service';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';

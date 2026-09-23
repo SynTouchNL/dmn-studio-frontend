@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-    DMNCreateInterface, DMNCreateVersionInterface, DMNDomainInterface, DMNFileInterface,
+    DMNCreateInterface, DMNCreateVersionInterface, DMNFileInterface,
     DMNInterface, DMNListInterface, DMNUpdateFileInterface
 } from '../../interfaces/dmn-interface';
+import { DMNDomainInterface, DomainCreateRequest } from '../../interfaces/domain-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
@@ -114,6 +115,15 @@ export class HttpService {
     /** Get one domain by ID. */
     getDomain(id: number): Observable<DMNDomainInterface> {
         return this.http.get<DMNDomainInterface>(`${this.baseUrl}/domain/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Create a domain. */
+    createDomain(domain: DomainCreateRequest): Observable<void> {
+        return this.http.post<void>(`${this.baseUrl}/domain`, domain, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }

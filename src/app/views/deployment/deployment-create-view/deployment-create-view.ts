@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpService } from '../../../services/http-service/http-service';
 import {
-    DMNDomainInterface,
     DMNFileInterface,
     DMNInterface,
     DMNListInterface,
     DMNVersionInterface
 } from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { EnvironmentsInterface } from '../../../interfaces/environments-interface';

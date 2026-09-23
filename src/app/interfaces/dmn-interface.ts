@@ -1,3 +1,5 @@
+import { DMNDomainInterface } from './domain-interface';
+
 export interface DMNInterface {
     id: number;
     name: string;
@@ -44,18 +46,6 @@ export interface DMNCreateVersionInterface {
     dmnId: number;
     fileBlob: string;
     createdBy: string;
-}
-
-export interface DMNDomainInterface {
-    id: number;
-    name: string;
-    ownerId: string;
-    owner: string;
-    active: boolean;
-    createdBy: string;
-    editedBy: string;
-    createdAt: string;
-    editedAt: string;
 }
 
 export interface DMNUpdateFileInterface {

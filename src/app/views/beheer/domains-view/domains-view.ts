@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { HttpService } from '../../../services/http-service/http-service';
 
 @Component({
