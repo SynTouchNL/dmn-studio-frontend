@@ -10,6 +10,14 @@ export interface DMNDomainInterface {
     editedAt: string;
 }
 
+export interface DomainPageResponse {
+    items: DMNDomainInterface[];
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
+
 export interface DomainRequest {
     name: string;
     ownerId: string;

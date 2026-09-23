@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, Observable, expand, map, reduce } from 'rxjs';
+import { EMPTY, Observable, expand, reduce } from 'rxjs';
 import {
     DMNCreateInterface, DMNCreateVersionInterface, DMNFileInterface,
     DMNInterface, DMNListInterface, DMNUpdateFileInterface
 } from '../../interfaces/dmn-interface';
-import { DMNDomainInterface, DomainRequest } from '../../interfaces/domain-interface';
+import { DMNDomainInterface, DomainPageResponse, DomainRequest } from '../../interfaces/domain-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
@@ -100,8 +100,8 @@ export class HttpService {
     }
 
     /** Get one page of domains (zero-based page index). */
-    getDomainsPage(page: number, size: number): Observable<DMNDomainInterface[]> {
-        return this.http.get<DMNDomainInterface[]>(`${this.baseUrl}/domain`, {
+    getDomainsPage(page: number, size: number): Observable<DomainPageResponse> {
+        return this.http.get<DomainPageResponse>(`${this.baseUrl}/domain`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             },
@@ -113,12 +113,11 @@ export class HttpService {
     getDomains(): Observable<DMNDomainInterface[]> {
         const size = 100;
         return this.getDomainsPage(0, size).pipe(
-            map(domains => ({ page: 0, domains })),
-            expand(({ page, domains }) => domains.length === size
-                ? this.getDomainsPage(page + 1, size).pipe(map(next => ({ page: page + 1, domains: next })))
+            expand(response => response.page + 1 < response.totalPages
+                ? this.getDomainsPage(response.page + 1, size)
                 : EMPTY
             ),
-            reduce((all, { domains }) => all.concat(domains), [] as DMNDomainInterface[])
+            reduce((all, response) => all.concat(response.items), [] as DMNDomainInterface[])
         );
     }
 

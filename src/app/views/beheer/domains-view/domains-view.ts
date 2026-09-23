@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
-import { map, of, switchMap } from 'rxjs';
 import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { HttpService } from '../../../services/http-service/http-service';
 
@@ -18,7 +17,6 @@ export class DomainsView implements OnInit {
   loadError = false;
   page = 1;
   pageSize = 10;
-  hasNext = false;
   collectionSize = 0;
 
   constructor(
@@ -37,22 +35,15 @@ export class DomainsView implements OnInit {
 
     this.page = page;
     this.domains = [];
-    this.hasNext = false;
     this.isLoading = true;
     this.loadError = false;
 
-    this.httpService.getDomainsPage(page - 1, this.pageSize).pipe(
-      switchMap(domains => domains.length === this.pageSize
-        ? this.httpService.getDomainsPage(page, this.pageSize).pipe(
-            map(nextPage => ({ domains, hasNext: nextPage.length > 0 }))
-          )
-        : of({ domains, hasNext: false })
-      )
-    ).subscribe({
-      next: ({ domains, hasNext }) => {
-        this.domains = domains;
-        this.hasNext = hasNext;
-        this.collectionSize = (page - 1) * this.pageSize + domains.length + (hasNext ? 1 : 0);
+    this.httpService.getDomainsPage(page - 1, this.pageSize).subscribe({
+      next: response => {
+        this.domains = response.items;
+        this.page = response.page + 1;
+        this.pageSize = response.size;
+        this.collectionSize = response.totalElements;
         this.isLoading = false;
       },
       error: () => {
