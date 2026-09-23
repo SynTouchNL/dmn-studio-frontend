@@ -1,0 +1,43 @@
+<div class="container">
+    <h3>Domeinen Overzicht</h3>
+    <div class="mb-2">
+        <button [routerLink]="['/domeinen/new']" class="btn btn-primary" type="button">Nieuw</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Domein</th>
+                    <th scope="col">Eigenaar</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Aangemaakt</th>
+                    <th scope="col">Laatste wijziging</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (domain of domains; track domain.id) {
+                    <tr>
+                        <td><a [routerLink]="['/domeinen', domain.id]">{{ domain.name }}</a></td>
+                        <td>{{ domain.owner }}</td>
+                        <td><span class="badge" [class.text-bg-success]="domain.active" [class.text-bg-secondary]="!domain.active">{{ domain.active ? 'Actief' : 'Inactief' }}</span></td>
+                        <td>{{ domain.createdAt | date:'dd-MM-yyyy HH:mm' }}</td>
+                        <td>{{ domain.editedAt | date:'dd-MM-yyyy HH:mm' }}</td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            @if (isLoading) {
+                                Domeinen worden geladen...
+                            } @else if (loadError) {
+                                Domeinen konden niet worden geladen.
+                            } @else {
+                                Geen domeinen gevonden.
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

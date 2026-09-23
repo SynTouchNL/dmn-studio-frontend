@@ -19,9 +19,31 @@ import { UnittestListView } from './views/testing/unittest-list-view/unittest-li
 import {UnittestDetailView} from './views/testing/unittest-detail-view/unittest-detail-view';
 import {UnittestCreateView} from './views/testing/unittest-create-view/unittest-create-view';
 import {DmnReviewView} from './views/dmn/dmn-review-view/dmn-review-view';
+import { DomainsView } from './views/beheer/domains-view/domains-view';
+import { DomainCreateView } from './views/beheer/domain-create-view/domain-create-view';
+import { DomainDetailView } from './views/beheer/domain-detail-view/domain-detail-view';
 import { ROUTE_ROLES } from '../auth';
 
 export const routes: Routes = [
+    // Beheer routes
+    {
+        path: 'domeinen/new',
+        component: DomainCreateView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.DOMAIN_CREATE }
+    },
+    {
+        path: 'domeinen',
+        component: DomainsView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.DOMAINS_VIEW }
+    },
+    {
+        path: 'domeinen/:id',
+        component: DomainDetailView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.DOMAINS_VIEW }
+    },
     // Deployment routes
     {
         path: 'deployments',

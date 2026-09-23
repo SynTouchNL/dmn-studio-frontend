@@ -111,6 +111,15 @@ export class HttpService {
         });
     }
 
+    /** Get one domain by ID. */
+    getDomain(id: number): Observable<DMNDomainInterface> {
+        return this.http.get<DMNDomainInterface>(`${this.baseUrl}/domain/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
     /**
      * Get all environments.
      * @returns EnvironmentsInterface with environments.
