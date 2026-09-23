@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, expand, map, reduce } from 'rxjs';
 import {
     DMNCreateInterface, DMNCreateVersionInterface, DMNFileInterface,
     DMNInterface, DMNListInterface, DMNUpdateFileInterface
 } from '../../interfaces/dmn-interface';
-import { DMNDomainInterface, DomainCreateRequest } from '../../interfaces/domain-interface';
+import { DMNDomainInterface, DomainRequest } from '../../interfaces/domain-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
 import { EnvironmentsInterface } from '../../interfaces/environments-interface';
@@ -99,17 +99,27 @@ export class HttpService {
         });
     }
 
-    /**
-     * Get all domains.
-     * @returns List of domains.
-     * @internal
-     */
-    getDomains(): Observable<DMNDomainInterface> {
-        return this.http.get<DMNDomainInterface>(`${this.baseUrl}/domain`, {
+    /** Get one page of domains (zero-based page index). */
+    getDomainsPage(page: number, size: number): Observable<DMNDomainInterface[]> {
+        return this.http.get<DMNDomainInterface[]>(`${this.baseUrl}/domain`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
-            }
+            },
+            params: { page, size }
         });
+    }
+
+    /** Get all domains for selectors outside the domain overview. */
+    getDomains(): Observable<DMNDomainInterface[]> {
+        const size = 100;
+        return this.getDomainsPage(0, size).pipe(
+            map(domains => ({ page: 0, domains })),
+            expand(({ page, domains }) => domains.length === size
+                ? this.getDomainsPage(page + 1, size).pipe(map(next => ({ page: page + 1, domains: next })))
+                : EMPTY
+            ),
+            reduce((all, { domains }) => all.concat(domains), [] as DMNDomainInterface[])
+        );
     }
 
     /** Get one domain by ID. */
@@ -122,8 +132,17 @@ export class HttpService {
     }
 
     /** Create a domain. */
-    createDomain(domain: DomainCreateRequest): Observable<void> {
+    createDomain(domain: DomainRequest): Observable<void> {
         return this.http.post<void>(`${this.baseUrl}/domain`, domain, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Update one domain by ID. */
+    updateDomain(id: number, domain: DomainRequest): Observable<void> {
+        return this.http.put<void>(`${this.baseUrl}/domain/${id}`, domain, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }

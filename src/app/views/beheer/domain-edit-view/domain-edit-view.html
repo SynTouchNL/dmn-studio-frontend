@@ -1,0 +1,11 @@
+<div class="container">
+    @if (isLoadingDomain) {
+        <p>Domein wordt geladen...</p>
+    } @else if (domainLoadError || !domain) {
+        <div class="alert alert-danger" role="alert">Domein kon niet worden geladen.</div>
+        <a [routerLink]="['/domeinen']">Terug naar domeinen</a>
+    } @else {
+        <h3>Domein bewerken</h3>
+        <app-domain-form-partial mode="edit" [domain]="domain"></app-domain-form-partial>
+    }
+</div>

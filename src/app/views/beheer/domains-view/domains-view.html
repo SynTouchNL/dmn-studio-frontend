@@ -31,6 +31,7 @@
                                 Domeinen worden geladen...
                             } @else if (loadError) {
                                 Domeinen konden niet worden geladen.
+                                <button type="button" class="btn btn-link" (click)="loadPage(page)">Opnieuw proberen</button>
                             } @else {
                                 Geen domeinen gevonden.
                             }
@@ -40,4 +41,22 @@
             </tbody>
         </table>
     </div>
+
+    @if (!loadError) {
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+                [collectionSize]="collectionSize"
+                [page]="page"
+                [pageSize]="pageSize"
+                [disabled]="isLoading"
+                (pageChange)="loadPage($event)">
+            </ngb-pagination>
+
+            <select class="form-select w-auto" aria-label="Domeinen per pagina" [value]="pageSize" [disabled]="isLoading" (change)="changePageSize($event)">
+                <option value="10">10 domeinen per pagina</option>
+                <option value="25">25 domeinen per pagina</option>
+                <option value="50">50 domeinen per pagina</option>
+            </select>
+        </div>
+    }
 </div>

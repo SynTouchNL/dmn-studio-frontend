@@ -10,7 +10,7 @@ export interface DMNDomainInterface {
     editedAt: string;
 }
 
-export interface DomainCreateRequest {
+export interface DomainRequest {
     name: string;
     ownerId: string;
     active: boolean;

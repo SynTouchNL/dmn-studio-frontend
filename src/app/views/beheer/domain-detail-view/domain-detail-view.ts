@@ -53,12 +53,12 @@ export class DomainDetailView implements OnInit {
     });
   }
 
-  get canDelete(): boolean {
+  get canManage(): boolean {
     return this.keycloakService.hasAnyRole([ROLES.ADMIN]);
   }
 
   deleteDomain(): void {
-    if (!this.canDelete || !this.domain || this.isDeleting) {
+    if (!this.canManage || !this.domain || this.isDeleting) {
       return;
     }
 

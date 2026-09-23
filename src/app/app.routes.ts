@@ -22,6 +22,7 @@ import {DmnReviewView} from './views/dmn/dmn-review-view/dmn-review-view';
 import { DomainsView } from './views/beheer/domains-view/domains-view';
 import { DomainCreateView } from './views/beheer/domain-create-view/domain-create-view';
 import { DomainDetailView } from './views/beheer/domain-detail-view/domain-detail-view';
+import { DomainEditView } from './views/beheer/domain-edit-view/domain-edit-view';
 import { ROUTE_ROLES } from '../auth';
 
 export const routes: Routes = [
@@ -37,6 +38,12 @@ export const routes: Routes = [
         component: DomainsView,
         canActivate: [canActivateAuthRole],
         data: { role: ROUTE_ROLES.DOMAINS_VIEW }
+    },
+    {
+        path: 'domeinen/:id/edit',
+        component: DomainEditView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.DOMAIN_EDIT }
     },
     {
         path: 'domeinen/:id',
