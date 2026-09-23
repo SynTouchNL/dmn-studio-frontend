@@ -22,7 +22,7 @@
             <div class="col-auto">
                 <div class="btn-group" role="group" aria-label="Domeinacties">
                     <button class="btn btn-primary" type="button" disabled title="Bewerken is nog niet beschikbaar">Bewerken</button>
-                    <button class="btn btn-danger" type="button" disabled title="Verwijderen is nog niet beschikbaar">Verwijderen</button>
+                    <button class="btn btn-danger" type="button" [disabled]="!canDelete || isDeleting" (click)="deleteDomain()">{{ isDeleting ? 'Verwijderen...' : 'Verwijderen' }}</button>
                 </div>
             </div>
         </div>

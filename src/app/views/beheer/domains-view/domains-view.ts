@@ -8,8 +8,7 @@ import { HttpService } from '../../../services/http-service/http-service';
 @Component({
   selector: 'app-domains-view',
   imports: [DatePipe, RouterLink],
-  templateUrl: './domains-view.html',
-  styleUrl: './domains-view.css'
+  templateUrl: './domains-view.html'
 })
 export class DomainsView implements OnInit {
   domains: DMNDomainInterface[] = [];

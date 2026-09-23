@@ -120,6 +120,15 @@ export class HttpService {
         });
     }
 
+    /** Delete one domain by ID. */
+    deleteDomain(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/domain/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
     /**
      * Get all environments.
      * @returns EnvironmentsInterface with environments.
