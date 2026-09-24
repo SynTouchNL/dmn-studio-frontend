@@ -49,16 +49,16 @@
                 <h4>Activiteit</h4>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt op</span><span class="col-12 col-sm-7">{{ domain.createdAt | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt op</span><span class="col-12 col-sm-7">{{ domain.createdDate | date:'dd-MM-yyyy HH:mm' }}</span></div>
                     </li>
                     <li class="list-group-item">
                         <div class="row"><span class="col-12 col-sm-5">Aangemaakt door</span><span class="col-12 col-sm-7">{{ domain.createdBy || '—' }}</span></div>
                     </li>
                     <li class="list-group-item">
-                        <div class="row"><span class="col-12 col-sm-5">Bewerkt op</span><span class="col-12 col-sm-7">{{ domain.editedAt | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt op</span><span class="col-12 col-sm-7">{{ domain.modifiedDate | date:'dd-MM-yyyy HH:mm' }}</span></div>
                     </li>
                     <li class="list-group-item">
-                        <div class="row"><span class="col-12 col-sm-5">Bewerkt door</span><span class="col-12 col-sm-7">{{ domain.editedBy || '—' }}</span></div>
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt door</span><span class="col-12 col-sm-7">{{ domain.modifiedBy || '—' }}</span></div>
                     </li>
                 </ul>
             </div>

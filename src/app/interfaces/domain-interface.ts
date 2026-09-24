@@ -5,9 +5,9 @@ export interface DMNDomainInterface {
     owner: string;
     active: boolean;
     createdBy: string;
-    editedBy: string;
-    createdAt: string;
-    editedAt: string;
+    modifiedBy: string;
+    createdDate: string;
+    modifiedDate: string;
 }
 
 export interface DomainPageResponse {

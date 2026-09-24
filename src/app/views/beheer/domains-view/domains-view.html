@@ -21,8 +21,8 @@
                         <td><a [routerLink]="['/domeinen', domain.id]">{{ domain.name }}</a></td>
                         <td>{{ domain.owner }}</td>
                         <td><span class="badge" [class.text-bg-success]="domain.active" [class.text-bg-secondary]="!domain.active">{{ domain.active ? 'Actief' : 'Inactief' }}</span></td>
-                        <td>{{ domain.createdAt | date:'dd-MM-yyyy HH:mm' }}</td>
-                        <td>{{ domain.editedAt | date:'dd-MM-yyyy HH:mm' }}</td>
+                        <td>{{ domain.createdDate| date:'dd-MM-yyyy HH:mm' }}</td>
+                        <td>{{ domain.modifiedDate | date:'dd-MM-yyyy HH:mm' }}</td>
                     </tr>
                 } @empty {
                     <tr>
