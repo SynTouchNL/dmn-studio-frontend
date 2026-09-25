@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="mb-3">
+        <a [routerLink]="['/domeinen']">Terug naar domeinen</a>
+    </div>
+
+    @if (isLoading) {
+        <p>Domein wordt geladen...</p>
+    } @else if (loadError || !domain) {
+        <div class="alert alert-danger" role="alert">Domein kon niet worden geladen.</div>
+    } @else {
+        <div class="row">
+            <div class="col">
+                <h3>{{ domain.name }}</h3>
+            </div>
+        </div>
+        <div class="row align-items-center gy-2">
+            <div class="col">
+                <span class="badge" [class.bg-success]="domain.active" [class.bg-secondary]="!domain.active">
+                    {{ domain.active ? 'Actief' : 'Inactief' }}
+                </span>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group" role="group" aria-label="Domeinacties">
+                    <button class="btn btn-primary" type="button" [disabled]="!canManage || isDeleting" [routerLink]="['/domeinen', domain.id, 'edit']">Bewerken</button>
+                    <button class="btn btn-danger" type="button" [disabled]="!canManage || isDeleting" (click)="deleteDomain()">{{ isDeleting ? 'Verwijderen...' : 'Verwijderen' }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-12 col-lg-6">
+                <h4>Algemene gegevens</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Naam</span><span class="col-12 col-sm-7">{{ domain.name }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Eigenaar-ID</span><span class="col-12 col-sm-7">{{ domain.ownerId || '—' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Eigenaar</span><span class="col-12 col-sm-7">{{ domain.owner || '—' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Status</span><span class="col-12 col-sm-7">{{ domain.active ? 'Actief' : 'Inactief' }}</span></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-6">
+                <h4>Activiteit</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt op</span><span class="col-12 col-sm-7">{{ domain.createdDate | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt door</span><span class="col-12 col-sm-7">{{ domain.createdBy || '—' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt op</span><span class="col-12 col-sm-7">{{ domain.modifiedDate | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt door</span><span class="col-12 col-sm-7">{{ domain.modifiedBy || '—' }}</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>

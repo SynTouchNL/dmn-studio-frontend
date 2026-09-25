@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
 import { HttpService } from '../../../services/http-service/http-service';
-import { DMNDomainInterface, DMNInterface } from '../../../interfaces/dmn-interface';
+import { DMNInterface } from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

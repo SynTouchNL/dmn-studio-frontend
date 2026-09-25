@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { HttpService } from '../../../services/http-service/http-service';
 import { AlertService } from '../../../services/alert-service/alert-service';
-import { DMNDomainInterface } from '../../../interfaces/dmn-interface';
+import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { Title } from '@angular/platform-browser';
 import { DocumentService } from '../../../services/document-service/document-service';
 import { TypeaheadUsersPartial } from '../../../partials/typeahead-partial/typeahead-users-partial';
