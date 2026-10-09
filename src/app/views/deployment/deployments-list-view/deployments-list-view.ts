@@ -8,6 +8,9 @@ import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { DeploymentsInterface } from '../../../interfaces/deployments-interface';
 import { HttpService } from '../../../services/http-service/http-service';
 import { Title } from '@angular/platform-browser';
+import { EnvironmentInterface } from '../../../interfaces/environments-interface';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { ROUTE_ROLES } from '../../../../auth';
 
 @Component({
     selector: 'app-deployments-list-view',
@@ -27,7 +30,8 @@ import { Title } from '@angular/platform-browser';
 export class DeploymentsListView implements OnInit, OnChanges {
     deployment_list: DeploymentsInterface[] = [];
     all_deployments: DeploymentsInterface[] = [];
-    environments: any[] = [];
+    environments: EnvironmentInterface[] = [];
+    readonly DELETED_ENVIRONMENT = 'deleted';
     page: number = 1
     pageSize: number = 10;
     collectionSize: number = 0;
@@ -36,8 +40,13 @@ export class DeploymentsListView implements OnInit, OnChanges {
     constructor(
         private http: HttpService,
         private formBuilder: FormBuilder,
-        private titleService: Title
+        private titleService: Title,
+        private keycloakService: KeycloakService
     ) {}
+
+    get canDeploy(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.DEPLOYMENT_CREATE);
+    }
 
     ngOnInit(){
         this.http.getDeployments().subscribe(
@@ -49,12 +58,15 @@ export class DeploymentsListView implements OnInit, OnChanges {
             }
         )
 
-        this.http.getEnvironments().subscribe(
-            //@ts-ignore
-            data => {
-                this.environments = Array.isArray(data) ? data : [data];
+        this.http.getEnvironments().subscribe({
+            next: data => {
+                this.environments = Array.isArray(data) ? data : [];
+            },
+            // The filter is optional; without environments only "Alle omgevingen" remains.
+            error: () => {
+                this.environments = [];
             }
-        )
+        })
 
         this.titleService.setTitle("DMNStudio - Deployment overzicht");
 
@@ -64,12 +76,13 @@ export class DeploymentsListView implements OnInit, OnChanges {
         });
 
         this.myForm.get("environments").valueChanges.subscribe(
-            (value: { id: number, name: string }) => {
+            (value: number | typeof this.DELETED_ENVIRONMENT | null) => {
                 if (value !== null) {
+                    const environmentId = value === this.DELETED_ENVIRONMENT ? null : value;
                     this.http.getDeployments().subscribe(
                         data => {
                             //@ts-ignore
-                            this.deployment_list = data.filter(dep => dep.environmentName === value.name);
+                            this.deployment_list = data.filter(dep => dep.environmentId === environmentId);
                         }
                     )
                 } else {

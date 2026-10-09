@@ -1,7 +1,7 @@
 <div class="container">
     <h3>Domeinen Overzicht</h3>
     <div class="mb-2">
-        <button [routerLink]="['/domeinen/new']" class="btn btn-primary" type="button">Nieuw</button>
+        <button [routerLink]="['/domeinen/new']" class="btn btn-primary" type="button" [disabled]="!canManage">Nieuw</button>
     </div>
 
     <div class="table-responsive">

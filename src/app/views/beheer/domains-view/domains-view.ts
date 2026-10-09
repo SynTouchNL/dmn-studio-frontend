@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { ROLES } from '../../../../auth';
 import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { HttpService } from '../../../services/http-service/http-service';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   selector: 'app-domains-view',
@@ -21,6 +23,7 @@ export class DomainsView implements OnInit {
 
   constructor(
     private readonly httpService: HttpService,
+    private readonly keycloakService: KeycloakService,
     private readonly titleService: Title
   ) {
     titleService.setTitle('DMNStudio - Domeinen');
@@ -28,6 +31,10 @@ export class DomainsView implements OnInit {
 
   ngOnInit(): void {
     this.loadPage(1);
+  }
+
+  get canManage(): boolean {
+    return this.keycloakService.hasAnyRole([ROLES.ADMIN]);
   }
 
   loadPage(page: number): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { HttpService } from '../../../services/http-service/http-service';
 import { DecisionVariables, Variable } from '../../../interfaces/decisions-interface';
@@ -6,6 +6,8 @@ import { Title } from '@angular/platform-browser';
 
 import { BreadcrumbsPartial } from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
 import { DocumentService } from '../../../services/document-service/document-service';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { ROUTE_ROLES } from '../../../../auth';
 import {
     NgbAccordionBody,
     NgbAccordionButton, NgbAccordionCollapse,
@@ -41,6 +43,16 @@ export class UnittestListView implements OnInit {
     testData: any[] = [];
     selectedDMN_naam: string = "";
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
+
+    private keycloakService = inject(KeycloakService);
+
+    canCreateTest(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.TEST_CREATE);
+    }
+
+    canDeleteTest(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.TEST_DELETE);
+    }
 
     constructor
     (

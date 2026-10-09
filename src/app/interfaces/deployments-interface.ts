@@ -5,8 +5,8 @@ export interface DeploymentsInterface {
     dmnId: number;
     deployedBy: string;
     deployedTime: string;
-    environmentId: number;
-    environmentName: string;
+    environmentId: number | null;
+    environmentName: string | null;
     deploymentRef: string;
     dmnVersion: {
         id: number;

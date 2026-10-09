@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DmnListPartial } from '../../../partials/dmn-list-partial/dmn-list-partial';
 import { HttpService } from '../../../services/http-service/http-service';
 import { DMNInterface } from '../../../interfaces/dmn-interface';
@@ -8,6 +8,8 @@ import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
+import { ROUTE_ROLES } from '../../../../auth';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
     selector: 'app-dmn-list-view',
@@ -27,12 +29,18 @@ export class DmnListView implements OnInit {
     domain_selected: DMNDomainInterface | '' = '';
     myForm: any;
 
+    private keycloakService = inject(KeycloakService);
+
     constructor(
         private dmnService: HttpService,
         private titleService: Title,
         private FormBuilder: FormBuilder,
         private router: Router
     ) { }
+
+    canCreateDMN(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.DMN_CREATE);
+    }
 
     ngOnInit() {
         this.dmnService.getDMNs().subscribe(data => {

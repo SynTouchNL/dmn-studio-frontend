@@ -41,6 +41,16 @@
                     <option [ngValue]="env" value="{{ env.id }}">{{ env.name }}</option>
                 }
             </select>
+            @if (environmentsLoadError) {
+                <div class="form-text text-danger">
+                    Omgevingen konden niet worden geladen.
+                    <button type="button" class="btn btn-link p-0 align-baseline" (click)="loadEnvironments()">Opnieuw proberen</button>
+                </div>
+            } @else if (environmentsLoaded && environments.length === 0) {
+                <div class="form-text text-danger">Er is geen omgeving beschikbaar om naar te deployen. Een beheerder moet eerst een omgeving activeren of configureren.</div>
+            } @else {
+                <div class="form-text">Staat de gewenste omgeving er niet tussen? Een beheerder moet deze eerst activeren of configureren.</div>
+            }
             <br>
             <div class="alert alert-danger" role="alert">
                 LET OP! Controlleer goed of u de juiste DMN versie en omgeving heeft geselecteerd voordat u op "Uitrollen" klikt.

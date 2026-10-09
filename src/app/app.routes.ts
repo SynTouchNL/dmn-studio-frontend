@@ -23,6 +23,10 @@ import { DomainsView } from './views/beheer/domains-view/domains-view';
 import { DomainCreateView } from './views/beheer/domain-create-view/domain-create-view';
 import { DomainDetailView } from './views/beheer/domain-detail-view/domain-detail-view';
 import { DomainEditView } from './views/beheer/domain-edit-view/domain-edit-view';
+import { EnvironmentsView } from './views/beheer/environments-view/environments-view';
+import { EnvironmentCreateView } from './views/beheer/environment-create-view/environment-create-view';
+import { EnvironmentDetailView } from './views/beheer/environment-detail-view/environment-detail-view';
+import { EnvironmentEditView } from './views/beheer/environment-edit-view/environment-edit-view';
 import { ROUTE_ROLES } from '../auth';
 
 export const routes: Routes = [
@@ -50,6 +54,30 @@ export const routes: Routes = [
         component: DomainDetailView,
         canActivate: [canActivateAuthRole],
         data: { role: ROUTE_ROLES.DOMAINS_VIEW }
+    },
+    {
+        path: 'omgevingen/new',
+        component: EnvironmentCreateView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.ENVIRONMENT_CREATE }
+    },
+    {
+        path: 'omgevingen',
+        component: EnvironmentsView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.ENVIRONMENTS_VIEW }
+    },
+    {
+        path: 'omgevingen/:id/edit',
+        component: EnvironmentEditView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.ENVIRONMENT_EDIT }
+    },
+    {
+        path: 'omgevingen/:id',
+        component: EnvironmentDetailView,
+        canActivate: [canActivateAuthRole],
+        data: { role: ROUTE_ROLES.ENVIRONMENTS_VIEW }
     },
     // Deployment routes
     {
