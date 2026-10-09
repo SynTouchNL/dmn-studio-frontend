@@ -4,13 +4,13 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROLES } from '../../../../auth';
-import { ApiErrorResponse } from '../../../interfaces/api-error-response-interface';
 import { ConnectionTestResult, EnvironmentInterface } from '../../../interfaces/environments-interface';
 import { ClassPipe } from '../../../pipes/class-pipe/class-pipe';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { HttpService } from '../../../services/http-service/http-service';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { apiErrorMessage } from '../../../utils/api-error-message';
 
 @Component({
   selector: 'app-environment-detail-view',
@@ -79,9 +79,11 @@ export class EnvironmentDetailView implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.isTesting = false;
-        this.alertService.error('Verbinding testen mislukt', this.errorMessage(error,
-          'U heeft geen toestemming om deze omgeving te testen.',
-          'Er is een fout opgetreden bij het testen van de verbinding.'));
+        this.alertService.error('Verbinding testen mislukt', apiErrorMessage(error, {
+          forbidden: 'U heeft geen toestemming om deze omgeving te testen.',
+          notFound: 'Deze omgeving bestaat niet meer.',
+          fallback: 'Er is een fout opgetreden bij het testen van de verbinding.'
+        }));
       }
     });
   }
@@ -108,25 +110,11 @@ export class EnvironmentDetailView implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.isDeleting = false;
-        this.alertService.error('Omgeving verwijderen mislukt', this.errorMessage(error,
-          'U heeft geen toestemming om deze omgeving te verwijderen.',
-          'Er is een fout opgetreden bij het verwijderen van de omgeving.'));
+        this.alertService.error('Omgeving verwijderen mislukt', apiErrorMessage(error, {
+          forbidden: 'U heeft geen toestemming om deze omgeving te verwijderen.',
+          notFound: 'Deze omgeving bestaat niet meer.',
+          fallback: 'Er is een fout opgetreden bij het verwijderen van de omgeving.'
+        }));
       }
     });
-  }
-
-  private errorMessage(error: HttpErrorResponse, forbidden: string, fallback: string): string {
-    if (error.status === 0) {
-      return 'De server is niet bereikbaar. Probeer het later opnieuw.';
-    }
-
-    const response = error.error as Partial<ApiErrorResponse> | null;
-    return typeof response?.message === 'string' && response.message.trim()
-      ? response.message.trim()
-      : error.status === 403
-        ? forbidden
-        : error.status === 404
-          ? 'Deze omgeving bestaat niet meer.'
-          : fallback;
-  }
-}
+  }}

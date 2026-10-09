@@ -4,11 +4,11 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ROLES } from '../../../auth';
-import { ApiErrorResponse } from '../../interfaces/api-error-response-interface';
 import { EnvironmentInterface, EnvironmentRequest } from '../../interfaces/environments-interface';
 import { AlertService } from '../../services/alert-service/alert-service';
 import { HttpService } from '../../services/http-service/http-service';
 import { KeycloakService } from '../../services/keycloak-service/keycloak-service';
+import { apiErrorMessage } from '../../utils/api-error-message';
 
 /** Same rule as the backend's @HttpUrl: absolute http(s), no credentials, query or fragment. */
 const HTTP_URL_PATTERN = /^https?:\/\/[^\s/?#@]+(\/[^\s?#@]*)?$/i;
@@ -137,7 +137,13 @@ export class EnvironmentFormPartial implements OnInit {
                 this.isSubmitting = false;
                 this.alertService.error(
                     this.mode === 'create' ? 'Omgeving aanmaken mislukt' : 'Omgeving bijwerken mislukt',
-                    this.errorMessage(error)
+                    apiErrorMessage(error, {
+                        forbidden: 'U heeft geen toestemming om deze omgeving te beheren.',
+                        notFound: this.mode === 'edit' ? 'Deze omgeving bestaat niet meer.' : undefined,
+                        fallback: this.mode === 'create'
+                            ? 'Er is een fout opgetreden bij het aanmaken van de omgeving.'
+                            : 'Er is een fout opgetreden bij het bijwerken van de omgeving.'
+                    })
                 );
             }
         });
@@ -151,29 +157,4 @@ export class EnvironmentFormPartial implements OnInit {
                 this.form.controls[name].enable({ emitEvent: false });
             }
         }
-    }
-
-    private errorMessage(error: HttpErrorResponse): string {
-        if (error.status === 0) {
-            return 'De server is niet bereikbaar. Probeer het later opnieuw.';
-        }
-
-        const response = error.error as Partial<ApiErrorResponse> | null;
-        const message = typeof response?.message === 'string' && response.message.trim()
-            ? response.message.trim()
-            : error.status === 403
-                ? 'U heeft geen toestemming om deze omgeving te beheren.'
-                : error.status === 404 && this.mode === 'edit'
-                    ? 'Deze omgeving bestaat niet meer.'
-                    : this.mode === 'create'
-                        ? 'Er is een fout opgetreden bij het aanmaken van de omgeving.'
-                        : 'Er is een fout opgetreden bij het bijwerken van de omgeving.';
-        const violations = Array.isArray(response?.violations)
-            ? response.violations
-                .filter(violation => typeof violation?.field === 'string' && typeof violation?.message === 'string')
-                .map(violation => `${violation.field}: ${violation.message}`)
-            : [];
-
-        return [message, ...violations].join(' ');
-    }
-}
+    }}
