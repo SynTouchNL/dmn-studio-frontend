@@ -11,15 +11,16 @@
 
     <div class="row mb-2 align-items-center">
         <div class="col-1 btn-group" role="group">
-            <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button">Nieuw</button>
+            <button [routerLink]="['/deployments/new']" class="btn btn-primary" type="button" [disabled]="!canDeploy">Nieuw</button>
         </div>
         <div class="col-2">
             <form [formGroup]="myForm">
                 <select formControlName="environments" class="form-select">
                     <option [ngValue]="null" selected>Alle omgevingen</option>
-                    @for(env of environments; track env.id + " - " + env.name) {
-                        <option [ngValue]="env">{{ env.name }}</option>
+                    @for(env of environments; track env.id) {
+                        <option [ngValue]="env.id">{{ env.name }}</option>
                     }
+                    <option [ngValue]="DELETED_ENVIRONMENT">Verwijderde omgeving</option>
                 </select>
             </form>
         </div>
@@ -54,7 +55,13 @@
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">v{{ dep.dmnVersion.version }}</span>
                                 <span class="badge {{ dep.dmnVersion.status | classPipe }}" style="margin: -85px 1px 1px 1px;">{{ dep.dmnVersion.status | statusPipe }}</span>
                             </td>
-                            <td>{{ dep.environmentName }}</td>
+                            <td>
+                                @if (dep.environmentId !== null) {
+                                    {{ dep.environmentName }}
+                                } @else {
+                                    <span class="text-body-secondary">Verwijderde omgeving</span>
+                                }
+                            </td>
                             <td>{{ dep.dmn.name }}</td>
                             <td>{{ dep.deployedBy }}</td>
                             <td>{{ dep.deployedTime | date:'dd-MM-yyyy HH:mm' }}</td>

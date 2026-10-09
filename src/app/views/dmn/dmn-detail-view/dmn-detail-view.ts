@@ -107,7 +107,12 @@ export class DmnDetailView implements OnInit {
     }
 
     canStartNewVersion(dmnVersions: DMNVersionInterface[], statusNum: number): boolean {
-        return this.documentService.canStartNewVersion(dmnVersions, statusNum)
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.DMN_VERSION_CREATE)
+            && this.documentService.canStartNewVersion(dmnVersions, statusNum)
+    }
+
+    canViewReview(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.DMN_REVIEW);
     }
 
 

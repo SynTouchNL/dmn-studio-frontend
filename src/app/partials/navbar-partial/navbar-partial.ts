@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import Keycloak, {KeycloakProfile} from 'keycloak-js';
 import {KeycloakService} from '../../services/keycloak-service/keycloak-service';
 import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
+import {ROUTE_ROLES} from '../../../auth';
 
 @Component({
   selector: 'app-navbar-partial',
@@ -31,6 +32,12 @@ export class NavbarPartial implements OnInit {
 
     async ngOnInit() {
         await this.loadUserProfile()
+    }
+
+    protected readonly routeRoles = ROUTE_ROLES;
+
+    canAccess(roles: readonly string[]): boolean {
+        return this.keycloakService.hasAnyRole(roles);
     }
 
     onClickLogout() {

@@ -1,0 +1,11 @@
+<div class="container">
+    @if (isLoadingEnvironment) {
+        <p>Omgeving wordt geladen...</p>
+    } @else if (environmentLoadError || !environment) {
+        <div class="alert alert-danger" role="alert">Omgeving kon niet worden geladen.</div>
+        <a [routerLink]="['/omgevingen']">Terug naar omgevingen</a>
+    } @else {
+        <h3>Omgeving bewerken</h3>
+        <app-environment-form-partial mode="edit" [environment]="environment"></app-environment-form-partial>
+    }
+</div>
