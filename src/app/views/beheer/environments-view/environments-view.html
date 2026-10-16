@@ -1,0 +1,49 @@
+<div class="container">
+    <h3>Omgevingen Overzicht</h3>
+    <div class="mb-2">
+        <button [routerLink]="['/omgevingen/new']" class="btn btn-primary" type="button" [disabled]="!canManage">Nieuw</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Omgeving</th>
+                    <th scope="col">Engine URL</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Deployments</th>
+                    <th scope="col">Laatste wijziging</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (environment of environments; track environment.id) {
+                    <tr>
+                        <td><a [routerLink]="['/omgevingen', environment.id]">{{ environment.name }}</a></td>
+                        <td class="text-break">{{ environment.url || '—' }}</td>
+                        <td>
+                            <span class="badge me-1" [class.text-bg-success]="environment.active" [class.text-bg-secondary]="!environment.active">{{ environment.active ? 'Actief' : 'Inactief' }}</span>
+                            @if (needsConfiguration(environment)) {
+                                <span class="badge text-bg-warning">Configuratie vereist</span>
+                            }
+                        </td>
+                        <td>{{ environment.deployments.length }}</td>
+                        <td>{{ environment.updatedAt | date:'dd-MM-yyyy HH:mm' }}</td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            @if (isLoading) {
+                                Omgevingen worden geladen...
+                            } @else if (loadError) {
+                                Omgevingen konden niet worden geladen.
+                                <button type="button" class="btn btn-link" (click)="loadEnvironments()">Opnieuw proberen</button>
+                            } @else {
+                                Geen omgevingen gevonden.
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

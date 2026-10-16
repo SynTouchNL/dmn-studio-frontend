@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { HttpService } from '../../../services/http-service/http-service';
 import {Title} from '@angular/platform-browser';
 import {BreadcrumbsPartial} from '../../../partials/breadcrumbs-partial/breadcrumbs-partial';
+import {KeycloakService} from '../../../services/keycloak-service/keycloak-service';
+import {ROUTE_ROLES} from '../../../../auth';
 
 @Component({
   selector: 'app-unittest-detail-view',
@@ -23,6 +25,12 @@ export class UnittestDetailView implements OnInit {
     dmnId: number = 0;
     dmnVersion: number = 0;
     breadcrumb: { label: string, url: string, current: boolean }[] = [];
+
+    private keycloakService = inject(KeycloakService);
+
+    canCreateTest(): boolean {
+        return this.keycloakService.hasAnyRole(ROUTE_ROLES.TEST_CREATE);
+    }
 
     constructor(
         private router: Router,

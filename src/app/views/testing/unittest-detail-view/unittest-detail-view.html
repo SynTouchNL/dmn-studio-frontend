@@ -10,7 +10,7 @@
         </div>
         <div class="col text-end">
             <div class="btn-group" role="group">
-                <button class="btn btn-primary" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Invoegen</button>
+                <button class="btn btn-primary" [disabled]="!canCreateTest()" [routerLink]="['../create']" [state]="{ data: this.filtered_dmnVars[0], fresh: false, import: this.data }" type="button">Invoegen</button>
             </div>
         </div>
     </div>

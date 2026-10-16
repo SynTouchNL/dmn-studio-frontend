@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROLES } from '../../../../auth';
-import { ApiErrorResponse } from '../../../interfaces/api-error-response-interface';
 import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { AlertService } from '../../../services/alert-service/alert-service';
 import { HttpService } from '../../../services/http-service/http-service';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { apiErrorMessage } from '../../../utils/api-error-message';
 
 @Component({
   selector: 'app-domain-detail-view',
@@ -75,26 +75,11 @@ export class DomainDetailView implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.isDeleting = false;
-        this.alertService.error('Domein verwijderen mislukt', this.deleteErrorMessage(error));
+        this.alertService.error('Domein verwijderen mislukt', apiErrorMessage(error, {
+          forbidden: 'U heeft geen toestemming om dit domein te verwijderen.',
+          notFound: 'Dit domein bestaat niet meer.',
+          fallback: 'Er is een fout opgetreden bij het verwijderen van het domein.'
+        }));
       }
     });
-  }
-
-  private deleteErrorMessage(error: HttpErrorResponse): string {
-    if (error.status === 0) {
-      return 'De server is niet bereikbaar. Probeer het later opnieuw.';
-    }
-
-    const response = error.error as Partial<ApiErrorResponse> | null;
-    const message = typeof response?.message === 'string' && response.message.trim()
-      ? response.message.trim()
-      : error.status === 403
-        ? 'U heeft geen toestemming om dit domein te verwijderen.'
-        : error.status === 404
-          ? 'Dit domein bestaat niet meer.'
-          : 'Er is een fout opgetreden bij het verwijderen van het domein.';
-
-
-    return message;
-  }
-}
+  }}

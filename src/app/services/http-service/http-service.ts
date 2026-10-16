@@ -8,7 +8,9 @@ import {
 import { DMNDomainInterface, DomainPageResponse, DomainRequest } from '../../interfaces/domain-interface';
 import { KeycloakService } from '../keycloak-service/keycloak-service';
 import { DeploymentsInterface } from '../../interfaces/deployments-interface';
-import { EnvironmentsInterface } from '../../interfaces/environments-interface';
+import {
+    ConnectionTestResult, EnvironmentInterface, EnvironmentRequest
+} from '../../interfaces/environments-interface';
 import { UnitTestPayload } from '../../interfaces/decisions-interface';
 import { ConfigService } from '../config-service/config-service';
 import { UserInterface } from '../../interfaces/user-interface';
@@ -159,15 +161,60 @@ export class HttpService {
 
     /**
      * Get all environments.
-     * @returns EnvironmentsInterface with environments.
+     * @returns EnvironmentInterface[] with environments.
      * @internal
      */
-    getEnvironments(): Observable<EnvironmentsInterface>{
-        return this.http.get<any>(`${this.baseUrl}/environment`, {
+    getEnvironments(): Observable<EnvironmentInterface[]> {
+        return this.http.get<EnvironmentInterface[]>(`${this.baseUrl}/environment`, {
             headers: {
                 'Authorization': `Bearer ${this.token}`
             }
-        })
+        });
+    }
+
+    /** Get one environment by ID. */
+    getEnvironment(id: number): Observable<EnvironmentInterface> {
+        return this.http.get<EnvironmentInterface>(`${this.baseUrl}/environment/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Create an environment. */
+    createEnvironment(environment: EnvironmentRequest): Observable<EnvironmentInterface> {
+        return this.http.post<EnvironmentInterface>(`${this.baseUrl}/environment`, environment, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Update one environment by ID. An omitted password keeps the stored password. */
+    updateEnvironment(id: number, environment: EnvironmentRequest): Observable<EnvironmentInterface> {
+        return this.http.put<EnvironmentInterface>(`${this.baseUrl}/environment/${id}`, environment, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Delete one environment by ID. Its deployments remain without an environment. */
+    deleteEnvironment(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/environment/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
+    }
+
+    /** Test the connection to the engine of a saved environment. */
+    testEnvironmentConnection(id: number): Observable<ConnectionTestResult> {
+        return this.http.post<ConnectionTestResult>(`${this.baseUrl}/environment/${id}/connection-test`, null, {
+            headers: {
+                'Authorization': `Bearer ${this.token}`
+            }
+        });
     }
 
 
@@ -395,15 +442,15 @@ export class HttpService {
      * Deploy specific DMN version to environment.
      * @param dmn - DMNInterface of the DMN to deploy
      * @param version - Version number of the DMN to deploy
-     * @param environment - EnvironmentsInterface of the environment to deploy to
+     * @param environment - The environment to deploy to; only its ID is sent
      * @returns Observable with deployment result
      * @internal
      */
-    deployVersion(dmn: DMNInterface, version: number, environment: EnvironmentsInterface){
+    deployVersion(dmn: DMNInterface, version: number, environment: Pick<EnvironmentInterface, 'id'>){
         const body = {
             dmn: dmn,
             version: version,
-            environment: environment,
+            environment: { id: environment.id },
             tenantId: "testrotterdam",
             deploymentSource: "DMN Tool",
             deployChangedOnly: false,

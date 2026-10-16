@@ -1,0 +1,128 @@
+<div class="container">
+    <div class="mb-3">
+        <a [routerLink]="['/omgevingen']">Terug naar omgevingen</a>
+    </div>
+
+    @if (isLoading) {
+        <p>Omgeving wordt geladen...</p>
+    } @else if (loadError || !environment) {
+        <div class="alert alert-danger" role="alert">Omgeving kon niet worden geladen.</div>
+    } @else {
+        <div class="row">
+            <div class="col">
+                <h3>{{ environment.name }}</h3>
+            </div>
+        </div>
+        <div class="row align-items-center gy-2">
+            <div class="col">
+                <span class="badge me-1" [class.bg-success]="environment.active" [class.bg-secondary]="!environment.active">
+                    {{ environment.active ? 'Actief' : 'Inactief' }}
+                </span>
+                @if (needsConfiguration) {
+                    <span class="badge text-bg-warning">Configuratie vereist</span>
+                }
+            </div>
+            <div class="col-auto">
+                <div class="btn-group" role="group" aria-label="Omgevingacties">
+                    <button class="btn btn-primary" type="button" [disabled]="!canManage || isDeleting" [routerLink]="['/omgevingen', environment.id, 'edit']">Bewerken</button>
+                    <button class="btn btn-outline-primary" type="button" [disabled]="!canManage || isDeleting || isTesting" (click)="testConnection()">
+                        @if (isTesting) {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Testen...
+                        } @else {
+                            Verbinding testen
+                        }
+                    </button>
+                    <button class="btn btn-danger" type="button" [disabled]="!canManage || isDeleting" (click)="deleteEnvironment()">{{ isDeleting ? 'Verwijderen...' : 'Verwijderen' }}</button>
+                </div>
+            </div>
+        </div>
+
+        @if (testResult) {
+            <div class="alert mt-3 mb-0" role="status" [class.alert-success]="testResult.success" [class.alert-danger]="!testResult.success">
+                {{ testResult.message }} <span class="text-body-secondary">({{ testResult.durationMs }} ms)</span>
+            </div>
+        }
+
+        @if (needsConfiguration) {
+            <div class="alert alert-warning mt-3 mb-0" role="alert">
+                Deze omgeving mist een URL of inloggegevens. Er kan pas naar worden gedeployed als een beheerder deze heeft geconfigureerd.
+            </div>
+        }
+
+        <div class="row g-4 mt-2">
+            <div class="col-12 col-lg-6">
+                <h4>Algemene gegevens</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Naam</span><span class="col-12 col-sm-7">{{ environment.name }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Engine URL</span><span class="col-12 col-sm-7 text-break">{{ environment.url || 'Niet ingesteld' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Gebruikersnaam</span><span class="col-12 col-sm-7">{{ environment.username || 'Niet ingesteld' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Wachtwoord</span><span class="col-12 col-sm-7">{{ environment.passwordSet ? 'Ingesteld' : 'Niet ingesteld' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Status</span><span class="col-12 col-sm-7">{{ environment.active ? 'Actief' : 'Inactief' }}</span></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-6">
+                <h4>Activiteit</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt op</span><span class="col-12 col-sm-7">{{ environment.createdAt | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Aangemaakt door</span><span class="col-12 col-sm-7">{{ environment.createdBy || '—' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt op</span><span class="col-12 col-sm-7">{{ environment.updatedAt | date:'dd-MM-yyyy HH:mm' }}</span></div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row"><span class="col-12 col-sm-5">Bewerkt door</span><span class="col-12 col-sm-7">{{ environment.updatedBy || '—' }}</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <h4>Deployments</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">DMN</th>
+                                <th scope="col">Versie</th>
+                                <th scope="col">Door</th>
+                                <th scope="col">Tijdstip</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (deployment of environment.deployments; track deployment.id) {
+                                <tr>
+                                    <td><a [routerLink]="['/dmns', deployment.dmnId, deployment.version.version]">{{ deployment.dmnName }}</a></td>
+                                    <td>
+                                        <span class="badge {{ deployment.version.status | classPipe }} me-1">v{{ deployment.version.version }}</span>
+                                        <span class="badge {{ deployment.version.status | classPipe }}">{{ deployment.version.status | statusPipe }}</span>
+                                    </td>
+                                    <td>{{ deployment.deployedBy }}</td>
+                                    <td>{{ deployment.deployedTime | date:'dd-MM-yyyy HH:mm' }}</td>
+                                </tr>
+                            } @empty {
+                                <tr>
+                                    <td colspan="4" class="text-center">Geen deployments op deze omgeving.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

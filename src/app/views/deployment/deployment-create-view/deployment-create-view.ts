@@ -10,7 +10,7 @@ import {
 import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { StatusPipe } from '../../../pipes/status-pipe/status-pipe';
 import { AlertService } from '../../../services/alert-service/alert-service';
-import { EnvironmentsInterface } from '../../../interfaces/environments-interface';
+import { EnvironmentInterface } from '../../../interfaces/environments-interface';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -22,7 +22,9 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class DeploymentCreateView implements OnInit {
-    environments: any[] = [];
+    environments: EnvironmentInterface[] = [];
+    environmentsLoaded: boolean = false;
+    environmentsLoadError: boolean = false;
     domains: DMNDomainInterface[] = [];
     dmns: DMNListInterface = [];
     dmns_base: DMNListInterface = [];
@@ -32,7 +34,7 @@ export class DeploymentCreateView implements OnInit {
 
     selected_dmn: DMNInterface | null = null;
     selected_version: DMNVersionInterface | null = null;
-    selected_environment: EnvironmentsInterface | null = null;
+    selected_environment: EnvironmentInterface | null = null;
 
     myForm: any;
     clicked: boolean = false;
@@ -57,11 +59,7 @@ export class DeploymentCreateView implements OnInit {
         this.titleService.setTitle("DMNStudio - Nieuwe deployment aanmaken");
 
 
-        this.dmnService.getEnvironments().subscribe(
-            data => {
-                this.environments = Array.isArray(data) ? data : [data];
-            }
-        )
+        this.loadEnvironments();
         this.dmnService.getDomains().subscribe(
             data => {
                 //@ts-ignore
@@ -103,11 +101,35 @@ export class DeploymentCreateView implements OnInit {
         );
 
         this.myForm.get("environments").valueChanges.subscribe(
-            (value: EnvironmentsInterface) => {
+            (value: EnvironmentInterface) => {
                 this.selected_environment = value;
             }
         );
 
+    }
+
+    loadEnvironments() {
+        this.environmentsLoaded = false;
+        this.environmentsLoadError = false;
+        this.myForm.get("environments").enable();
+        this.dmnService.getEnvironments().subscribe({
+            next: data => {
+                // Only active, fully configured environments (URL and credentials) can be deployed to.
+                this.environments = (Array.isArray(data) ? data : [])
+                    .filter(env => env.active && !!env.url && !!env.username && env.passwordSet);
+                this.environmentsLoaded = true;
+                if (this.environments.length === 0) {
+                    this.myForm.get("environments").disable();
+                }
+            },
+            error: (error) => {
+                this.environments = [];
+                this.environmentsLoaded = true;
+                this.environmentsLoadError = true;
+                this.myForm.get("environments").disable();
+                this.alertService.error("Omgevingen konden niet worden geladen", error.error?.message || 'Onbekende fout.');
+            }
+        });
     }
 
     refreshDMNs(){

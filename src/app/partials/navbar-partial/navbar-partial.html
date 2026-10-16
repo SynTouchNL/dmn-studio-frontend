@@ -10,17 +10,30 @@
         <div id="navcol-1" class="collapse navbar-collapse">
             <div class="navbar-content d-md-flex align-items-md-center w-100">
                 <ul class="navbar-nav me-md-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']" routerLinkActive="active">DMNs</a></li>
-                    <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']" routerLinkActive="active">Deployments</a></li>
-                    <li class="nav-item" ngbDropdown>
-                        <button class="nav-link dropdown-toggle" type="button" ngbDropdownToggle>Beheer</button>
-                        <div ngbDropdownMenu>
-                            <a ngbDropdownItem [routerLink]="['/domeinen']" routerLinkActive="active">Domeinen</a>
-                        </div>
-                    </li>
+                    @if (canAccess(routeRoles.HOME)) {
+                        <li class="nav-item">
+                            <a class="nav-link" [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+                        </li>
+                    }
+                    @if (canAccess(routeRoles.DMN_LIST)) {
+                        <li class="nav-item"><a class="nav-link" [routerLink]="['/dmns']" routerLinkActive="active">DMNs</a></li>
+                    }
+                    @if (canAccess(routeRoles.DEPLOYMENT_LIST)) {
+                        <li class="nav-item"><a class="nav-link" [routerLink]="['/deployments']" routerLinkActive="active">Deployments</a></li>
+                    }
+                    @if (canAccess(routeRoles.DOMAINS_VIEW) || canAccess(routeRoles.ENVIRONMENTS_VIEW)) {
+                        <li class="nav-item" ngbDropdown>
+                            <button class="nav-link dropdown-toggle" type="button" ngbDropdownToggle>Beheer</button>
+                            <div ngbDropdownMenu>
+                                @if (canAccess(routeRoles.DOMAINS_VIEW)) {
+                                    <a ngbDropdownItem [routerLink]="['/domeinen']" routerLinkActive="active">Domeinen</a>
+                                }
+                                @if (canAccess(routeRoles.ENVIRONMENTS_VIEW)) {
+                                    <a ngbDropdownItem [routerLink]="['/omgevingen']" routerLinkActive="active">Omgevingen</a>
+                                }
+                            </div>
+                        </li>
+                    }
                 </ul>
                 <div ngbDropdown class="profile-dropdown mt-2 mt-md-0">
                     <img ngbDropdownToggle class="rounded-circle img-fluid object-fit-scale" alt="Profielmenu" src="default_profile_image.png" width="40" height="40"/>

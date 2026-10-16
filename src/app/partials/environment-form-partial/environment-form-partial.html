@@ -1,0 +1,80 @@
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            @if (environment && !environment.active) {
+                <div class="alert alert-info" role="alert">
+                    Deze omgeving is inactief en daardoor alleen-lezen. Vink "Actief" aan om de omgeving opnieuw te activeren en te bewerken.
+                </div>
+            }
+
+            <div class="mb-3">
+                <label for="environment-name" class="form-label">Naam</label>
+                <input id="environment-name" type="text" class="form-control" formControlName="name" maxlength="255"
+                       [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid">
+                @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+                    <div class="invalid-feedback">Vul een naam in.</div>
+                } @else if (form.controls.name.touched && form.controls.name.hasError('maxlength')) {
+                    <div class="invalid-feedback">De naam mag maximaal 255 tekens bevatten.</div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label for="environment-url" class="form-label">Engine URL</label>
+                <input id="environment-url" type="url" class="form-control" formControlName="url" maxlength="2048"
+                       placeholder="https://engine.example.com/engine-rest"
+                       [class.is-invalid]="form.controls.url.touched && form.controls.url.invalid">
+                @if (form.controls.url.touched && form.controls.url.hasError('required')) {
+                    <div class="invalid-feedback">Vul een URL in.</div>
+                } @else if (form.controls.url.touched && form.controls.url.hasError('maxlength')) {
+                    <div class="invalid-feedback">De URL mag maximaal 2048 tekens bevatten.</div>
+                } @else if (form.controls.url.touched && form.controls.url.hasError('httpUrl')) {
+                    <div class="invalid-feedback">Vul een absolute http(s)-URL in, zonder inloggegevens, query (?) of fragment (#).</div>
+                }
+                @if (urlWithoutContextPath) {
+                    <div class="form-text text-warning">Deze URL heeft geen contextpad. De Operaton REST API draait meestal onder bijvoorbeeld /engine-rest.</div>
+                } @else {
+                    <div class="form-text">De URL van de Operaton REST API, inclusief contextpad (bijvoorbeeld /engine-rest).</div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label for="environment-username" class="form-label">Gebruikersnaam</label>
+                <input id="environment-username" type="text" class="form-control" formControlName="username" maxlength="255"
+                       autocomplete="off"
+                       [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid">
+                @if (form.controls.username.touched && form.controls.username.hasError('required')) {
+                    <div class="invalid-feedback">Vul een gebruikersnaam in.</div>
+                } @else if (form.controls.username.touched && form.controls.username.hasError('maxlength')) {
+                    <div class="invalid-feedback">De gebruikersnaam mag maximaal 255 tekens bevatten.</div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label for="environment-password" class="form-label">Wachtwoord</label>
+                <input id="environment-password" type="password" class="form-control" formControlName="password" maxlength="200"
+                       autocomplete="new-password" [placeholder]="passwordStored ? 'Ongewijzigd laten' : ''"
+                       [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid">
+                @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+                    <div class="invalid-feedback">Vul een wachtwoord in.</div>
+                } @else if (form.controls.password.touched && form.controls.password.hasError('maxlength')) {
+                    <div class="invalid-feedback">Het wachtwoord mag maximaal 200 tekens bevatten.</div>
+                }
+                @if (passwordStored) {
+                    <div class="form-text">Er is een wachtwoord opgeslagen. Laat dit veld leeg om het te behouden.</div>
+                }
+            </div>
+
+            <div class="form-check mb-3">
+                <input id="environment-active" type="checkbox" class="form-check-input" formControlName="active">
+                <label for="environment-active" class="form-check-label">Actief</label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || isReadOnly">
+                    {{ isSubmitting ? (mode === 'create' ? 'Aanmaken...' : 'Opslaan...') : (mode === 'create' ? 'Aanmaken' : 'Opslaan') }}
+                </button>
+                <a [routerLink]="mode === 'edit' && environment ? ['/omgevingen', environment.id] : ['/omgevingen']" class="btn btn-secondary">Terug</a>
+            </div>
+        </div>
+    </div>
+</form>
