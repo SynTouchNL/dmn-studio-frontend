@@ -1,48 +1,47 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, OperatorFunction } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Observable, OperatorFunction, of } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
-import {UserInterface} from '../../interfaces/user-interface';
-import {JsonPipe} from '@angular/common';
+import { UserInterface } from '../../interfaces/user-interface';
+import { HttpService } from '../../services/http-service/http-service';
 
 @Component({
     selector: 'app-typeahead-users-partial',
-    imports: [
-        FormsModule,
-        NgbTypeaheadModule
-    ],
+    imports: [FormsModule, NgbTypeaheadModule],
     templateUrl: './typeahead-users-partial.html',
     styleUrl: './typeahead-users-partial.css'
 })
-
-export class TypeaheadUsersPartial {
+export class TypeaheadUsersPartial implements OnChanges {
     @Input() title = '';
-    @Input() data: UserInterface[] = [];
+    @Input() initialUser?: Partial<UserInterface>;
     @Output() selected = new EventEmitter<UserInterface>();
     model: any = '';
+    selectedUser?: UserInterface;
 
-    selectedUser?: UserInterface
+    constructor(private httpService: HttpService) {}
 
-    constructor() {}
-
-    formatter = (user: any) => user ? `${user.firstName} ${user.lastName}` : '';
-
-    search: OperatorFunction<string, readonly any[]> = (text$: Observable<string>) =>
-    text$.pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        map(term =>
-            term.length < 2 ? [] : this.data.filter(v => {
-                const full = `${v.firstName} ${v.lastName}`.toLowerCase();
-                return full.includes(term.toLowerCase());
-            }).slice(0, 10)
-        )
-    );
-
-    onUserSelected(event: any) {
-        this.selectedUser = event.item; // full object
-        this.selected.emit(this.selectedUser); // 🔹 emit to parent
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['initialUser'] && this.initialUser && !this.selectedUser) {
+            this.model = this.initialUser;
+        }
     }
 
+    formatter = (user: any) => user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : '';
+
+    search: OperatorFunction<string, readonly UserInterface[]> = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap(term =>
+                term.length < 2
+                    ? of([])
+                    : this.httpService.searchUsers(term).pipe(catchError(() => of([])))
+            )
+        );
+
+    onUserSelected(event: any) {
+        this.selectedUser = event.item;
+        this.selected.emit(this.selectedUser);
+    }
 }

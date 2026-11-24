@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
+import { UserInterface } from '../../interfaces/user-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -15,4 +16,15 @@ export class KeycloakService {
         return !!this.keycloak.authenticated && roles.some(role => this.keycloak.hasRealmRole(role));
     }
     async getUserProfile(): Promise<KeycloakProfile>{ return await this.keycloak.loadUserProfile(); }
+
+    getCurrentUser(): Partial<UserInterface> {
+        const t = this.keycloak.tokenParsed;
+        return {
+            id: t?.['sub'],
+            username: t?.['preferred_username'],
+            firstName: t?.['given_name'],
+            lastName: t?.['family_name'],
+            email: t?.['email']
+        };
+    }
 }

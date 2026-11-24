@@ -8,7 +8,8 @@ import { DMNDomainInterface } from '../../../interfaces/domain-interface';
 import { Title } from '@angular/platform-browser';
 import { DocumentService } from '../../../services/document-service/document-service';
 import { TypeaheadUsersPartial } from '../../../partials/typeahead-partial/typeahead-users-partial';
-import {UserInterface} from '../../../interfaces/user-interface';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
+import { UserInterface } from '../../../interfaces/user-interface';
 
 @Component({
     selector: 'app-dmn-create-view',
@@ -23,14 +24,15 @@ export class DmnCreateView implements OnInit {
     dmnOwner: string = '';
     domains: DMNDomainInterface[] = [];
     dmnFileContent: string = '';
-    dmnUsers: UserInterface[] = [];
+    currentUser?: Partial<UserInterface>;
 
     constructor(
         private dmnService: HttpService,
         private alertService: AlertService,
         private router: Router,
         private titleService: Title,
-        private documentService: DocumentService
+        private documentService: DocumentService,
+        private keycloakService: KeycloakService
     ) { }
 
     ngOnInit(){
@@ -39,13 +41,9 @@ export class DmnCreateView implements OnInit {
                 this.domains = Array.isArray(data) ? data : [data];
             }
         );
-        this.dmnService.getUsers().subscribe({
-            next: data => {
-                this.dmnUsers = data ? data : [];
-            }
-        })
+        this.currentUser = this.keycloakService.getCurrentUser();
+        this.dmnOwner = this.currentUser.username ?? '';
         this.titleService.setTitle("DMNStudio - Nieuwe DMN aanmaken ");
-
     }
 
     submitForm(event: Event) {

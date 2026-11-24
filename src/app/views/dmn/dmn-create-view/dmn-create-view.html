@@ -26,7 +26,7 @@
             </div>
             <br>
             <div class="form-group">
-                <app-typeahead-users-partial [title]="'Eigenaar DMN'" [data]="dmnUsers" (selected)="onUserPicked($event)"></app-typeahead-users-partial>
+                <app-typeahead-users-partial [title]="'Eigenaar DMN'" [initialUser]="currentUser" (selected)="onUserPicked($event)"></app-typeahead-users-partial>
             </div>
             <br>
             <div class="form-group">

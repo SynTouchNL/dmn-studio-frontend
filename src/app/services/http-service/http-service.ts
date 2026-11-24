@@ -45,9 +45,14 @@ export class HttpService {
 
     getUsers(): Observable<UserInterface[]> {
         return this.http.get<any>(`${this.baseUrl}/auth/users`, {
-            headers: {
-                'Authorization': `Bearer ${this.token}`
-            }
+            headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+    }
+
+    searchUsers(search: string, max = 20): Observable<UserInterface[]> {
+        return this.http.get<UserInterface[]>(`${this.baseUrl}/auth/users`, {
+            headers: { 'Authorization': `Bearer ${this.token}` },
+            params: { search, max }
         });
     }
 

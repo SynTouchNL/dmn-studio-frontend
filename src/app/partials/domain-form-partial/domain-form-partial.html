@@ -13,29 +13,13 @@
             </div>
 
             <div class="mb-3">
-                <label for="domain-owner" class="form-label">Eigenaar</label>
-                <select id="domain-owner" class="form-select" formControlName="ownerId"
-                        [class.is-invalid]="form.controls.ownerId.touched && form.controls.ownerId.invalid">
-                    <option value="">Kies een gebruiker</option>
-                    @if (ownerMissing && domain) {
-                        <option [value]="domain.ownerId">{{ domain.owner || domain.ownerId }} (huidige eigenaar)</option>
-                    }
-                    @for (user of users; track user.id) {
-                        <option [value]="user.id">{{ userLabel(user) }}</option>
-                    }
-                </select>
+                <app-typeahead-users-partial
+                    title="Eigenaar"
+                    [initialUser]="initialOwner"
+                    (selected)="onOwnerSelected($event)">
+                </app-typeahead-users-partial>
                 @if (form.controls.ownerId.touched && form.controls.ownerId.hasError('required')) {
-                    <div class="invalid-feedback">Kies een eigenaar.</div>
-                }
-                @if (isLoadingUsers) {
-                    <div class="form-text">Gebruikers worden geladen...</div>
-                } @else if (usersLoadError) {
-                    <div class="text-danger mt-2">
-                        Gebruikers konden niet worden geladen.
-                        <button type="button" class="btn btn-link p-0" (click)="loadUsers()">Opnieuw proberen</button>
-                    </div>
-                } @else if (users.length === 0 && mode === 'create') {
-                    <div class="form-text">Geen gebruikers beschikbaar.</div>
+                    <div class="text-danger small mt-1">Kies een eigenaar.</div>
                 }
             </div>
 
@@ -46,7 +30,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary"
-                        [disabled]="isSubmitting || isLoadingUsers || (mode === 'create' && (usersLoadError || users.length === 0))">
+                        [disabled]="isSubmitting">
                     {{ isSubmitting ? (mode === 'create' ? 'Aanmaken...' : 'Opslaan...') : (mode === 'create' ? 'Aanmaken' : 'Opslaan') }}
                 </button>
                 <a [routerLink]="mode === 'edit' && domain ? ['/domeinen', domain.id] : ['/domeinen']" class="btn btn-secondary">Terug</a>

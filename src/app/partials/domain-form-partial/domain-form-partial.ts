@@ -10,10 +10,11 @@ import { AlertService } from '../../services/alert-service/alert-service';
 import { HttpService } from '../../services/http-service/http-service';
 import { KeycloakService } from '../../services/keycloak-service/keycloak-service';
 import { apiErrorMessage } from '../../utils/api-error-message';
+import { TypeaheadUsersPartial } from '../typeahead-partial/typeahead-users-partial';
 
 @Component({
     selector: 'app-domain-form-partial',
-    imports: [ReactiveFormsModule, RouterLink],
+    imports: [ReactiveFormsModule, RouterLink, TypeaheadUsersPartial],
     templateUrl: './domain-form-partial.html'
 })
 export class DomainFormPartial implements OnInit {
@@ -32,10 +33,15 @@ export class DomainFormPartial implements OnInit {
         active: new FormControl(true, { nonNullable: true })
     });
 
-    users: UserInterface[] = [];
-    isLoadingUsers = true;
-    usersLoadError = false;
     isSubmitting = false;
+    private defaultOwner?: Partial<UserInterface>;
+
+    get initialOwner(): Partial<UserInterface> | undefined {
+        if (this.domain?.ownerId) {
+            return { id: this.domain.ownerId, firstName: this.domain.owner || this.domain.ownerId };
+        }
+        return this.defaultOwner;
+    }
 
     constructor(
         private readonly httpService: HttpService,
@@ -51,34 +57,15 @@ export class DomainFormPartial implements OnInit {
                 ownerId: this.domain.ownerId,
                 active: this.domain.active
             });
+        } else {
+            this.defaultOwner = this.keycloakService.getCurrentUser();
+            this.form.controls.ownerId.setValue(this.defaultOwner.id ?? '');
         }
-        this.loadUsers();
     }
 
-    loadUsers(): void {
-        this.isLoadingUsers = true;
-        this.usersLoadError = false;
-        this.httpService.getUsers().subscribe({
-            next: users => {
-                this.users = Array.isArray(users) ? users : [];
-                this.isLoadingUsers = false;
-            },
-            error: () => {
-                this.users = [];
-                this.usersLoadError = true;
-                this.isLoadingUsers = false;
-            }
-        });
-    }
-
-    get ownerMissing(): boolean {
-        return !!this.domain && !this.users.some(user => user.id === this.domain?.ownerId);
-    }
-
-    userLabel(user: UserInterface): string {
-        const name = [user.firstName, user.lastName].filter(Boolean).join(' ');
-        const identifier = user.username || user.email || user.id;
-        return name ? `${name} (${identifier})` : identifier;
+    onOwnerSelected(user: UserInterface): void {
+        this.form.controls.ownerId.setValue(user.id ?? '');
+        this.form.controls.ownerId.markAsTouched();
     }
 
     submit(): void {
@@ -87,16 +74,11 @@ export class DomainFormPartial implements OnInit {
 
         if (!this.keycloakService.hasAnyRole([ROLES.ADMIN]) ||
             (this.mode === 'edit' && !this.domain) ||
-            this.form.invalid || this.isLoadingUsers || this.isSubmitting) {
+            this.form.invalid || this.isSubmitting) {
             return;
         }
 
         const data = this.form.getRawValue();
-        if (!this.users.some(user => user.id === data.ownerId) && data.ownerId !== this.domain?.ownerId) {
-            this.form.controls.ownerId.setErrors({ required: true });
-            return;
-        }
-
         let request: Observable<void>;
         let destination: (string | number)[];
         if (this.mode === 'edit') {
