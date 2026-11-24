@@ -34,14 +34,7 @@ export class DomainFormPartial implements OnInit {
     });
 
     isSubmitting = false;
-    private defaultOwner?: Partial<UserInterface>;
-
-    get initialOwner(): Partial<UserInterface> | undefined {
-        if (this.domain?.ownerId) {
-            return { id: this.domain.ownerId, firstName: this.domain.owner || this.domain.ownerId };
-        }
-        return this.defaultOwner;
-    }
+    initialOwner?: Partial<UserInterface>;
 
     constructor(
         private readonly httpService: HttpService,
@@ -52,14 +45,15 @@ export class DomainFormPartial implements OnInit {
 
     ngOnInit(): void {
         if (this.domain) {
+            this.initialOwner = { id: this.domain.ownerId, firstName: this.domain.owner || this.domain.ownerId };
             this.form.setValue({
                 name: this.domain.name,
                 ownerId: this.domain.ownerId,
                 active: this.domain.active
             });
         } else {
-            this.defaultOwner = this.keycloakService.getCurrentUser();
-            this.form.controls.ownerId.setValue(this.defaultOwner.id ?? '');
+            this.initialOwner = this.keycloakService.getCurrentUser();
+            this.form.controls.ownerId.setValue(this.initialOwner.id ?? '');
         }
     }
 

@@ -18,12 +18,14 @@ export class TypeaheadUsersPartial implements OnChanges {
     @Output() selected = new EventEmitter<UserInterface>();
     model: any = '';
     selectedUser?: UserInterface;
+    private initialApplied = false;
 
     constructor(private httpService: HttpService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['initialUser'] && this.initialUser && !this.selectedUser) {
-            this.model = this.initialUser;
+        if (changes['initialUser'] && this.initialUser && !this.initialApplied) {
+            this.initialApplied = true;
+            this.model = this.formatter(this.initialUser);
         }
     }
 
@@ -35,8 +37,8 @@ export class TypeaheadUsersPartial implements OnChanges {
             distinctUntilChanged(),
             switchMap(term =>
                 term.length < 2
-                    ? of([])
-                    : this.httpService.searchUsers(term).pipe(catchError(() => of([])))
+                    ? of<readonly UserInterface[]>([])
+                    : this.httpService.searchUsers(term).pipe(catchError(() => of<readonly UserInterface[]>([])))
             )
         );
 
